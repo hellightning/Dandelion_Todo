@@ -8,9 +8,9 @@ Project for Mobile Internet Lesson in Autumn 2021. Aim to develop a multi-functi
 ## 文件说明
 
 * lib 主要代码区
-  * beans 主要是数据类
+  * models 主要是数据类
   * components 可复用的widget
-  * constants 常量们。有个Global类
+  * utils 常量和工具类
   * http 网络相关类。看别人的项目里有，顺手建了个
   * material 和界面定制有关的类
   * pages 和route有关的页面widget
@@ -20,3 +20,7 @@ Project for Mobile Internet Lesson in Autumn 2021. Aim to develop a multi-functi
 * jsons 需要的json文件
 * mock 看别人的项目里有，顺手建了个
 * res 相关资源（怎么感觉建了好几个用途重合的包
+
+## 插件说明
+* shared_preferences 账户持久化
+* provider 全局状态管理
