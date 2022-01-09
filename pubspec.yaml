@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   json_model: ^1.0.0
   json_serializable: ^5.0.0
+  image_picker: ^0.8.4+4
 
 dev_dependencies:
   flutter_test:
