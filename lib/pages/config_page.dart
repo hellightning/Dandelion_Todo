@@ -1,3 +1,5 @@
+import 'package:dandelion_todo/utils/Global.dart';
+import 'package:dandelion_todo/utils/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -25,8 +27,72 @@ class _ConfigPageState extends State<ConfigPage> {
             subtitle: Text('设置说明'),
           ),
           ListTile(
-            title: Text('test'),
-            subtitle: Text('this is test subtitle'),
+            title: Text('主题颜色'),
+            subtitle: Text(Global.THEME_COLOR.name),
+            // 太丑了，肯定不能这么嗯写
+            onTap: () {
+              showDialog<Null>(
+                context: context,
+                builder: (BuildContext context) {
+                  return new SimpleDialog(
+                    title: new Text('选择'),
+                    children: <Widget>[
+                      new SimpleDialogOption(
+                        child: new Text('blue'),
+                        onPressed: () {
+                          Global.APP_THEME = AppTheme.blue;
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      new SimpleDialogOption(
+                        child: new Text('red'),
+                        onPressed: () {
+                          Global.APP_THEME = AppTheme.red;
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      new SimpleDialogOption(
+                        child: new Text('purple'),
+                        onPressed: () {
+                          Global.APP_THEME = AppTheme.purple;
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      new SimpleDialogOption(
+                        child: new Text('pink'),
+                        onPressed: () {
+                          Global.APP_THEME = AppTheme.pink;
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      new SimpleDialogOption(
+                        child: new Text('green'),
+                        onPressed: () {
+                          Global.APP_THEME = AppTheme.green;
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      new SimpleDialogOption(
+                        child: new Text('dark'),
+                        onPressed: () {
+                          Global.APP_THEME = AppTheme.dark;
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      new SimpleDialogOption(
+                        child: new Text('light'),
+                        onPressed: () {
+                          Global.APP_THEME = AppTheme.light;
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ).then((val) {
+                print(val);
+              });
+            },
           ),
           ListTile(
             title: Text('test'),

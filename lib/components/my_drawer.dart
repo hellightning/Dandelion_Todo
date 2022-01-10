@@ -18,55 +18,92 @@ class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        children: [
-          DrawerHeader(
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Image.asset(
-                  'assets/imgs/blue.jpeg',
-                  fit: BoxFit.cover,
-                ),
-                IconButton(
-                  icon: Icon(Icons.account_circle_rounded),
-                  onPressed: () {},
-                ),
-              ],
+      child: Container(
+        color: Global.THEME_COLOR.background,
+        child: ListView(
+          children: [
+            DrawerHeader(
+              curve: Curves.easeInCubic,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Image.asset(
+                    'assets/imgs/' + Global.THEME_COLOR.name + '.jpeg',
+                    fit: BoxFit.cover,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.account_circle_rounded),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
             ),
-          ),
-          ListTile(
-            selected: currentItem == Global.TODO_DRAWER_UNFINISHED,
-            title: Text('正在进行'),
-            onTap: () {
-              setState(() {
-                currentItem = Global.TODO_DRAWER_UNFINISHED;
-              });
-            },
-          ),
-          ListTile(
-            selected: currentItem == Global.TODO_DRAWER_FINISHED,
-            title: Text('已完成'),
-            onTap: () {
-              setState(() {
-                currentItem = Global.TODO_DRAWER_FINISHED;
-              });
-            },
-          ),
-          ListTile(
-            selected: currentItem == Global.TODO_DRAWER_CONFIG,
-            title: Text('设置'),
-            onTap: () {
-              setState(() {
-                currentItem = Global.TODO_DRAWER_CONFIG;
-              });
-            },
-          ),
-          ListTile(
-            title: Text('添加好友'),
-            onTap: () {},
-          ),
-        ],
+            ListTile(
+              selectedTileColor: Global.THEME_COLOR.subColor,
+              selected: currentItem == Global.TODO_DRAWER_UNFINISHED,
+              title: Text(
+                '正在进行',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: currentItem == Global.TODO_DRAWER_UNFINISHED
+                        ? Global.THEME_COLOR.mainColor
+                        : Global.THEME_COLOR.textColor),
+              ),
+              onTap: () {
+                setState(() {
+                  currentItem = Global.TODO_DRAWER_UNFINISHED;
+                });
+              },
+            ),
+            ListTile(
+              selectedTileColor: Global.THEME_COLOR.subColor,
+              selected: currentItem == Global.TODO_DRAWER_FINISHED,
+              title: Text(
+                '已完成',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: currentItem == Global.TODO_DRAWER_FINISHED
+                        ? Global.THEME_COLOR.mainColor
+                        : Global.THEME_COLOR.textColor),
+              ),
+              onTap: () {
+                setState(() {
+                  currentItem = Global.TODO_DRAWER_FINISHED;
+                });
+              },
+            ),
+            ListTile(
+              selectedTileColor: Global.THEME_COLOR.subColor,
+              selected: currentItem == Global.TODO_DRAWER_CONFIG,
+              title: Text(
+                '设置',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: currentItem == Global.TODO_DRAWER_CONFIG
+                        ? Global.THEME_COLOR.mainColor
+                        : Global.THEME_COLOR.textColor),
+              ),
+              onTap: () {
+                setState(() {
+                  currentItem = Global.TODO_DRAWER_CONFIG;
+                });
+                Navigator.pushNamed(context, '/config_page/setting');
+              },
+            ),
+            ListTile(
+              selectedTileColor: Global.THEME_COLOR.subColor,
+              title: Text(
+                '添加好友',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: currentItem == Global.TODO_DRAWER_ACCOUNT
+                        ? Global.THEME_COLOR.mainColor
+                        : Global.THEME_COLOR.textColor),
+              ),
+              onTap: () {},
+            ),
+          ],
+        ),
       ),
     );
   }

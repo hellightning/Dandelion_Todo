@@ -12,7 +12,7 @@ class SearchItem extends StatelessWidget {
       padding: EdgeInsets.all(5.0),
       decoration: new BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(2.0)),
-        color: Colors.blue[100],
+        color: Global.THEME_COLOR.subColor,
         boxShadow: <BoxShadow>[
           BoxShadow(
               blurRadius: 3,
@@ -28,7 +28,7 @@ class SearchItem extends StatelessWidget {
             },
             icon: Icon(
               Icons.menu,
-              color: Global.THEME_COLOR.neglected,
+              color: Global.THEME_COLOR.mainColor,
             ),
             iconSize: 30,
             splashRadius: 30,
@@ -40,6 +40,7 @@ class SearchItem extends StatelessWidget {
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10.0),
                     hintText: '搜索TODO事项',
+                    hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
                     border: InputBorder.none),
               )),
         ],

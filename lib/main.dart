@@ -41,8 +41,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Dandelion Todo',
+      color: Global.THEME_COLOR.background,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
       home: TodoPage(),
       initialRoute: '/todo_page',

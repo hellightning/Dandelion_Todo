@@ -1,6 +1,7 @@
 import 'package:dandelion_todo/components/my_drawer.dart';
 import 'package:dandelion_todo/components/search_item.dart';
 import 'package:dandelion_todo/components/todo_item.dart';
+import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class _TodoPageState extends State<TodoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MyDrawer(),
+      backgroundColor: Global.THEME_COLOR.background,
       body: Stack(
         children: [
           ListView(

@@ -64,7 +64,7 @@ class _TodoItemState extends State<TodoItem> {
                   IconButton(
                     icon: Icon(
                       Icons.delete_forever,
-                      color: Global.THEME_COLOR.neglected,
+                      color: Global.THEME_COLOR.warnColor,
                     ),
                     onPressed: () {},
                   ),
