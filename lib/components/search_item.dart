@@ -1,3 +1,4 @@
+import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,25 +8,30 @@ class SearchItem extends StatelessWidget {
     return Container(
       alignment: Alignment.topCenter,
       margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-      width: 350,
       height: 60,
       padding: EdgeInsets.all(5.0),
       decoration: new BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(2.0)),
         color: Colors.blue[100],
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+              blurRadius: 3,
+              color: Global.THEME_COLOR.neglected,
+              offset: Offset(5.0, 5.0))
+        ],
       ),
       child: Row(
         children: [
-          InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, '/config_page/config');
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/config_page/setting');
             },
-            child: Container(
-              alignment: Alignment.center,
-              width: 30,
-              height: 30,
-              child: Icon(Icons.menu),
+            icon: Icon(
+              Icons.menu,
+              color: Global.THEME_COLOR.neglected,
             ),
+            iconSize: 30,
+            splashRadius: 30,
           ),
           SizedBox(
               width: 300,

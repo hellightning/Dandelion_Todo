@@ -49,8 +49,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/todo_page/unfinished': (context) => TodoPage(),
         '/todo_page/finished': (context) => TodoPage(), // 参数应该不一样
-        '/config_page/config': (context) => ConfigPage(),
-        '/config_page/account': (context) => ConfigPage(),
+        '/config_page/setting': (context) => ConfigPage(),
+        '/config_page/account': (context) => ConfigPage(), // 同上
       },
     );
   }

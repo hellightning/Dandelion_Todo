@@ -1,3 +1,4 @@
+import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,19 +21,46 @@ class _MyDrawerState extends State<MyDrawer> {
       child: ListView(
         children: [
           DrawerHeader(
-            child: Icon(Icons.account_box_sharp),
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Image.asset(
+                  'assets/imgs/blue.jpeg',
+                  fit: BoxFit.cover,
+                ),
+                IconButton(
+                  icon: Icon(Icons.account_circle_rounded),
+                  onPressed: () {},
+                ),
+              ],
+            ),
           ),
           ListTile(
-            title: Text('已完成'),
-            onTap: () {},
-          ),
-          ListTile(
+            selected: currentItem == Global.TODO_DRAWER_UNFINISHED,
             title: Text('正在进行'),
-            onTap: () {},
+            onTap: () {
+              setState(() {
+                currentItem = Global.TODO_DRAWER_UNFINISHED;
+              });
+            },
           ),
           ListTile(
+            selected: currentItem == Global.TODO_DRAWER_FINISHED,
+            title: Text('已完成'),
+            onTap: () {
+              setState(() {
+                currentItem = Global.TODO_DRAWER_FINISHED;
+              });
+            },
+          ),
+          ListTile(
+            selected: currentItem == Global.TODO_DRAWER_CONFIG,
             title: Text('设置'),
-            onTap: () {},
+            onTap: () {
+              setState(() {
+                currentItem = Global.TODO_DRAWER_CONFIG;
+              });
+            },
           ),
           ListTile(
             title: Text('添加好友'),
