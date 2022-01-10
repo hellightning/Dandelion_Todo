@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dandelion_todo/pages/config_page.dart';
 import 'package:dandelion_todo/pages/login_page.dart';
 import 'package:dandelion_todo/pages/todo_page.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +12,6 @@ import 'utils/Global.dart';
 
 void main() {
   Global.init().then((e) => runApp(MyApp()));
-  if (Platform.isAndroid) {
-    //设置Android头部的导航栏透明
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-  }
 }
 
 class MyApp extends StatelessWidget {
@@ -51,7 +46,12 @@ class MyApp extends StatelessWidget {
       ),
       home: TodoPage(),
       initialRoute: '/todo_page',
-      routes: {'/todo': (context) => TodoPage()},
+      routes: {
+        '/todo_page/unfinished': (context) => TodoPage(),
+        '/todo_page/finished': (context) => TodoPage(), // 参数应该不一样
+        '/config_page/config': (context) => ConfigPage(),
+        '/config_page/account': (context) => ConfigPage(),
+      },
     );
   }
 }

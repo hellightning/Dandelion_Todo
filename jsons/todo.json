@@ -1,13 +1,13 @@
 {
-    "completeAt": "$time_stamp",
-    "createdAt": "$time_stamp",
+    "completeAt": 0,
+    "createdAt": 0,
     "creatorId": 0,
-    "deadline": "$time_stamp",
+    "deadline": 0,
     "description": "",
     "localId": 0,
     "parentId": 0,
     "plantTime": 0,
     "title": "",
     "todoId": 0,
-    "updateAt": "$time_stamp"
+    "updateAt": 0
 }

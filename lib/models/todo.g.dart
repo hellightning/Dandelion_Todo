@@ -7,17 +7,17 @@ part of 'todo.dart';
 // **************************************************************************
 
 Todo _$TodoFromJson(Map<String, dynamic> json) => Todo()
-  ..completeAt = Time_stamp.fromJson(json['completeAt'] as Map<String, dynamic>)
-  ..createdAt = Time_stamp.fromJson(json['createdAt'] as Map<String, dynamic>)
+  ..completeAt = json['completeAt'] as num
+  ..createdAt = json['createdAt'] as num
   ..creatorId = json['creatorId'] as num
-  ..deadline = Time_stamp.fromJson(json['deadline'] as Map<String, dynamic>)
+  ..deadline = json['deadline'] as num
   ..description = json['description'] as String
   ..localId = json['localId'] as num
   ..parentId = json['parentId'] as num
   ..plantTime = json['plantTime'] as num
   ..title = json['title'] as String
   ..todoId = json['todoId'] as num
-  ..updateAt = Time_stamp.fromJson(json['updateAt'] as Map<String, dynamic>);
+  ..updateAt = json['updateAt'] as num;
 
 Map<String, dynamic> _$TodoToJson(Todo instance) => <String, dynamic>{
       'completeAt': instance.completeAt,

@@ -1,3 +1,4 @@
+import 'package:dandelion_todo/components/my_drawer.dart';
 import 'package:dandelion_todo/components/search_item.dart';
 import 'package:dandelion_todo/components/todo_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,28 +15,49 @@ class _TodoPageState extends State<TodoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Todo List'),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              child: Icon(Icons.account_box_sharp),
-            ),
-            ElevatedButton(
-              child: Text('Button'),
-              onPressed: () => {},
-            ),
-          ],
-        ),
-      ),
+      drawer: MyDrawer(),
       body: Stack(
         children: [
-          SearchItem(),
           ListView(
-            children: [TodoItem(), TodoItem(), TodoItem()],
-          )
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(20),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                child: TodoItem(),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                child: TodoItem(),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                child: TodoItem(),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                child: TodoItem(),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                child: TodoItem(),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                child: TodoItem(),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                child: TodoItem(),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                child: TodoItem(),
+              ),
+            ],
+          ),
+          SearchItem(),
         ],
       ),
       floatingActionButton:
