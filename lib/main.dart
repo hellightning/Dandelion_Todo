@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dandelion_todo/pages/config_page.dart';
 import 'package:dandelion_todo/pages/login_page.dart';
+import 'package:dandelion_todo/pages/planttree_page.dart';
 import 'package:dandelion_todo/pages/todo_edit_page.dart';
 import 'package:dandelion_todo/pages/todo_page.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         '/edit_page/add': (context) => TodoEditPage(),
         '/edit_page/edit': (context) => TodoEditPage(),
         '/login_page': (context) => LoginPage(),
+        '/planttree_page': (context) => PlanttreePage(),
       },
     );
   }

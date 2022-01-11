@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class PlantTreePage extends StatefulWidget {
+class PlanttreePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -8,7 +8,7 @@ class PlantTreePage extends StatefulWidget {
   }
 }
 
-class PlantTreeState extends State<PlantTreePage> {
+class _PlanttreePageState extends State<PlanttreePage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
