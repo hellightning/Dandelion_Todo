@@ -15,17 +15,15 @@ class SearchItem extends StatelessWidget {
         color: Global.THEME_COLOR.subColor,
         boxShadow: <BoxShadow>[
           BoxShadow(
-              blurRadius: 3,
+              blurRadius: 2,
               color: Global.THEME_COLOR.neglected,
-              offset: Offset(5.0, 5.0))
+              offset: Offset(3.0, 3.0))
         ],
       ),
       child: Row(
         children: [
           IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/config_page/setting');
-            },
+            onPressed: () => Scaffold.of(context).openDrawer(),
             icon: Icon(
               Icons.menu,
               color: Global.THEME_COLOR.mainColor,

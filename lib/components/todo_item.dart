@@ -40,7 +40,8 @@ class _TodoItemState extends State<TodoItem> {
                 child: Text(
                   todoTitle,
                   style: TextStyle(
-                      color: Global.THEME_COLOR.mainColor, fontSize: 30),
+                      color: Global.THEME_COLOR.mainColor,
+                      fontSize: Global.TODO_TITLE_SIZE),
                 ),
               ),
               Padding(
@@ -48,12 +49,29 @@ class _TodoItemState extends State<TodoItem> {
                 child: Text(
                   todoContent,
                   style: TextStyle(
-                      color: Global.THEME_COLOR.textColor, fontSize: 16),
+                      color: Global.THEME_COLOR.textColor,
+                      fontSize: Global.NORMAL_TEXT_SIZE),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Text(
+                        'Deadline: ' + '2001-01-01',
+                        style: TextStyle(
+                            color: /*isNearDeadline? warn : neglected*/ Global
+                                .THEME_COLOR.neglected),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: SizedBox(),
+                  ),
                   IconButton(
                     icon: Icon(
                       Icons.task_alt,
@@ -88,7 +106,16 @@ class _TodoItemState extends State<TodoItem> {
           margin: EdgeInsets.all(2),
           decoration: BoxDecoration(
               color: Global.THEME_COLOR.subColor,
-              borderRadius: BorderRadius.all(Radius.circular(5.0)))),
+              // borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              border: Border(
+                  bottom: BorderSide(
+                      color: Global.THEME_COLOR.neglected,
+                      width: 2.0,
+                      style: BorderStyle.solid),
+                  right: BorderSide(
+                      color: Global.THEME_COLOR.neglected,
+                      width: 2.0,
+                      style: BorderStyle.solid)))),
     );
   }
 }

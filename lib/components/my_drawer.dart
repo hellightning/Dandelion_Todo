@@ -29,11 +29,20 @@ class _MyDrawerState extends State<MyDrawer> {
                 children: [
                   Image.asset(
                     'assets/imgs/' + Global.THEME_COLOR.name + '.jpeg',
+                    width: 400,
+                    height: 400,
                     fit: BoxFit.cover,
                   ),
-                  IconButton(
-                    icon: Icon(Icons.account_circle_rounded),
-                    onPressed: () {},
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.account_circle_rounded,
+                        size: 60,
+                        color: Global.THEME_COLOR.warnColor,
+                      ),
+                      onPressed: () {},
+                    ),
                   ),
                 ],
               ),
@@ -44,7 +53,7 @@ class _MyDrawerState extends State<MyDrawer> {
               title: Text(
                 '正在进行',
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: Global.NORMAL_TEXT_SIZE,
                     color: currentItem == Global.TODO_DRAWER_UNFINISHED
                         ? Global.THEME_COLOR.mainColor
                         : Global.THEME_COLOR.textColor),
@@ -61,7 +70,7 @@ class _MyDrawerState extends State<MyDrawer> {
               title: Text(
                 '已完成',
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: Global.NORMAL_TEXT_SIZE,
                     color: currentItem == Global.TODO_DRAWER_FINISHED
                         ? Global.THEME_COLOR.mainColor
                         : Global.THEME_COLOR.textColor),
@@ -78,7 +87,7 @@ class _MyDrawerState extends State<MyDrawer> {
               title: Text(
                 '设置',
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: Global.NORMAL_TEXT_SIZE,
                     color: currentItem == Global.TODO_DRAWER_CONFIG
                         ? Global.THEME_COLOR.mainColor
                         : Global.THEME_COLOR.textColor),
@@ -95,8 +104,8 @@ class _MyDrawerState extends State<MyDrawer> {
               title: Text(
                 '添加好友',
                 style: TextStyle(
-                    fontSize: 16,
-                    color: currentItem == Global.TODO_DRAWER_ACCOUNT
+                    fontSize: Global.NORMAL_TEXT_SIZE,
+                    color: currentItem == Global.TODO_DRAWER_ADDFRIEND
                         ? Global.THEME_COLOR.mainColor
                         : Global.THEME_COLOR.textColor),
               ),

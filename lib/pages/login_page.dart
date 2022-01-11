@@ -27,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Login')),
+      backgroundColor: Global.THEME_COLOR.background,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -34,12 +35,20 @@ class _LoginPageState extends State<LoginPage> {
           autovalidate: true,
           child: Column(
             children: <Widget>[
+              Image.asset(
+                'assets/imgs/' + Global.THEME_COLOR.name + '.jpeg',
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
+                height: 200,
+              ),
               TextFormField(
                   autofocus: _nameAutoFocus,
                   controller: _unameController,
                   decoration: InputDecoration(
                     labelText: 'input user name',
                     hintText: 'input user name or email',
+                    labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
+                    hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
                     prefixIcon: Icon(Icons.person),
                   ),
                   validator: (v) {
@@ -53,6 +62,8 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                     labelText: 'password',
                     hintText: 'please input your password',
+                    labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
+                    hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -69,6 +80,16 @@ class _LoginPageState extends State<LoginPage> {
                       ? null
                       : 'please input your password';
                 },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FloatingActionButton(
+                    child: Icon(Icons.login),
+                    onPressed: () => Navigator.pushReplacementNamed(
+                        context, '/todo_page/unfinished'),
+                  )
+                ],
               ),
             ],
           ),

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dandelion_todo/pages/config_page.dart';
 import 'package:dandelion_todo/pages/login_page.dart';
+import 'package:dandelion_todo/pages/todo_edit_page.dart';
 import 'package:dandelion_todo/pages/todo_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,13 +46,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: TodoPage(),
+      home: LoginPage(),
       initialRoute: '/todo_page',
       routes: {
         '/todo_page/unfinished': (context) => TodoPage(),
         '/todo_page/finished': (context) => TodoPage(), // 参数应该不一样
         '/config_page/setting': (context) => ConfigPage(),
         '/config_page/account': (context) => ConfigPage(), // 同上
+        '/edit_page/add': (context) => TodoEditPage(),
+        '/edit_page/edit': (context) => TodoEditPage(),
+        '/login_page': (context) => LoginPage(),
       },
     );
   }

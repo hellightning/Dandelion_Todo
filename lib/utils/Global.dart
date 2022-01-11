@@ -5,12 +5,17 @@ import 'themes.dart';
 
 // global类管理全局变量
 class Global {
-  // todo yongSharedPreference实现账号本地存储...大概？
+  // todo SharedPreference实现账号本地存储
   static SharedPreferences? _pref;
+
+  // 数字常量
   static const TODO_DRAWER_UNFINISHED = 0;
   static const TODO_DRAWER_FINISHED = 1;
   static const TODO_DRAWER_CONFIG = 2;
-  static const TODO_DRAWER_ACCOUNT = 3;
+  static const TODO_DRAWER_ADDFRIEND = 3;
+  static const APPBAR_TITLE_SIZE = 20.0;
+  static const TODO_TITLE_SIZE = 30.0;
+  static const NORMAL_TEXT_SIZE = 16.0;
 
   // theme colors
   static AppTheme APP_THEME = AppTheme.dark;

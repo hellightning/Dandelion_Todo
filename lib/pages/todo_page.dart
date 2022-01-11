@@ -62,8 +62,9 @@ class _TodoPageState extends State<TodoPage> {
           SearchItem(),
         ],
       ),
-      floatingActionButton:
-          FloatingActionButton(onPressed: () => {}, child: Icon(Icons.add)),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => Navigator.pushNamed(context, '/edit_page/add'),
+          child: Icon(Icons.add)),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
   }

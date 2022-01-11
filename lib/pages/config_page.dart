@@ -17,17 +17,23 @@ class _ConfigPageState extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Global.THEME_COLOR.background,
       appBar: AppBar(
         title: Text('设置'),
       ),
       body: ListView(
         children: [
           ListTile(
-            title: Text('设置事项'),
-            subtitle: Text('设置说明'),
+            title: Text(
+              '设置事项',
+              style: TextStyle(color: Global.THEME_COLOR.textColor),
+            ),
+            subtitle: Text('设置说明',
+                style: TextStyle(color: Global.THEME_COLOR.neglected)),
           ),
           ListTile(
-            title: Text('主题颜色'),
+            title: Text('主题颜色',
+                style: TextStyle(color: Global.THEME_COLOR.textColor)),
             subtitle: Text(Global.THEME_COLOR.name),
             // 太丑了，肯定不能这么嗯写
             onTap: () {
@@ -93,10 +99,6 @@ class _ConfigPageState extends State<ConfigPage> {
                 print(val);
               });
             },
-          ),
-          ListTile(
-            title: Text('test'),
-            subtitle: Text('this is test subtitle'),
           ),
         ],
       ),
