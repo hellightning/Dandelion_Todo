@@ -9,7 +9,7 @@ import 'package:dandelion_todo/models/user.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 
-class RestImpl implements RestUser, RestTodo {
+class RestImpl implements RestApi {
 
   static final RestImpl _instance = RestImpl._internal();
   var dio = Dio();

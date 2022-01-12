@@ -26,3 +26,5 @@ abstract class RestTodo {
   Future updateUserTodo(int userId, int todoId, Todo content);
   Future deleteUserTodo(int userId, int todoId, Todo content);
 }
+
+abstract class RestApi implements RestUser, RestTodo {}

@@ -7,7 +7,14 @@ import 'package:dandelion_todo/models/todo.dart';
 import 'package:dandelion_todo/models/user.dart';
 import 'package:image_picker/image_picker.dart';
 
-class RestMock implements RestUser, RestTodo {
+class RestMock implements RestApi {
+
+  RestMock._internal();
+  static final RestMock instance = RestMock._internal();
+
+  factory RestMock() {
+    return instance;
+  }
 
   var userMock = const {
     'nickname': 'hhh',
