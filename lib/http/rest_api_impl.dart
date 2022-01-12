@@ -368,7 +368,7 @@ class RestImpl implements RestApi {
   Future syncTodoList(List<Todo> lst) async {
     try {
       var nlst = List<Map>.from(lst.map((e) => e.toJson()));
-      var res = await dio.request(
+      await dio.request(
           '/api/todo/$localUid',
           options: Options(
               method: 'POST'
