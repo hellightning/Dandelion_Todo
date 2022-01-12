@@ -5,8 +5,31 @@ import 'themes.dart';
 
 // global类管理全局变量
 class Global {
-  // todo SharedPreference实现账号本地存储
+  // SharedPreference实现账号本地存储
   static SharedPreferences? _pref;
+  static int getUser() {
+    return _pref?.getInt('userid') ?? 0;
+  }
+
+  static String getPassword() {
+    return _pref?.getString('password') ?? 'null';
+  }
+
+  static void Login(String username, String password) {
+    // TODO: RESTful Request
+    _pref?.setString('username', username);
+    _pref?.setString('password', password);
+    // _pref?.setBool('isLoggedIn', true);
+  }
+
+  static void Logout() {
+    _pref?.remove('username');
+    // _pref?.setBool('isLoggedIn', false);
+  }
+
+  static bool isLoggedIn() {
+    return !(_pref?.getString('username') == null);
+  }
 
   // 数字常量
   static const TODO_DRAWER_UNFINISHED = 0;
@@ -18,7 +41,7 @@ class Global {
   static const NORMAL_TEXT_SIZE = 16.0;
 
   // theme colors
-  static AppTheme APP_THEME = AppTheme.dark;
+  static AppTheme APP_THEME = AppTheme.light;
   set setAppTheme(AppTheme at) {
     try {
       Global.APP_THEME = at;
@@ -41,6 +64,7 @@ class Global {
           Color(0xff05072d),
           Color(0xffbad8e8),
           Color(0xff6f83b3),
+          Colors.blue,
           'blue');
 
       ThemeColor.themeMap[AppTheme.red] = ThemeColor(
@@ -50,6 +74,7 @@ class Global {
           Color(0xff4b2d37),
           Color(0xffff7d82),
           Color(0xff806d83),
+          Colors.red,
           'red');
 
       ThemeColor.themeMap[AppTheme.purple] = ThemeColor(
@@ -59,6 +84,7 @@ class Global {
           Color(0xff131258),
           Color(0xff98a3f6),
           Color(0xff7967b3),
+          Colors.deepPurple,
           'purple');
 
       ThemeColor.themeMap[AppTheme.pink] = ThemeColor(
@@ -68,6 +94,7 @@ class Global {
           Color(0xffbd6e5e),
           Color(0xffeae5aa),
           Color(0xffd3b764),
+          Colors.pink,
           'pink');
 
       ThemeColor.themeMap[AppTheme.green] = ThemeColor(
@@ -77,6 +104,7 @@ class Global {
           Color(0xff007f6c),
           Color(0xffcef4a8),
           Color(0xff94c0b1),
+          Colors.lime,
           'green');
 
       ThemeColor.themeMap[AppTheme.dark] = ThemeColor(
@@ -86,6 +114,7 @@ class Global {
           Color(0xff95a197),
           Color(0xff242a44),
           Color(0xff584a5b),
+          Colors.indigo,
           'dark');
 
       ThemeColor.themeMap[AppTheme.light] = ThemeColor(
@@ -95,6 +124,7 @@ class Global {
           Color(0xff7092bd),
           Color(0xffffefef),
           Color(0xff9fbb9a),
+          Colors.yellow,
           'light');
     } catch (e) {
       print('here');

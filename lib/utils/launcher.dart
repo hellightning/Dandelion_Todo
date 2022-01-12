@@ -10,6 +10,8 @@ class DandelionLauncher {
 
   // 检验是否登陆成功
   static bool isLoginSuccess(String id, String password) {
+    // TODO: REST POST
+    // TODO: Global preference
     return true;
   }
 

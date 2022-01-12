@@ -1,3 +1,4 @@
+import 'package:dandelion_todo/http/rest_api_mock.dart';
 import 'package:dandelion_todo/models/index.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,12 +6,14 @@ import 'package:flutter/material.dart';
 
 // 首页显示TODO缩略信息的Widget
 class TodoItem extends StatefulWidget {
+  const TodoItem({Key? key}) : super(key: key);
   @override
   _TodoItemState createState() => _TodoItemState();
 }
 
 class _TodoItemState extends State<TodoItem> {
   // component of todo
+  late Todo todoData;
   String todoTitle = "Test Title";
   String todoContent = "test content test content test content test content";
   int importance = 0;
@@ -44,6 +47,10 @@ class _TodoItemState extends State<TodoItem> {
                     fontSize: Global.TODO_TITLE_SIZE),
               ),
             ),
+            Divider(
+              color: Global.THEME_COLOR.neglected,
+              thickness: 1.0,
+            ),
             Padding(
               padding: EdgeInsets.all(5),
               child: Text(
@@ -62,6 +69,9 @@ class _TodoItemState extends State<TodoItem> {
                     padding: EdgeInsets.all(5),
                     child: Text(
                       'Deadline: ' + '2001-01-01',
+                      // DateTime.fromMicrosecondsSinceEpoch(
+                      //         todoData.deadline as int)
+                      //     .toString(),
                       style: TextStyle(
                           color: /*isNearDeadline? warn : neglected*/ Global
                               .THEME_COLOR.neglected),

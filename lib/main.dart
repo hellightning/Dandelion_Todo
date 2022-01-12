@@ -5,6 +5,9 @@ import 'package:dandelion_todo/pages/login_page.dart';
 import 'package:dandelion_todo/pages/planttree_page.dart';
 import 'package:dandelion_todo/pages/todo_edit_page.dart';
 import 'package:dandelion_todo/pages/todo_page.dart';
+import 'package:dandelion_todo/states/profile_state.dart';
+import 'package:dandelion_todo/states/theme_state.dart';
+import 'package:dandelion_todo/states/todo_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -19,46 +22,40 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MultiProvider(
-  //     providers: <SingleChildWidget>[
-  //       ChangeNotifierProvider.value(value: User()),
-  //     ],
-  //     child: MaterialApp(
-  //       title: 'Dandelion Todo',
-  //       theme: ThemeData(
-  //         primarySwatch: Colors.blue,
-  //       ),
-  //       home: LoginPage(),
-  //       initialRoute: '/todo_page',
-  //       routes: {
-  //         '/login_page': (context) => LoginPage(),
-  //         '/todo_page': (context) => TodoPage()
-  //       },
-  //     ),
-  //   );
-  // }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Dandelion Todo',
-      color: Global.THEME_COLOR.background,
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
+    // TODO: Provider管理全局状态
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: ProfileState(),
+        ),
+        ChangeNotifierProvider.value(
+          value: ThemeState(),
+        ),
+        ChangeNotifierProvider.value(
+          value: TodoState(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'Dandelion Todo',
+        color: Global.THEME_COLOR.background,
+        theme: ThemeData(
+          primarySwatch: Global.THEME_COLOR.themeColor,
+        ),
+        initialRoute:
+            Global.isLoggedIn() ? '/todo_page/unfinished' : '/login_page',
+        routes: {
+          '/todo_page/unfinished': (context) => TodoPage(),
+          '/todo_page/finished': (context) => TodoPage(), // 参数应该不一样
+          '/config_page/setting': (context) => ConfigPage(),
+          '/config_page/account': (context) => ConfigPage(), // 同上
+          '/edit_page/add': (context) => TodoEditPage(),
+          '/edit_page/edit': (context) => TodoEditPage(),
+          '/login_page': (context) => LoginPage(),
+          '/planttree_page': (context) => PlanttreePage(),
+        },
       ),
-      home: LoginPage(),
-      initialRoute: '/todo_page',
-      routes: {
-        '/todo_page/unfinished': (context) => TodoPage(),
-        '/todo_page/finished': (context) => TodoPage(), // 参数应该不一样
-        '/config_page/setting': (context) => ConfigPage(),
-        '/config_page/account': (context) => ConfigPage(), // 同上
-        '/edit_page/add': (context) => TodoEditPage(),
-        '/edit_page/edit': (context) => TodoEditPage(),
-        '/login_page': (context) => LoginPage(),
-        '/planttree_page': (context) => PlanttreePage(),
-      },
     );
   }
 }

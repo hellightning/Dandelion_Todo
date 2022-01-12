@@ -3,23 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchItem extends StatelessWidget {
+  const SearchItem({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.topCenter,
-      margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-      height: 60,
-      padding: EdgeInsets.all(5.0),
-      decoration: new BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(2.0)),
-        color: Global.THEME_COLOR.subColor,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              blurRadius: 2,
-              color: Global.THEME_COLOR.neglected,
-              offset: Offset(3.0, 3.0))
-        ],
-      ),
       child: Row(
         children: [
           IconButton(
@@ -32,15 +20,34 @@ class SearchItem extends StatelessWidget {
             splashRadius: 30,
           ),
           SizedBox(
-              width: 300,
-              height: 50,
-              child: TextField(
-                decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10.0),
-                    hintText: '搜索TODO事项',
-                    hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
-                    border: InputBorder.none),
-              )),
+            width: MediaQuery.of(context).size.width * 0.7,
+            height: 50,
+            child: TextField(
+              controller: TextEditingController(text: ''),
+              style: TextStyle(
+                  color: Global.THEME_COLOR.textColor,
+                  fontSize: Global.NORMAL_TEXT_SIZE),
+              decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(10.0),
+                  hintText: '搜索TODO事项',
+                  hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
+                  border: InputBorder.none),
+            ),
+          ),
+        ],
+      ),
+      alignment: Alignment.topCenter,
+      margin: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+      height: 60,
+      padding: const EdgeInsets.all(5.0),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(2.0)),
+        color: Global.THEME_COLOR.subColor,
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+              blurRadius: 2,
+              color: Global.THEME_COLOR.neglected,
+              offset: const Offset(3.0, 3.0))
         ],
       ),
     );
