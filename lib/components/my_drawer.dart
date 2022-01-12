@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyDrawer extends StatefulWidget {
+  const MyDrawer({Key? key}) : super(key: key);
   @override
   _MyDrawerState createState() => _MyDrawerState();
 }
@@ -34,7 +35,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     fit: BoxFit.cover,
                   ),
                   Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: IconButton(
                       icon: Icon(
                         Icons.account_circle_rounded,

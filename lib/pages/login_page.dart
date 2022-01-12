@@ -1,4 +1,5 @@
 import 'package:dandelion_todo/utils/Global.dart';
+import 'package:dandelion_todo/utils/launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -76,9 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                     )),
                 obscureText: !pwdShow,
                 validator: (v) {
-                  return v!.trim().isNotEmpty
-                      ? null
-                      : 'please input your password';
+                  return v!.trim().isNotEmpty ? null : '请输入密码';
                 },
               ),
               Row(
@@ -86,8 +85,13 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   FloatingActionButton(
                     child: Icon(Icons.login),
-                    onPressed: () => Navigator.pushReplacementNamed(
-                        context, '/todo_page/unfinished'),
+                    onPressed: () {
+                      if (DandelionLauncher.isLoginSuccess(
+                          _unameController.text, _pwdController.text)) {
+                        Navigator.pushReplacementNamed(context,
+                            '/todo_page/unfinished'); //+_unameController.text + '/unfinished');
+                      }
+                    },
                   )
                 ],
               ),

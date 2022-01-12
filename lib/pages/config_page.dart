@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ConfigPage extends StatefulWidget {
+  const ConfigPage({Key? key}) : super(key: key);
   @override
   _ConfigPageState createState() => _ConfigPageState();
 }

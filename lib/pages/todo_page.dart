@@ -1,6 +1,8 @@
 import 'package:dandelion_todo/components/my_drawer.dart';
 import 'package:dandelion_todo/components/search_item.dart';
 import 'package:dandelion_todo/components/todo_item.dart';
+import 'package:dandelion_todo/http/rest_api_mock.dart';
+import 'package:dandelion_todo/models/todo.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,13 @@ class TodoPage extends StatefulWidget {
 
 class _TodoPageState extends State<TodoPage> {
   // List<TodoProvider> todoList = List.empty(growable: true);
+  List<Todo> todoList = List.empty();
+  @override
+  void initState() {
+    /*todoList = */ RestMock.instance.getTodoList(Global.getUser());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,48 +32,21 @@ class _TodoPageState extends State<TodoPage> {
           ListView(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(20),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                child: TodoItem(),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                child: TodoItem(),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                child: TodoItem(),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                child: TodoItem(),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                child: TodoItem(),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                child: TodoItem(),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                child: TodoItem(),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                child: TodoItem(),
-              ),
-            ],
+                padding: EdgeInsets.all(20.0),
+              )
+            ]
+                .followedBy(todoList.map((todoItem) => Padding(
+                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                      child: TodoItem(/*todoItem*/),
+                    )))
+                .toList(),
           ),
           SearchItem(),
         ],
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () => Navigator.pushNamed(context, '/edit_page/add'),
-          child: Icon(Icons.add)),
+          child: const Icon(Icons.add)),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
   }

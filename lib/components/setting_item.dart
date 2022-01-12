@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SettingItem extends StatefulWidget {
+  const SettingItem({Key? key}) : super(key: key);
   @override
   _SettingItemState createState() => _SettingItemState();
 }
