@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:dandelion_todo/http/http_error.dart';
@@ -38,6 +39,26 @@ void main() {
       expect(qans, containsAll([2,3,4]));
       await dio.deleteWatchList([2,3,4]);
       qans = await dio.findWatchList(4);
+    });
+  });
+  group('Find Detail API', (){
+    test('Detail authorized', ()async {
+      var usr = await dio.findDetailById(4);
+      expect(usr, isNotNull);
+      expect(usr, const TypeMatcher<User>());
+      usr = await dio.updateNickname("zgh");
+      expect(usr, isNotNull);
+      expect(usr!.nickName, 'zgh');
+      usr = await dio.findDetailById(4);
+      expect(usr, isNotNull);
+      expect(usr!.nickName, 'zgh');
+      usr = await dio.updatePassword('123456');
+      expect(usr, isNotNull);
+      expect(usr, const TypeMatcher<User>());
+      dio.dio.options.headers['Authorization'] = '114514';
+      await dio.login(4, '123456');
+      expect(dio.dio.options.headers['Authorization'], isNot('114514'));
+      await dio.updatePassword('114514');
     });
   });
 }

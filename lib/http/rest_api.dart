@@ -12,7 +12,8 @@ abstract class RestUser {
   Future cameraUploadAvatar();
   Future setAvatar(File image);
   Future<User?> findDetailById(int userId);
-  Future updateDetailInfo(User userInfo);
+  Future updateNickname(String newNickname);
+  Future updatePassword(String password);
   Future<List<int>> findWatchList(int userId);
   Future addWatchList(List<int> watchList);
   Future deleteWatchList(List<int> deleteList);
@@ -20,6 +21,7 @@ abstract class RestUser {
 
 abstract class RestTodo {
   Future<List<Todo>> getTodoList(int userId);
+  Future<List<Todo>> getTodoListWithPage(int userId, int limit, int maxId);
   Future syncTodoList(List<Todo> lst);
   Future createTodo(Todo todo);
   Future<Todo> getUserTodoDetail(int userId, int todoId);

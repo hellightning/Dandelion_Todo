@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'dart:convert';
 
 import 'package:dandelion_todo/http/http_error.dart';
@@ -13,7 +12,9 @@ class RestImpl implements RestApi {
 
   static final RestImpl _instance = RestImpl._internal();
   var dio = Dio();
-  late User currUser;
+  late String localNickname;
+  late String localPassword;
+  late int localUid;
 
   RestImpl._internal() {
     dio.options.baseUrl = "http://sgp.hareru.moe:8080/";
@@ -33,7 +34,7 @@ class RestImpl implements RestApi {
   Future addWatchList(List<int> watchList) async{
     try {
       var res = await dio.request(
-        '/api/user/${currUser.userId}/watchlist',
+        '/api/user/$localUid/watchlist',
         options: Options(
           method: 'POST'
         ),data: {
@@ -49,10 +50,9 @@ class RestImpl implements RestApi {
         var body = json.decode(e.response.toString());
         if (body["status"] == 403) {
           try {
-            await login(currUser.userId as int, currUser.passWord);
+            await login(localUid, localPassword);
             await addWatchList(watchList);
           } catch (e) {
-            print((e as DioError).response);
             throw NetworkErrorException();
           }
         } else {
@@ -78,7 +78,7 @@ class RestImpl implements RestApi {
   Future deleteWatchList(List<int> deleteList) async {
     try {
       var res = await dio.request(
-        '/api/user/${currUser.userId}/watchlist',
+        '/api/user/$localUid/watchlist',
         options: Options(
             method: 'DELETE'
         ),data: {
@@ -94,7 +94,7 @@ class RestImpl implements RestApi {
         var body = json.decode(e.response.toString());
         if (body["status"] == 403) {
           try {
-            await login(currUser.userId as int, currUser.passWord);
+            await login(localUid, localPassword);
             await deleteWatchList(deleteList);
           } catch (e) {
             throw NetworkErrorException();
@@ -110,7 +110,38 @@ class RestImpl implements RestApi {
 
   @override
   Future<User?> findDetailById(int userId) async {
-    throw UnimplementedError();
+    try {
+      var res = await dio.request(
+          '/api/user/$localUid/detail',
+          options: Options(
+              method: 'GET'
+          )
+      );
+      var body = json.decode(res.toString());
+      if (body["status"] != 200) {
+        throw InvalidInputException(body["msg"]);
+      }
+      var usr = User.fromJson(body["data"]);
+      localNickname = usr.nickName;
+      return usr;
+    } on DioError catch (e) {
+      if (e.response != null) {
+        var body = json.decode(e.response.toString());
+        if (body["status"] == 403) {
+          try {
+            await login(localUid, localPassword);
+            var a = await findDetailById(userId);
+            return a;
+          } catch (e) {
+            throw NetworkErrorException();
+          }
+        } else {
+          throw LoginFailedException(body['msg']);
+        }
+      } else {
+        throw NetworkErrorException();
+      }
+    }
   }
 
   @override
@@ -127,7 +158,7 @@ class RestImpl implements RestApi {
   Future<List<int>> findWatchList(int userId) async {
     try {
       var res = await dio.request(
-          '/api/user/${currUser.userId}/watchlist',
+          '/api/user/$localUid/watchlist',
           options: Options(
               method: 'GET'
           )
@@ -145,7 +176,7 @@ class RestImpl implements RestApi {
         var body = json.decode(e.response.toString());
         if (body["status"] == 403) {
           try {
-            await login(currUser.userId as int, currUser.passWord);
+            await login(localUid, localPassword);
             var a = await findWatchList(userId);
             return a;
           } catch (e) {
@@ -162,7 +193,38 @@ class RestImpl implements RestApi {
 
   @override
   Future<List<Todo>> getTodoList(int userId) async {
-    throw UnimplementedError();
+    try {
+      var res = await dio.request(
+          '/api/todo/$localUid',
+          options: Options(
+              method: 'GET'
+          )
+      );
+      var body = json.decode(res.toString());
+      if (body["status"] != 200) {
+        throw InvalidInputException(body["msg"]);
+      }
+      var stateLst = body["data"];
+      var lstMapped = List<Todo>.from(stateLst.map((e) => Todo.fromJson(e)));
+      return lstMapped;
+    } on DioError catch (e) {
+      if (e.response != null) {
+        var body = json.decode(e.response.toString());
+        if (body["status"] == 403) {
+          try {
+            await login(localUid, localPassword);
+            var a = await getTodoList(userId);
+            return a;
+          } catch (e) {
+            throw NetworkErrorException();
+          }
+        } else {
+          throw LoginFailedException(body['msg']);
+        }
+      } else {
+        throw NetworkErrorException();
+      }
+    }
   }
 
   @override
@@ -181,7 +243,8 @@ class RestImpl implements RestApi {
       );
       var body = json.decode(res.toString());
       dio.options.headers['Authorization'] = body['data'];
-      this.currUser = User.fromIdPass(userId, password);
+      localUid = userId;
+      localPassword = password;
     } on DioError catch (e) {
       if (e.response != null) {
         var body = json.decode(e.response.toString());
@@ -206,10 +269,13 @@ class RestImpl implements RestApi {
           }
       );
       var body = json.decode(res.toString());
-      currUser = User.fromJson(body['data']);
+      var currUser = User.fromJson(body['data']);
+      localNickname = nickname;
+      localUid = currUser.userId as int;
+      localPassword = password;
       return currUser;
     } on DioError catch (e) {
-      throw NetworkErrorException();
+      throw NetworkErrorException(e.message);
     }
   }
 
@@ -224,8 +290,83 @@ class RestImpl implements RestApi {
   }
 
   @override
-  Future updateDetailInfo(User userInfo) async {
-    throw UnimplementedError();
+  Future updateNickname(String newNickname) async {
+    try {
+      var res = await dio.request(
+          '/api/user/$localUid/detail',
+          options: Options(
+              method: 'POST'
+          ),
+          data: {
+            'userId': localUid,
+            'nickname': newNickname
+          }
+      );
+      var body = json.decode(res.toString());
+      if (body["status"] != 200) {
+        throw InvalidInputException(body["msg"]);
+      }
+      var usr = User.fromJson(body["data"]);
+      localNickname = newNickname;
+      return usr;
+    } on DioError catch (e) {
+      if (e.response != null) {
+        var body = json.decode(e.response.toString());
+        if (body["status"] == 403) {
+          try {
+            await login(localUid, localPassword);
+            var a = await updateNickname(newNickname);
+            return a;
+          } catch (e) {
+            throw NetworkErrorException();
+          }
+        } else {
+          throw LoginFailedException(body['msg']);
+        }
+      } else {
+        throw NetworkErrorException();
+      }
+    }
+  }
+
+  @override
+  Future updatePassword(String password) async {
+    try {
+      var res = await dio.request(
+          '/api/user/$localUid/detail',
+          options: Options(
+              method: 'POST'
+          ),
+          data: {
+            'userId': localUid,
+            'password': password
+          }
+      );
+      var body = json.decode(res.toString());
+      if (body["status"] != 200) {
+        throw InvalidInputException(body["msg"]);
+      }
+      var usr = User.fromJson(body["data"]);
+      localPassword = password;
+      return usr;
+    } on DioError catch (e) {
+      if (e.response != null) {
+        var body = json.decode(e.response.toString());
+        if (body["status"] == 403) {
+          try {
+            await login(localUid, localPassword);
+            var a = await updatePassword(password);
+            return a;
+          } catch (e) {
+            throw NetworkErrorException();
+          }
+        } else {
+          throw LoginFailedException(body['msg']);
+        }
+      } else {
+        throw NetworkErrorException();
+      }
+    }
   }
 
   @override
@@ -240,6 +381,12 @@ class RestImpl implements RestApi {
 
   @override
   Future cameraUploadAvatar() async{
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Todo>> getTodoListWithPage(int userId, int limit, int maxId) {
+    // TODO: implement getTodoListWithPage
     throw UnimplementedError();
   }
 

@@ -185,16 +185,6 @@ class RestMock implements RestApi {
   }
 
   @override
-  Future updateDetailInfo(User userInfo) async {
-    double r = Random().nextDouble();
-    await Future.delayed(const Duration(milliseconds: 100));
-    if (r > .8) {
-      throw NetworkErrorException();
-    }
-    return;
-  }
-
-  @override
   Future updateUserTodo(int userId, int todoId, Todo content) async {
     double r = Random().nextDouble();
     await Future.delayed(const Duration(milliseconds: 100));
@@ -220,6 +210,31 @@ class RestMock implements RestApi {
       localImage = File(images.path);
     }
     return;
+  }
+
+  @override
+  Future updateNickname(String newNickname) async {
+    double r = Random().nextDouble();
+    await Future.delayed(const Duration(milliseconds: 100));
+    if (r > .8) {
+      throw NetworkErrorException();
+    }
+    return;
+  }
+
+  @override
+  Future updatePassword(String password) async {
+    double r = Random().nextDouble();
+    await Future.delayed(const Duration(milliseconds: 100));
+    if (r > .8) {
+      throw NetworkErrorException();
+    }
+    return;
+  }
+
+  @override
+  Future<List<Todo>> getTodoListWithPage(int userId, int limit, int maxId) {
+    return getTodoList(userId);
   }
   
 }
