@@ -5,7 +5,7 @@ import 'package:dandelion_todo/models/user.dart';
 
 abstract class RestUser {
   Future<User?> register(String nickname, String password);
-  Future<User?> login(int userId, String password);
+  Future login(int userId, String password);
   Future<List<User>?> findUserByNickName(String nickname);
   Future<User?> findInfoById(int userId);
   Future pickUploadAvatar();

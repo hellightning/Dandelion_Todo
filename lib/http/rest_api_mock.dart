@@ -138,7 +138,7 @@ class RestMock implements RestUser, RestTodo {
   }
 
   @override
-  Future<User?> login(int userId, String password) async {
+  Future login(int userId, String password) async {
     double r = Random().nextDouble();
     await Future.delayed(const Duration(milliseconds: 100));
     if (r > .8) {

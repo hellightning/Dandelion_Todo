@@ -106,6 +106,7 @@ unlinked_spec.ds
 
 # Coverage
 coverage/
+genhtml.perl
 
 # Symbols
 app.*.symbols

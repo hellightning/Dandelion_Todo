@@ -5,6 +5,13 @@ class NetworkErrorException implements Exception {
   String toString() => msg ?? 'Network Error';
 }
 
+class LoginFailedException implements Exception {
+  final String? msg;
+  LoginFailedException([this.msg]);
+  @override
+  String toString() => msg ?? 'Wrong User id or Password';
+}
+
 class InvalidInputException implements Exception {
   final String? msg;
   InvalidInputException([this.msg]);

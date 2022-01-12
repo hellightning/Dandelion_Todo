@@ -39,6 +39,8 @@ dependencies:
   json_model: ^1.0.0
   json_serializable: ^5.0.0
   image_picker: ^0.8.4+4
+  build_runner: any
+  dio: ^4.0.4
 
 dev_dependencies:
   flutter_test:
