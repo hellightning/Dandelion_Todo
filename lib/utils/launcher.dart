@@ -1,4 +1,5 @@
 import 'package:dandelion_todo/components/todo_item.dart';
+import 'package:dandelion_todo/http/rest_api_mock.dart';
 import 'package:dandelion_todo/models/todo.dart';
 
 // 登录和启动过程中用到的方法类
@@ -8,10 +9,12 @@ class DandelionLauncher {
     return true;
   }
 
+  // TODO: 所有方法用Future异步处理
   // 检验是否登陆成功
-  static bool isLoginSuccess(String id, String password) {
+  static /*Future*/ bool isLoginSuccess(int id, String password) {
     // TODO: REST POST
     // TODO: Global preference
+    RestMock.instance.login(id, password);
     return true;
   }
 

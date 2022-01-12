@@ -1,3 +1,4 @@
+import 'package:dandelion_todo/http/rest_api_mock.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:dandelion_todo/utils/launcher.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,24 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(title: Text('Login')),
       backgroundColor: Global.THEME_COLOR.background,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.login),
+        onPressed: () {
+          // TODO: 登陆结果校验
+          if (_unameController == null) {
+            Navigator.pushNamed(context, 'register_page');
+          } else if (DandelionLauncher.isLoginSuccess(
+                  int.parse(_unameController.text), _pwdController.text)
+              // TODO: 使用用户名登陆？
+              ) {
+            Global.Login(int.parse(_unameController.text), _pwdController.text);
+            Navigator.pushReplacementNamed(context,
+                '/todo_page/unfinished'); //+_unameController.text + '/unfinished');
+          }
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -46,8 +65,8 @@ class _LoginPageState extends State<LoginPage> {
                   autofocus: _nameAutoFocus,
                   controller: _unameController,
                   decoration: InputDecoration(
-                    labelText: 'input user name',
-                    hintText: 'input user name or email',
+                    labelText: '请输入userid或昵称',
+                    hintText: 'input userid or nickname',
                     labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
                     hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
                     prefixIcon: Icon(Icons.person),
@@ -79,21 +98,6 @@ class _LoginPageState extends State<LoginPage> {
                 validator: (v) {
                   return v!.trim().isNotEmpty ? null : '请输入密码';
                 },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FloatingActionButton(
-                    child: Icon(Icons.login),
-                    onPressed: () {
-                      if (DandelionLauncher.isLoginSuccess(
-                          _unameController.text, _pwdController.text)) {
-                        Navigator.pushReplacementNamed(context,
-                            '/todo_page/unfinished'); //+_unameController.text + '/unfinished');
-                      }
-                    },
-                  )
-                ],
               ),
             ],
           ),

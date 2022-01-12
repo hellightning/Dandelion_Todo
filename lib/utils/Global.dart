@@ -15,20 +15,20 @@ class Global {
     return _pref?.getString('password') ?? 'null';
   }
 
-  static void Login(String username, String password) {
+  static void Login(int userid, String password) {
     // TODO: RESTful Request
-    _pref?.setString('username', username);
+    _pref?.setInt('userid', userid);
     _pref?.setString('password', password);
     // _pref?.setBool('isLoggedIn', true);
   }
 
   static void Logout() {
-    _pref?.remove('username');
+    _pref?.remove('userid');
     // _pref?.setBool('isLoggedIn', false);
   }
 
   static bool isLoggedIn() {
-    return !(_pref?.getString('username') == null);
+    return !(_pref?.getInt('userid') == null);
   }
 
   // 数字常量

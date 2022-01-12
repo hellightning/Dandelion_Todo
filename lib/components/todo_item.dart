@@ -5,25 +5,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // 首页显示TODO缩略信息的Widget
-class TodoItem extends StatefulWidget {
-  const TodoItem({Key? key}) : super(key: key);
-  @override
-  _TodoItemState createState() => _TodoItemState();
-}
+class TodoItem extends StatelessWidget {
+  TodoItem({Key? key, this.todoData}) : super(key: key);
 
-class _TodoItemState extends State<TodoItem> {
   // component of todo
-  late Todo todoData;
-  String todoTitle = "Test Title";
-  String todoContent = "test content test content test content test content";
-  int importance = 0;
-  DateTime fromTime = DateTime.now();
-  DateTime toTime = DateTime(2099);
-  // Todo todoInfo = Todo(title: , );
-  @override
-  void initState() {
-    super.initState();
-  }
+  Todo? todoData;
+  // String todoTitle = "Test Title";
+  // String todoContent = "test content test content test content test content";
+  // int importance = 0;
+  // DateTime fromTime = DateTime.now();
+  // DateTime toTime = DateTime(2099);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +32,7 @@ class _TodoItemState extends State<TodoItem> {
             Padding(
               padding: EdgeInsets.all(5),
               child: Text(
-                todoTitle,
+                todoData == null ? 'Title' : todoData!.title,
                 style: TextStyle(
                     color: Global.THEME_COLOR.mainColor,
                     fontSize: Global.TODO_TITLE_SIZE),
@@ -54,7 +45,9 @@ class _TodoItemState extends State<TodoItem> {
             Padding(
               padding: EdgeInsets.all(5),
               child: Text(
-                todoContent,
+                todoData == null
+                    ? 'todo content todo content todo content'
+                    : todoData!.description,
                 style: TextStyle(
                     color: Global.THEME_COLOR.textColor,
                     fontSize: Global.NORMAL_TEXT_SIZE),
@@ -68,10 +61,10 @@ class _TodoItemState extends State<TodoItem> {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: Text(
-                      'Deadline: ' + '2001-01-01',
-                      // DateTime.fromMicrosecondsSinceEpoch(
-                      //         todoData.deadline as int)
-                      //     .toString(),
+                      'Deadline: ' +
+                          DateTime.fromMicrosecondsSinceEpoch(
+                                  todoData!.deadline as int)
+                              .toString(),
                       style: TextStyle(
                           color: /*isNearDeadline? warn : neglected*/ Global
                               .THEME_COLOR.neglected),

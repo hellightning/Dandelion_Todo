@@ -11,7 +11,7 @@ class Todo {
   late num creatorId;
   late num deadline;
   late String description;
-  late num localId;
+  late String localId;
   late num parentId;
   late num plantTime;
   late String title;

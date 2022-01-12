@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 
 class RestImpl implements RestApi {
-
   static final RestImpl _instance = RestImpl._internal();
   var dio = Dio();
   late String localNickname;
@@ -18,9 +17,9 @@ class RestImpl implements RestApi {
 
   RestImpl._internal() {
     dio.options.baseUrl = "http://sgp.hareru.moe:8080/";
-    dio.options.connectTimeout = 5000;//超时时间
-    dio.options.receiveTimeout = 3000;//接收数据最长时间
-    dio.options.responseType = ResponseType.json;//数据格式
+    dio.options.connectTimeout = 5000; //超时时间
+    dio.options.receiveTimeout = 3000; //接收数据最长时间
+    dio.options.responseType = ResponseType.json; //数据格式
   }
 
   factory RestImpl() {
@@ -31,16 +30,10 @@ class RestImpl implements RestApi {
   late File localImage;
 
   @override
-  Future addWatchList(List<int> watchList) async{
+  Future addWatchList(List<int> watchList) async {
     try {
-      var res = await dio.request(
-        '/api/user/$localUid/watchlist',
-        options: Options(
-          method: 'POST'
-        ),data: {
-          'watchList': watchList
-        }
-      );
+      var res = await dio.request('/api/user/$localUid/watchlist',
+          options: Options(method: 'POST'), data: {'watchList': watchList});
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
@@ -65,7 +58,7 @@ class RestImpl implements RestApi {
   }
 
   @override
-  Future createTodo(Todo todo) async{
+  Future createTodo(Todo todo) async {
     throw UnimplementedError();
   }
 
@@ -77,14 +70,8 @@ class RestImpl implements RestApi {
   @override
   Future deleteWatchList(List<int> deleteList) async {
     try {
-      var res = await dio.request(
-        '/api/user/$localUid/watchlist',
-        options: Options(
-            method: 'DELETE'
-        ),data: {
-        'watchList': deleteList
-        }
-      );
+      var res = await dio.request('/api/user/$localUid/watchlist',
+          options: Options(method: 'DELETE'), data: {'watchList': deleteList});
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
@@ -111,18 +98,14 @@ class RestImpl implements RestApi {
   @override
   Future<User?> findDetailById(int userId) async {
     try {
-      var res = await dio.request(
-          '/api/user/$localUid/detail',
-          options: Options(
-              method: 'GET'
-          )
-      );
+      var res = await dio.request('/api/user/$localUid/detail',
+          options: Options(method: 'GET'));
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
       }
       var usr = User.fromJson(body["data"]);
-      localNickname = usr.nickName;
+      localNickname = usr.nickname;
       return usr;
     } on DioError catch (e) {
       if (e.response != null) {
@@ -157,12 +140,8 @@ class RestImpl implements RestApi {
   @override
   Future<List<int>> findWatchList(int userId) async {
     try {
-      var res = await dio.request(
-          '/api/user/$localUid/watchlist',
-          options: Options(
-              method: 'GET'
-          )
-      );
+      var res = await dio.request('/api/user/$localUid/watchlist',
+          options: Options(method: 'GET'));
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
@@ -194,12 +173,8 @@ class RestImpl implements RestApi {
   @override
   Future<List<Todo>> getTodoList(int userId) async {
     try {
-      var res = await dio.request(
-          '/api/todo/$localUid',
-          options: Options(
-              method: 'GET'
-          )
-      );
+      var res = await dio.request('/api/todo/$localUid',
+          options: Options(method: 'GET'));
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
@@ -235,12 +210,8 @@ class RestImpl implements RestApi {
   @override
   Future login(int userId, String password) async {
     try {
-      var res = await dio.request(
-          '/login?userId=$userId&password=$password',
-          options: Options(
-              method: 'POST'
-          )
-      );
+      var res = await dio.request('/login?userId=$userId&password=$password',
+          options: Options(method: 'POST'));
       var body = json.decode(res.toString());
       dio.options.headers['Authorization'] = body['data'];
       localUid = userId;
@@ -258,16 +229,9 @@ class RestImpl implements RestApi {
   @override
   Future<User?> register(String nickname, String password) async {
     try {
-      var res = await dio.request(
-          '/register',
-          options: Options(
-              method: 'POST'
-          ),
-          data: {
-            'nickname': nickname,
-            'password': password
-          }
-      );
+      var res = await dio.request('/register',
+          options: Options(method: 'POST'),
+          data: {'nickname': nickname, 'password': password});
       var body = json.decode(res.toString());
       var currUser = User.fromJson(body['data']);
       localNickname = nickname;
@@ -292,16 +256,9 @@ class RestImpl implements RestApi {
   @override
   Future updateNickname(String newNickname) async {
     try {
-      var res = await dio.request(
-          '/api/user/$localUid/detail',
-          options: Options(
-              method: 'POST'
-          ),
-          data: {
-            'userId': localUid,
-            'nickname': newNickname
-          }
-      );
+      var res = await dio.request('/api/user/$localUid/detail',
+          options: Options(method: 'POST'),
+          data: {'userId': localUid, 'nickname': newNickname});
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
@@ -332,16 +289,9 @@ class RestImpl implements RestApi {
   @override
   Future updatePassword(String password) async {
     try {
-      var res = await dio.request(
-          '/api/user/$localUid/detail',
-          options: Options(
-              method: 'POST'
-          ),
-          data: {
-            'userId': localUid,
-            'password': password
-          }
-      );
+      var res = await dio.request('/api/user/$localUid/detail',
+          options: Options(method: 'POST'),
+          data: {'userId': localUid, 'password': password});
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
@@ -380,7 +330,7 @@ class RestImpl implements RestApi {
   }
 
   @override
-  Future cameraUploadAvatar() async{
+  Future cameraUploadAvatar() async {
     throw UnimplementedError();
   }
 
@@ -389,5 +339,4 @@ class RestImpl implements RestApi {
     // TODO: implement getTodoListWithPage
     throw UnimplementedError();
   }
-
 }

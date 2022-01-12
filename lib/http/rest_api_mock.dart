@@ -8,7 +8,6 @@ import 'package:dandelion_todo/models/user.dart';
 import 'package:image_picker/image_picker.dart';
 
 class RestMock implements RestApi {
-
   RestMock._internal();
   static final RestMock instance = RestMock._internal();
 
@@ -19,16 +18,16 @@ class RestMock implements RestApi {
   var userMock = const {
     'nickname': 'hhh',
     'password': '114514',
-    'role': [{
-      'authority': 'ROLE_USER'
-    }],
+    'role': [
+      {'authority': 'ROLE_USER'}
+    ],
     'userId': 4,
     'watchList': [0]
   };
 
   var todoMock = const {
     'completeAt': 1641699781012,
-    'createAt': 1641699781012,
+    'createdAt': 1641699781012,
     'creatorId': 4,
     'deadline': 1641699782012,
     'description': 'string',
@@ -45,7 +44,7 @@ class RestMock implements RestApi {
   late File localImage;
 
   @override
-  Future addWatchList(List<int> watchList) async{
+  Future addWatchList(List<int> watchList) async {
     double r = Random().nextDouble();
     await Future.delayed(const Duration(milliseconds: 100));
     if (r > .8) {
@@ -55,7 +54,7 @@ class RestMock implements RestApi {
   }
 
   @override
-  Future createTodo(Todo todo) async{
+  Future createTodo(Todo todo) async {
     double r = Random().nextDouble();
     await Future.delayed(const Duration(milliseconds: 100));
     if (r > .8) {
@@ -121,7 +120,7 @@ class RestMock implements RestApi {
     if (r > .8) {
       throw NetworkErrorException();
     }
-    return List.from([3,4]);
+    return List.from([3, 4]);
   }
 
   @override
@@ -204,7 +203,7 @@ class RestMock implements RestApi {
   }
 
   @override
-  Future cameraUploadAvatar() async{
+  Future cameraUploadAvatar() async {
     final images = await picker.pickImage(source: ImageSource.gallery);
     if (images != null) {
       localImage = File(images.path);
@@ -236,5 +235,4 @@ class RestMock implements RestApi {
   Future<List<Todo>> getTodoListWithPage(int userId, int limit, int maxId) {
     return getTodoList(userId);
   }
-  
 }

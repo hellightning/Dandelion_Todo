@@ -1,7 +1,7 @@
 {
-    "nickName": "",
-    "passWord": "",
-    "role": 0,
+    "nickname": "",
+    "password": "",
+    "role": {"authority":"ROLE_USER"},
     "userId": 0,
     "watchList":[
         0

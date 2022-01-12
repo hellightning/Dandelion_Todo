@@ -18,7 +18,9 @@ class _TodoPageState extends State<TodoPage> {
   List<Todo> todoList = List.empty();
   @override
   void initState() {
-    /*todoList = */ RestMock.instance.getTodoList(Global.getUser());
+    RestMock.instance.getTodoList(Global.getUser()).then((value) {
+      todoList = value;
+    });
     super.initState();
   }
 
@@ -35,9 +37,11 @@ class _TodoPageState extends State<TodoPage> {
                 padding: EdgeInsets.all(20.0),
               )
             ]
-                .followedBy(todoList.map((todoItem) => Padding(
+                .followedBy(todoList.map((todoData) => Padding(
                       padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child: TodoItem(/*todoItem*/),
+                      child: TodoItem(
+                        todoData: todoData,
+                      ),
                     )))
                 .toList(),
           ),
