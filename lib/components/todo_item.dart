@@ -1,4 +1,3 @@
-import 'package:dandelion_todo/http/rest_api_mock.dart';
 import 'package:dandelion_todo/models/index.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,10 +5,8 @@ import 'package:flutter/material.dart';
 
 // 首页显示TODO缩略信息的Widget
 class TodoItem extends StatelessWidget {
-  TodoItem({Key? key, this.todoData}) : super(key: key);
-
-  // component of todo
-  Todo? todoData;
+  TodoItem({Key? key, required this.todoData}) : super(key: key);
+  Todo todoData;
   // String todoTitle = "Test Title";
   // String todoContent = "test content test content test content test content";
   // int importance = 0;
@@ -32,7 +29,7 @@ class TodoItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(5),
               child: Text(
-                todoData == null ? 'Title' : todoData!.title,
+                todoData.title,
                 style: TextStyle(
                     color: Global.THEME_COLOR.mainColor,
                     fontSize: Global.TODO_TITLE_SIZE),
@@ -45,9 +42,7 @@ class TodoItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(5),
               child: Text(
-                todoData == null
-                    ? 'todo content todo content todo content'
-                    : todoData!.description,
+                todoData.description,
                 style: TextStyle(
                     color: Global.THEME_COLOR.textColor,
                     fontSize: Global.NORMAL_TEXT_SIZE),
@@ -58,12 +53,13 @@ class TodoItem extends StatelessWidget {
               children: [
                 Align(
                   alignment: Alignment.bottomLeft,
-                  child: Padding(
+                  child: Container(
                     padding: EdgeInsets.all(5),
+                    constraints: BoxConstraints(maxWidth: 50),
                     child: Text(
                       'Deadline: ' +
                           DateTime.fromMicrosecondsSinceEpoch(
-                                  todoData!.deadline as int)
+                                  todoData.deadline as int)
                               .toString(),
                       style: TextStyle(
                           color: /*isNearDeadline? warn : neglected*/ Global

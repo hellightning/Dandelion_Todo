@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dandelion_todo/components/my_drawer.dart';
 import 'package:dandelion_todo/components/search_item.dart';
 import 'package:dandelion_todo/components/todo_item.dart';
@@ -21,6 +23,7 @@ class _TodoPageState extends State<TodoPage> {
     RestMock.instance.getTodoList(Global.getUser()).then((value) {
       todoList = value;
     });
+    // sleep(Duration(seconds: 5));
     super.initState();
   }
 
@@ -32,18 +35,18 @@ class _TodoPageState extends State<TodoPage> {
       body: Stack(
         children: [
           ListView(
-            children: <Widget>[
+            children: /*<Widget>[
               Padding(
                 padding: EdgeInsets.all(20.0),
               )
             ]
-                .followedBy(todoList.map((todoData) => Padding(
+                .followedBy*/
+                (todoList.map((todoData) => Padding(
                       padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                       child: TodoItem(
                         todoData: todoData,
                       ),
-                    )))
-                .toList(),
+                    ))).toList(),
           ),
           SearchItem(),
         ],
