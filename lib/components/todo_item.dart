@@ -2,11 +2,14 @@ import 'package:dandelion_todo/models/index.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:date_format/date_format.dart';
 
 // 首页显示TODO缩略信息的Widget
 class TodoItem extends StatelessWidget {
-  TodoItem({Key? key, required this.todoData}) : super(key: key);
+  TodoItem({Key? key, required this.todoData, this.isUnfinished = true})
+      : super(key: key);
   Todo todoData;
+  bool isUnfinished;
   // String todoTitle = "Test Title";
   // String todoContent = "test content test content test content test content";
   // int importance = 0;
@@ -50,50 +53,75 @@ class TodoItem extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    constraints: BoxConstraints(maxWidth: 50),
-                    child: Text(
-                      'Deadline: ' +
-                          DateTime.fromMicrosecondsSinceEpoch(
-                                  todoData.deadline as int)
-                              .toString(),
-                      style: TextStyle(
-                          color: /*isNearDeadline? warn : neglected*/ Global
-                              .THEME_COLOR.neglected),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: SizedBox(),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.task_alt,
-                    color: Global.THEME_COLOR.mainColor,
-                  ),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.delete_forever,
-                    color: Global.THEME_COLOR.warnColor,
-                  ),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.alarm_rounded,
-                    color: Global.THEME_COLOR.textColor,
-                  ),
-                  onPressed: () =>
-                      Navigator.pushNamed(context, '/planttree_page'),
-                ),
-              ],
+              children: isUnfinished
+                  ? <Widget>[
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          constraints: BoxConstraints(maxWidth: 100),
+                          child: Text(
+                            'Deadline: ' +
+                                formatDate(
+                                    DateTime.fromMicrosecondsSinceEpoch(
+                                        todoData.deadline as int),
+                                    [yyyy, '-', mm, '-', dd]),
+                            style: TextStyle(
+                                color: /*isNearDeadline? warn : neglected*/ Global
+                                    .THEME_COLOR.neglected),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        fit: FlexFit.tight,
+                        child: SizedBox(),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.task_alt,
+                          color: Global.THEME_COLOR.mainColor,
+                        ),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete_forever,
+                          color: Global.THEME_COLOR.warnColor,
+                        ),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.alarm_rounded,
+                          color: Global.THEME_COLOR.textColor,
+                        ),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/planttree_page'),
+                      ),
+                    ]
+                  : <Widget>[
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          constraints: BoxConstraints(maxWidth: 50),
+                          child: Text(
+                            'Completed: ' +
+                                formatDate(
+                                    DateTime.fromMicrosecondsSinceEpoch(
+                                        todoData.completeAt as int),
+                                    [yyyy, '-', mm, '-', dd]),
+                            style: TextStyle(
+                                color: /*isNearDeadline? warn : neglected*/ Global
+                                    .THEME_COLOR.neglected),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        fit: FlexFit.tight,
+                        child: SizedBox(),
+                      ),
+                    ],
             ),
           ],
         ),

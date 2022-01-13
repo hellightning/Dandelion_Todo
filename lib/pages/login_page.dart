@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   bool pwdShow = false; //密码是否显示明文
   GlobalKey _formKey = GlobalKey<FormState>();
   bool _nameAutoFocus = true;
+  bool _isUserEmpty = true;
   // TODO: 使用provider管理全局用户状态进行替换
   User? userData;
 
@@ -36,24 +37,23 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(title: Text('Login')),
       backgroundColor: Global.THEME_COLOR.background,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.login),
+        child: Icon(_isUserEmpty ? Icons.upload : Icons.login),
         onPressed: () async {
           // TODO: 登陆结果校验
-          if (_unameController == null) {
+          if (_unameController.text == '' && _pwdController.text == '') {
             Navigator.pushNamed(context, 'register_page');
           } else if (await DandelionLauncher.login(
                   int.parse(_unameController.text), _pwdController.text)
               // TODO: 使用用户名登陆？
               ) {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) {
-              // TODO: 传递用户登录数据
-              return TodoPage(
-                isUnfinished: true,
-              );
-            }));
-            // Navigator.pushReplacementNamed(context,
-            //     '/todo_page/unfinished');
+            // Navigator.pushReplacement(context,
+            //     MaterialPageRoute(builder: (context) {
+            //   // TODO: 传递用户登录数据
+            //   return TodoPage(
+            //     isUnfinished: true,
+            //   );
+            // }));
+            Navigator.pushReplacementNamed(context, '/todo_page/unfinished');
           }
         },
       ),
@@ -81,6 +81,17 @@ class _LoginPageState extends State<LoginPage> {
                     hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
                     prefixIcon: Icon(Icons.person),
                   ),
+                  onChanged: (value) {
+                    if (value == '') {
+                      setState(() {
+                        _isUserEmpty = true;
+                      });
+                    } else {
+                      setState(() {
+                        _isUserEmpty = false;
+                      });
+                    }
+                  },
                   validator: (v) {
                     return v!.trim().isNotEmpty
                         ? null

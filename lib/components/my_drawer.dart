@@ -36,6 +36,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10),
+                    // TODO: 点击头像进入账号管理页面
                     child: IconButton(
                       icon: Icon(
                         Icons.account_circle_rounded,
@@ -63,6 +64,9 @@ class _MyDrawerState extends State<MyDrawer> {
                 setState(() {
                   currentItem = Global.TODO_DRAWER_UNFINISHED;
                 });
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/todo_page/unfinished');
               },
             ),
             ListTile(
@@ -80,6 +84,9 @@ class _MyDrawerState extends State<MyDrawer> {
                 setState(() {
                   currentItem = Global.TODO_DRAWER_FINISHED;
                 });
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/todo_page/finished');
               },
             ),
             ListTile(

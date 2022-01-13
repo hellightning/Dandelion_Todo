@@ -28,6 +28,12 @@ class DandelionLauncher {
     return ret;
   }
 
+  static Future<int> register(String nickname, String password) async {
+    int ret = -1;
+    // TODO: 注册逻辑
+    return ret;
+  }
+
   // 启动时获取TodoList
   static List<Todo> requestTodo() {
     throw UnimplementedError();

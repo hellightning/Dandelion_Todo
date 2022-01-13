@@ -37,18 +37,22 @@ class _TodoPageState extends State<TodoPage> {
       body: Stack(
         children: [
           ListView(
-            children: /*<Widget>[
+            children: <Widget>[
               Padding(
                 padding: EdgeInsets.all(20.0),
               )
             ]
-                .followedBy*/
-                (todoList.map((todoData) => Padding(
-                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child: TodoItem(
-                        todoData: todoData,
-                      ),
-                    ))).toList(),
+                .followedBy(todoList
+                    .where((todoData) =>
+                        ((todoData.completeAt == 0) == widget.isUnfinished))
+                    .map((todoData) => Padding(
+                          padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                          child: TodoItem(
+                            todoData: todoData,
+                            isUnfinished: widget.isUnfinished,
+                          ),
+                        )))
+                .toList(),
           ),
           SearchItem(),
         ],
