@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:dandelion_todo/http/http_error.dart';
 import 'package:dandelion_todo/http/rest_api_impl.dart';
+import 'package:dandelion_todo/http/rest_api_mock.dart';
+import 'package:dandelion_todo/models/index.dart';
 import 'package:dandelion_todo/models/user.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -48,10 +48,10 @@ void main() {
       expect(usr, const TypeMatcher<User>());
       usr = await dio.updateNickname("zgh");
       expect(usr, isNotNull);
-      expect(usr!.nickName, 'zgh');
+      expect(usr!.nickname, 'zgh');
       usr = await dio.findDetailById(4);
       expect(usr, isNotNull);
-      expect(usr!.nickName, 'zgh');
+      expect(usr!.nickname, 'zgh');
       usr = await dio.updatePassword('123456');
       expect(usr, isNotNull);
       expect(usr, const TypeMatcher<User>());
@@ -59,6 +59,18 @@ void main() {
       await dio.login(4, '123456');
       expect(dio.dio.options.headers['Authorization'], isNot('114514'));
       await dio.updatePassword('114514');
+    });
+  });
+  group('TODO API', (){
+    test('C,U,D TODO', ()async {
+      var todo = await dio.createTodo(Todo.fromJson(RestMock.instance.todoMock));
+      var todoid = todo.todoId;
+      print(todoid);
+      todo.plantTime += 10;
+      await dio.updateUserTodo(dio.localUid, todoid as int, todo);
+      var ntodo = await dio.getUserTodoDetail(dio.localUid, todoid);
+      expect(ntodo.plantTime, 10);
+      await dio.deleteUserTodo(dio.localUid, todoid);
     });
   });
 }

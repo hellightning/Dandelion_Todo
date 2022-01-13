@@ -54,17 +54,17 @@ class RestMock implements RestApi {
   }
 
   @override
-  Future createTodo(Todo todo) async {
+  Future<Todo> createTodo(Todo todo) async{
     double r = Random().nextDouble();
     await Future.delayed(const Duration(milliseconds: 100));
     if (r > .8) {
       throw NetworkErrorException();
     }
-    return;
+    return Todo.fromJson(todoMock);
   }
 
   @override
-  Future deleteUserTodo(int userId, int todoId, Todo content) async {
+  Future deleteUserTodo(int userId, int todoId) async {
     double r = Random().nextDouble();
     await Future.delayed(const Duration(milliseconds: 100));
     if (r > .8) {
@@ -94,23 +94,23 @@ class RestMock implements RestApi {
   }
 
   @override
-  Future<User?> findInfoById(int userId) async {
+  Future<String?> findNicknameById(int userId) async {
     double r = Random().nextDouble();
     await Future.delayed(const Duration(milliseconds: 100));
     if (r > .8) {
       throw InvalidInputException('userId $userId is illegal');
     }
-    return User.fromJson(userMock);
+    return "zyx";
   }
 
   @override
-  Future<List<User>?> findUserByNickName(String nickname) async {
+  Future<List<int>?> findUserByNickName(String nickname) async {
     double r = Random().nextDouble();
     await Future.delayed(const Duration(milliseconds: 100));
     if (r > .8) {
       throw NetworkErrorException();
     }
-    return List.from([User.fromJson(userMock), User.fromJson(userMock)]);
+    return List.from([2,3]);
   }
 
   @override
