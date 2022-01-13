@@ -1,30 +1,35 @@
-import 'package:dandelion_todo/components/todo_item.dart';
+import 'package:dandelion_todo/http/http_error.dart';
 import 'package:dandelion_todo/http/rest_api_mock.dart';
 import 'package:dandelion_todo/models/todo.dart';
+import 'package:dandelion_todo/utils/Global.dart';
 
 // 登录和启动过程中用到的方法类
 class DandelionLauncher {
-  // 检验是否已经有登陆数据
-  static bool verifyLogin() {
-    return true;
-  }
-
-  // TODO: 所有方法用Future异步处理
-  // 检验是否登陆成功
-  static /*Future*/ bool isLoginSuccess(int id, String password) {
-    // TODO: REST POST
-    // TODO: Global preference
-    RestMock.instance.login(id, password);
-    return true;
+  /// 登陆操作，返回登陆是否成功
+  static Future<bool> login(int userid, String password) async {
+    late bool ret;
+    if (Global.isLoggedIn()) {
+      ret = true;
+    } else {
+      await RestMock.instance.login(userid, password).then((value) {
+        Global.login(userid, password); // 更新本地账号缓存
+        ret = true;
+        // TODO: 更新profile provider
+      }).catchError((e) {
+        ret = false;
+        if (e is NetworkErrorException) {
+          // TODO: 处理不同的错误逻辑
+          ;
+        } else if (e is LoginFailedException) {
+          ;
+        }
+      });
+    }
+    return ret;
   }
 
   // 启动时获取TodoList
   static List<Todo> requestTodo() {
-    throw UnimplementedError();
-  }
-
-  // 将Todo数据类装载为Widget
-  static TodoItem implementTodo(Todo todo) {
     throw UnimplementedError();
   }
 }

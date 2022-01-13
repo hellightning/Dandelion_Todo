@@ -43,16 +43,21 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Global.THEME_COLOR.themeColor,
         ),
-        initialRoute: Global.isLoggedIn() ? '/planttree_page' : '/login_page',
+        // initialRoute: Global.isLoggedIn() ? '/todo_page/unfinished' : '/login_page',
+        initialRoute: '/login_page',
         routes: {
-          '/todo_page/unfinished': (context) => TodoPage(),
-          '/todo_page/finished': (context) => TodoPage(), // 参数应该不一样
+          '/todo_page/unfinished': (context) => TodoPage(
+                isUnfinished: false,
+              ),
+          '/todo_page/finished': (context) => TodoPage(
+                isUnfinished: false,
+              ), // 参数应该不一样
           '/config_page/setting': (context) => ConfigPage(),
           '/config_page/account': (context) => ConfigPage(), // 同上
           '/edit_page/add': (context) => TodoEditPage(),
           '/edit_page/edit': (context) => TodoEditPage(),
           '/login_page': (context) => LoginPage(),
-          '/planttree_page': (context) => PlanttreePage(totalTime: 60),
+          '/planttree_page': (context) => PlanttreePage(),
         },
       ),
     );

@@ -5,9 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PlanttreePage extends StatefulWidget {
-  PlanttreePage({Key? key, required this.totalTime /*,required this.todoid*/})
-      : super(key: key);
-  int totalTime = 0;
+  PlanttreePage({Key? key /*,required this.todoid*/}) : super(key: key);
   int todoid = 0;
   @override
   _PlanttreePageState createState() => _PlanttreePageState();
@@ -19,7 +17,7 @@ class _PlanttreePageState extends State<PlanttreePage> {
   late Timer _timer;
   @override
   void initState() {
-    remainTime = widget.totalTime;
+    remainTime = 60;
     super.initState();
   }
 
@@ -51,7 +49,7 @@ class _PlanttreePageState extends State<PlanttreePage> {
                 });
             _timer = Timer.periodic(second, callback);
           } else {
-            remainTime = widget.totalTime;
+            remainTime = 60;
             try {
               _timer.cancel();
             } catch (e) {

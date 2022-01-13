@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 
 // main page
 class TodoPage extends StatefulWidget {
+  TodoPage({Key? key, required this.isUnfinished}) : super(key: key);
+  bool isUnfinished;
   @override
   _TodoPageState createState() => _TodoPageState();
 }

@@ -1,4 +1,7 @@
+import 'package:dandelion_todo/http/http_error.dart';
 import 'package:dandelion_todo/http/rest_api_mock.dart';
+import 'package:dandelion_todo/models/index.dart';
+import 'package:dandelion_todo/pages/todo_page.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:dandelion_todo/utils/launcher.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +18,8 @@ class _LoginPageState extends State<LoginPage> {
   bool pwdShow = false; //密码是否显示明文
   GlobalKey _formKey = GlobalKey<FormState>();
   bool _nameAutoFocus = true;
+  // TODO: 使用provider管理全局用户状态进行替换
+  User? userData;
 
   @override
   void initState() {
@@ -32,22 +37,27 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Global.THEME_COLOR.background,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.login),
-        onPressed: () {
+        onPressed: () async {
           // TODO: 登陆结果校验
           if (_unameController == null) {
             Navigator.pushNamed(context, 'register_page');
-          } else if (DandelionLauncher.isLoginSuccess(
+          } else if (await DandelionLauncher.login(
                   int.parse(_unameController.text), _pwdController.text)
               // TODO: 使用用户名登陆？
               ) {
-            Global.Login(int.parse(_unameController.text), _pwdController.text);
-            Navigator.pushReplacementNamed(context,
-                '/todo_page/unfinished'); //+_unameController.text + '/unfinished');
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) {
+              // TODO: 传递用户登录数据
+              return TodoPage(
+                isUnfinished: true,
+              );
+            }));
+            // Navigator.pushReplacementNamed(context,
+            //     '/todo_page/unfinished');
           }
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

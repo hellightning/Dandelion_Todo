@@ -15,14 +15,13 @@ class Global {
     return _pref?.getString('password') ?? 'null';
   }
 
-  static void Login(int userid, String password) {
-    // TODO: RESTful Request
+  static void login(int userid, String password) {
     _pref?.setInt('userid', userid);
     _pref?.setString('password', password);
     // _pref?.setBool('isLoggedIn', true);
   }
 
-  static void Logout() {
+  static void logout() {
     _pref?.remove('userid');
     // _pref?.setBool('isLoggedIn', false);
   }
@@ -127,8 +126,7 @@ class Global {
           Colors.yellow,
           'light');
     } catch (e) {
-      print('here');
-      throw Error();
+      print(e);
     }
   }
 
