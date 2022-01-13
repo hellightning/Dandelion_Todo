@@ -13,11 +13,15 @@ class PlanttreePage extends StatefulWidget {
 
 class _PlanttreePageState extends State<PlanttreePage> {
   bool isPlanting = false;
-  int remainTime = 0;
+  ScrollController _hourController = ScrollController();
+  ScrollController _minuteController = ScrollController();
+  int remainSecond = 0;
+  int remainMinute = 0;
+  int remainHour = 0;
   late Timer _timer;
   @override
   void initState() {
-    remainTime = 60;
+    remainMinute = 60;
     super.initState();
   }
 
@@ -40,16 +44,30 @@ class _PlanttreePageState extends State<PlanttreePage> {
           if (isPlanting) {
             const second = Duration(seconds: 1);
             var callback = (timer) => setState(() {
-                  if (remainTime < 1) {
+                  if (remainSecond <= 0) {
                     // TODO: 更新种树结果到服务端
-                    _timer.cancel();
+                    if (remainMinute <= 0) {
+                      if (remainHour <= 0) {
+                        _timer.cancel();
+                        isPlanting = false;
+                      } else {
+                        remainHour -= 1;
+                        remainMinute = 59;
+                        remainSecond = 59;
+                      }
+                    } else {
+                      remainSecond = 59;
+                      remainMinute -= 1;
+                    }
                   } else {
-                    remainTime -= 1;
+                    remainSecond -= 1;
                   }
                 });
             _timer = Timer.periodic(second, callback);
           } else {
-            remainTime = 60;
+            remainHour = 1;
+            remainMinute = 59;
+            remainSecond = 59;
             try {
               _timer.cancel();
             } catch (e) {
@@ -64,12 +82,73 @@ class _PlanttreePageState extends State<PlanttreePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Container(
-        child: Text(
-          remainTime.toString(),
-          style: TextStyle(
-              color: isPlanting
-                  ? Global.THEME_COLOR.mainColor
-                  : Global.THEME_COLOR.neglected),
+        constraints: BoxConstraints.tightForFinite(),
+        child: Row(
+          children: [
+            Container(
+              width: 100,
+              height: 200,
+              child: ListWheelScrollView.useDelegate(
+                controller: _hourController,
+                itemExtent: 100,
+                offAxisFraction: -0.5,
+                perspective: 0.01,
+                childDelegate: ListWheelChildBuilderDelegate(
+                  builder: (context, index) {
+                    return Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        alignment: Alignment.center,
+                        child: Text('$index时'));
+                  },
+                  childCount: 5,
+                ),
+                onSelectedItemChanged: (value) {
+                  if (!isPlanting) {
+                    remainHour = value;
+                  }
+                },
+              ),
+            ),
+            Container(
+              width: 100,
+              height: 200,
+              child: ListWheelScrollView.useDelegate(
+                controller: _minuteController,
+                itemExtent: 100,
+                offAxisFraction: 0.5,
+                perspective: 0.01,
+                childDelegate: ListWheelChildBuilderDelegate(
+                  builder: (context, index) {
+                    return Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        alignment: Alignment.center,
+                        child: Text('$index分'));
+                  },
+                  childCount: 60,
+                ),
+                onSelectedItemChanged: (value) {
+                  if (!isPlanting) {
+                    remainMinute = value;
+                  }
+                },
+              ),
+            ),
+            Container(
+              width: 100,
+              height: 200,
+              child: CupertinoPicker(
+                itemExtent: 100,
+                children: List<int>.filled(10, 1)
+                    .map((index) => Container(
+                          child: Text('$index'),
+                        ))
+                    .toList(),
+                onSelectedItemChanged: (value) {},
+              ),
+            ),
+          ],
         ),
       ),
     );

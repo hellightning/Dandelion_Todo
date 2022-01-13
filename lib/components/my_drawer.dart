@@ -50,8 +50,10 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
             ListTile(
-              selectedTileColor: Global.THEME_COLOR.subColor,
-              selected: currentItem == Global.TODO_DRAWER_UNFINISHED,
+              tileColor: currentItem == Global.TODO_DRAWER_UNFINISHED
+                  ? Global.THEME_COLOR.subColor
+                  : Global.THEME_COLOR.background,
+              // selected: currentItem == Global.TODO_DRAWER_UNFINISHED,
               title: Text(
                 '正在进行',
                 style: TextStyle(
@@ -70,8 +72,10 @@ class _MyDrawerState extends State<MyDrawer> {
               },
             ),
             ListTile(
-              selectedTileColor: Global.THEME_COLOR.subColor,
-              selected: currentItem == Global.TODO_DRAWER_FINISHED,
+              tileColor: currentItem == Global.TODO_DRAWER_FINISHED
+                  ? Global.THEME_COLOR.subColor
+                  : Global.THEME_COLOR.background,
+              // selected: currentItem == Global.TODO_DRAWER_FINISHED,
               title: Text(
                 '已完成',
                 style: TextStyle(
@@ -90,8 +94,11 @@ class _MyDrawerState extends State<MyDrawer> {
               },
             ),
             ListTile(
-              selectedTileColor: Global.THEME_COLOR.subColor,
-              selected: currentItem == Global.TODO_DRAWER_CONFIG,
+              tileColor: currentItem == Global.TODO_DRAWER_CONFIG
+                  ? Global.THEME_COLOR.subColor
+                  : Global.THEME_COLOR.background,
+              // selectedTileColor: Global.THEME_COLOR.subColor,
+              // selected: currentItem == Global.TODO_DRAWER_CONFIG,
               title: Text(
                 '设置',
                 style: TextStyle(
@@ -108,7 +115,9 @@ class _MyDrawerState extends State<MyDrawer> {
               },
             ),
             ListTile(
-              selectedTileColor: Global.THEME_COLOR.subColor,
+              tileColor: currentItem == Global.TODO_DRAWER_ADDFRIEND
+                  ? Global.THEME_COLOR.subColor
+                  : Global.THEME_COLOR.background,
               title: Text(
                 '添加好友',
                 style: TextStyle(
@@ -117,7 +126,9 @@ class _MyDrawerState extends State<MyDrawer> {
                         ? Global.THEME_COLOR.mainColor
                         : Global.THEME_COLOR.textColor),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/addfriend_page');
+              },
             ),
           ],
         ),

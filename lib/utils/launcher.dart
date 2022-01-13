@@ -13,6 +13,7 @@ class DandelionLauncher {
     } else {
       await RestMock.instance.login(userid, password).then((value) {
         Global.login(userid, password); // 更新本地账号缓存
+
         ret = true;
         // TODO: 更新profile provider
       }).catchError((e) {
@@ -30,6 +31,7 @@ class DandelionLauncher {
 
   static Future<int> register(String nickname, String password) async {
     int ret = -1;
+    ret = 4;
     // TODO: 注册逻辑
     return ret;
   }

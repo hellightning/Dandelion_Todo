@@ -30,7 +30,7 @@ class TodoItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               child: Text(
                 todoData.title,
                 style: TextStyle(
@@ -43,7 +43,7 @@ class TodoItem extends StatelessWidget {
               thickness: 1.0,
             ),
             Padding(
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               child: Text(
                 todoData.description,
                 style: TextStyle(
@@ -58,8 +58,8 @@ class TodoItem extends StatelessWidget {
                       Align(
                         alignment: Alignment.bottomLeft,
                         child: Container(
-                          padding: EdgeInsets.all(5),
-                          constraints: BoxConstraints(maxWidth: 100),
+                          padding: const EdgeInsets.all(5),
+                          constraints: const BoxConstraints(maxWidth: 100),
                           child: Text(
                             'Deadline: ' +
                                 formatDate(
@@ -72,7 +72,7 @@ class TodoItem extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Flexible(
+                      const Flexible(
                         fit: FlexFit.tight,
                         child: SizedBox(),
                       ),
@@ -103,8 +103,8 @@ class TodoItem extends StatelessWidget {
                       Align(
                         alignment: Alignment.bottomLeft,
                         child: Container(
-                          padding: EdgeInsets.all(5),
-                          constraints: BoxConstraints(maxWidth: 50),
+                          padding: const EdgeInsets.all(5),
+                          constraints: const BoxConstraints(maxWidth: 100),
                           child: Text(
                             'Completed: ' +
                                 formatDate(
@@ -117,7 +117,7 @@ class TodoItem extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Flexible(
+                      const Flexible(
                         fit: FlexFit.tight,
                         child: SizedBox(),
                       ),
@@ -127,17 +127,17 @@ class TodoItem extends StatelessWidget {
         ),
         // constraints: BoxConstraints.loose(Size(300, 150)),
         constraints:
-            BoxConstraints(minWidth: 300, maxWidth: 300, minHeight: 150),
+            const BoxConstraints(minWidth: 300, maxWidth: 300, minHeight: 150),
         alignment: Alignment.topCenter,
         // color: Colors.grey[200],
-        padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
-        margin: EdgeInsets.all(2),
+        padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
+        margin: const EdgeInsets.all(2),
         decoration: BoxDecoration(
           color: Global.THEME_COLOR.subColor,
           boxShadow: <BoxShadow>[
             BoxShadow(blurRadius: 2.0, color: Global.THEME_COLOR.neglected),
           ],
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           // border: Border(
           //     bottom: BorderSide(
           //         color: Global.THEME_COLOR.neglected,

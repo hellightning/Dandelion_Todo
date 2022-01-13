@@ -10,6 +10,6 @@ class SettingItem extends StatefulWidget {
 class _SettingItemState extends State<SettingItem> {
   @override
   Widget build(BuildContext context) {
-    return ListTile();
+    return const ListTile();
   }
 }

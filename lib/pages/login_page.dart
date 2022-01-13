@@ -46,13 +46,6 @@ class _LoginPageState extends State<LoginPage> {
                   int.parse(_unameController.text), _pwdController.text)
               // TODO: 使用用户名登陆？
               ) {
-            // Navigator.pushReplacement(context,
-            //     MaterialPageRoute(builder: (context) {
-            //   // TODO: 传递用户登录数据
-            //   return TodoPage(
-            //     isUnfinished: true,
-            //   );
-            // }));
             Navigator.pushReplacementNamed(context, '/todo_page/unfinished');
           }
         },

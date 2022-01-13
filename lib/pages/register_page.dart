@@ -39,8 +39,10 @@ class _RegisterPageState extends State<RegisterPage> {
               _pwdController.text == '' ||
               _pwdController.text != _pwdcController.text) {
             ;
-          } else {await DandelionLauncher.register
-              _unameController.text, _pwdController.text)) ;
+          } else {
+            await DandelionLauncher.register(
+                _unameController.text, _pwdController.text);
+
             Navigator.pop(context);
           }
         },

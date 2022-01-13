@@ -1,12 +1,13 @@
 import 'dart:io';
 
+import 'package:dandelion_todo/pages/addfriend_page.dart';
 import 'package:dandelion_todo/pages/config_page.dart';
 import 'package:dandelion_todo/pages/login_page.dart';
 import 'package:dandelion_todo/pages/planttree_page.dart';
 import 'package:dandelion_todo/pages/todo_edit_page.dart';
 import 'package:dandelion_todo/pages/todo_page.dart';
 import 'package:dandelion_todo/states/profile_state.dart';
-import 'package:dandelion_todo/states/theme_state.dart';
+import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/states/todo_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
           value: ProfileState(),
         ),
         ChangeNotifierProvider.value(
-          value: ThemeState(),
+          value: ConfigState(),
         ),
         ChangeNotifierProvider.value(
           value: TodoState(),
@@ -43,8 +44,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Global.THEME_COLOR.themeColor,
         ),
-        // initialRoute: Global.isLoggedIn() ? '/todo_page/unfinished' : '/login_page',
-        initialRoute: '/login_page',
+        // initialRoute:
+        //     Global.isLoggedIn() ? '/todo_page/unfinished' : '/login_page',
+        initialRoute: '/planttree_page',
         routes: {
           '/todo_page/unfinished': (context) => TodoPage(
                 isUnfinished: false,
@@ -58,6 +60,7 @@ class MyApp extends StatelessWidget {
           '/edit_page/edit': (context) => TodoEditPage(),
           '/login_page': (context) => LoginPage(),
           '/planttree_page': (context) => PlanttreePage(),
+          '/addfriend_page': (context) => AddFriendPage(),
         },
       ),
     );
