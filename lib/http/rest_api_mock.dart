@@ -28,7 +28,7 @@ class RestMock implements RestApi {
 
   var todoMock = const {
     'completeAt': 0,
-    'createdAt': 1641699781012,
+    'createAt': 1641699781012,
     'creatorId': 4,
     'deadline': 1641699782012,
     'description': 'string',
@@ -65,7 +65,7 @@ class RestMock implements RestApi {
   }
 
   @override
-  Future deleteUserTodo(int userId, int todoId) async {
+  Future deleteUserTodo(int userId, int todoId, Todo todo) async {
     double r = Random().nextDouble();
     await Future.delayed(const Duration(milliseconds: 100));
     if (r > .8) {

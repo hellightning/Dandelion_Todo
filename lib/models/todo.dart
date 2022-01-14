@@ -7,10 +7,11 @@ class Todo {
   Todo();
 
   late num completeAt;
-  late num createdAt;
+  late num createAt;
   late num creatorId;
   late num deadline;
   late String description;
+  late int importance;
   late String localId;
   late num parentId;
   late num plantTime;

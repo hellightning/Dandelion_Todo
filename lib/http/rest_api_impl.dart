@@ -97,13 +97,14 @@ class RestImpl implements RestApi {
   }
 
   @override
-  Future deleteUserTodo(int userId, int todoId) async {
+  Future deleteUserTodo(int userId, int todoId, Todo todo) async {
     try {
       var res = await dio.request(
           '/api/todo/$localUid/$todoId',
           options: Options(
               method: 'DELETE'
           ),
+          data: todo.toJson()
       );
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
@@ -115,7 +116,7 @@ class RestImpl implements RestApi {
         if (body["status"] == 403) {
           try {
             await login(localUid, localPassword);
-            await deleteUserTodo(userId, todoId);
+            await deleteUserTodo(userId, todoId, todo);
           } catch (e) {
             throw NetworkErrorException();
           }
@@ -324,7 +325,34 @@ class RestImpl implements RestApi {
 
   @override
   Future<Todo> getUserTodoDetail(int userId, int todoId) async {
-    throw UnimplementedError();
+    try {
+      var res = await dio.request('/api/todo/$userId/$todoId',
+          options: Options(method: 'GET'));
+      var body = json.decode(res.toString());
+      if (body["status"] != 200) {
+        throw InvalidInputException(body["msg"]);
+      }
+      var state = body["data"];
+      var lstMapped = Todo.fromJson(state);
+      return lstMapped;
+    } on DioError catch (e) {
+      if (e.response != null) {
+        var body = json.decode(e.response.toString());
+        if (body["status"] == 403) {
+          try {
+            await login(localUid, localPassword);
+            var a = await getUserTodoDetail(userId, todoId);
+            return a;
+          } catch (e) {
+            throw NetworkErrorException();
+          }
+        } else {
+          throw LoginFailedException(body['msg']);
+        }
+      } else {
+        throw NetworkErrorException();
+      }
+    }
   }
 
   @override
@@ -353,6 +381,7 @@ class RestImpl implements RestApi {
           options: Options(method: 'POST'),
           data: {'nickname': nickname, 'password': password});
       var body = json.decode(res.toString());
+      var q = body['data'];
       var currUser = User.fromJson(body['data']);
       localNickname = nickname;
       localUid = currUser.userId as int;
@@ -479,7 +508,7 @@ class RestImpl implements RestApi {
         if (body["status"] == 403) {
           try {
             await login(localUid, localPassword);
-            await deleteUserTodo(userId, todoId);
+            await updateUserTodo(userId, todoId, content);
           } catch (e) {
             throw NetworkErrorException();
           }

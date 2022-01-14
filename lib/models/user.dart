@@ -8,13 +8,13 @@ class User {
 
   late String nickname;
   late String password;
-  late Map<String,dynamic> role;
+  late List role;
   late num userId;
   late List watchList;
   User._internal (num id, String pass){
     userId = id;
     password = pass;
-    role = {};
+    role = [];
     watchList = [];
     nickname = "";
   }
