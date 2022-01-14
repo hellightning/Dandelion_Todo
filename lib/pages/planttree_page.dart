@@ -13,8 +13,8 @@ class PlanttreePage extends StatefulWidget {
 
 class _PlanttreePageState extends State<PlanttreePage> {
   bool isPlanting = false;
-  ScrollController _hourController = ScrollController();
-  ScrollController _minuteController = ScrollController();
+  FixedExtentScrollController _hourController = FixedExtentScrollController();
+  FixedExtentScrollController _minuteController = FixedExtentScrollController();
   int remainSecond = 0;
   int remainMinute = 0;
   int remainHour = 0;
@@ -30,7 +30,7 @@ class _PlanttreePageState extends State<PlanttreePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '种树中...',
+          isPlanting ? '种树中...' : '请选择时间',
           style: TextStyle(
               fontSize: Global.APPBAR_TITLE_SIZE,
               color: Global.THEME_COLOR.textColor),
@@ -45,19 +45,28 @@ class _PlanttreePageState extends State<PlanttreePage> {
             const second = Duration(seconds: 1);
             var callback = (timer) => setState(() {
                   if (remainSecond <= 0) {
-                    // TODO: 更新种树结果到服务端
                     if (remainMinute <= 0) {
                       if (remainHour <= 0) {
+                        // TODO: 更新种树结果到服务端
                         _timer.cancel();
                         isPlanting = false;
                       } else {
                         remainHour -= 1;
                         remainMinute = 59;
                         remainSecond = 59;
+                        _hourController.animateTo(remainHour.toDouble(),
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.ease);
+                        _minuteController.animateTo(remainMinute.toDouble(),
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.ease);
                       }
                     } else {
                       remainSecond = 59;
                       remainMinute -= 1;
+                      _minuteController.animateTo(remainMinute.toDouble(),
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.ease);
                     }
                   } else {
                     remainSecond -= 1;
@@ -83,54 +92,34 @@ class _PlanttreePageState extends State<PlanttreePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Container(
         constraints: BoxConstraints.tightForFinite(),
+        alignment: Alignment.center,
         child: Row(
           children: [
             Container(
               width: 100,
               height: 200,
-              child: ListWheelScrollView.useDelegate(
-                controller: _hourController,
+              child: CupertinoPicker(
+                scrollController: _hourController,
                 itemExtent: 100,
                 offAxisFraction: -0.5,
-                perspective: 0.01,
-                childDelegate: ListWheelChildBuilderDelegate(
-                  builder: (context, index) {
-                    return Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                        alignment: Alignment.center,
-                        child: Text('$index时'));
-                  },
-                  childCount: 5,
-                ),
+                squeeze: 1.5,
+                looping: true,
+                children: List<int>.filled(10, 0)
+                    .fold<List<int>>(List.empty(growable: true), (l, v) {
+                      l.add(l.length);
+                      return l;
+                    })
+                    .map((index) => Container(
+                          child: Text('$index时'),
+                        ))
+                    .toList(),
                 onSelectedItemChanged: (value) {
                   if (!isPlanting) {
                     remainHour = value;
-                  }
-                },
-              ),
-            ),
-            Container(
-              width: 100,
-              height: 200,
-              child: ListWheelScrollView.useDelegate(
-                controller: _minuteController,
-                itemExtent: 100,
-                offAxisFraction: 0.5,
-                perspective: 0.01,
-                childDelegate: ListWheelChildBuilderDelegate(
-                  builder: (context, index) {
-                    return Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                        alignment: Alignment.center,
-                        child: Text('$index分'));
-                  },
-                  childCount: 60,
-                ),
-                onSelectedItemChanged: (value) {
-                  if (!isPlanting) {
-                    remainMinute = value;
+                  } else {
+                    _hourController.animateTo(remainHour.toDouble(),
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.ease);
                   }
                 },
               ),
@@ -139,13 +128,33 @@ class _PlanttreePageState extends State<PlanttreePage> {
               width: 100,
               height: 200,
               child: CupertinoPicker(
+                scrollController: _minuteController,
                 itemExtent: 100,
-                children: List<int>.filled(10, 1)
+                offAxisFraction: 0.5,
+                squeeze: 3.0,
+                looping: true,
+                children: List<int>.filled(60, 0)
+                    .fold<List<int>>(List.empty(growable: true), (l, v) {
+                      l.add(l.length);
+                      return l;
+                    })
                     .map((index) => Container(
-                          child: Text('$index'),
+                          child: Text('$index分'),
                         ))
                     .toList(),
-                onSelectedItemChanged: (value) {},
+                onSelectedItemChanged: (value) {
+                  print(isPlanting);
+                  print(remainMinute.toDouble());
+                  print(value);
+                  if (!isPlanting) {
+                    remainMinute = value;
+                  } else {
+                    //TODO: 这个animateTo是什么神必原理？？？？？？怎么老是蹦到0和1
+                    _minuteController.animateTo(remainMinute.toDouble(),
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.ease);
+                  }
+                },
               ),
             ),
           ],

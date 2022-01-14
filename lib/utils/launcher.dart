@@ -3,7 +3,8 @@ import 'package:dandelion_todo/http/rest_api_mock.dart';
 import 'package:dandelion_todo/models/todo.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 
-// 登录和启动过程中用到的方法类
+/// 登录和启动过程中用到的方法类
+/// 所有网络请求和本地化操作都在这个类中进行
 class DandelionLauncher {
   /// 登陆操作，返回登陆是否成功
   static Future<bool> login(int userid, String password) async {
@@ -37,7 +38,9 @@ class DandelionLauncher {
   }
 
   // 启动时获取TodoList
-  static List<Todo> requestTodo() {
-    throw UnimplementedError();
-  }
+  // static Future<List<Todo>> requestTodo() async {
+  //   return await RestMock.instance
+  //       .getTodoList(Global.getUser())
+  //       .catchError((e) {});
+  // }
 }

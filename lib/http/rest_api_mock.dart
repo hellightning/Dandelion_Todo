@@ -26,7 +26,7 @@ class RestMock implements RestApi {
   };
 
   var todoMock = const {
-    'completeAt': 1641699781012,
+    'completeAt': 0,
     'createdAt': 1641699781012,
     'creatorId': 4,
     'deadline': 1641699782012,
@@ -54,7 +54,7 @@ class RestMock implements RestApi {
   }
 
   @override
-  Future<Todo> createTodo(Todo todo) async{
+  Future<Todo> createTodo(Todo todo) async {
     double r = Random().nextDouble();
     await Future.delayed(const Duration(milliseconds: 100));
     if (r > .8) {
@@ -110,7 +110,7 @@ class RestMock implements RestApi {
     if (r > .8) {
       throw NetworkErrorException();
     }
-    return List.from([2,3]);
+    return List.from([2, 3]);
   }
 
   @override

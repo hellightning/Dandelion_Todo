@@ -43,7 +43,9 @@ class _MyDrawerState extends State<MyDrawer> {
                         size: 60,
                         color: Global.THEME_COLOR.warnColor,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/addfriend_page');
+                      },
                     ),
                   ),
                 ],
@@ -114,22 +116,22 @@ class _MyDrawerState extends State<MyDrawer> {
                 Navigator.pushNamed(context, '/config_page/setting');
               },
             ),
-            ListTile(
-              tileColor: currentItem == Global.TODO_DRAWER_ADDFRIEND
-                  ? Global.THEME_COLOR.subColor
-                  : Global.THEME_COLOR.background,
-              title: Text(
-                '添加好友',
-                style: TextStyle(
-                    fontSize: Global.NORMAL_TEXT_SIZE,
-                    color: currentItem == Global.TODO_DRAWER_ADDFRIEND
-                        ? Global.THEME_COLOR.mainColor
-                        : Global.THEME_COLOR.textColor),
-              ),
-              onTap: () {
-                Navigator.pushNamed(context, '/addfriend_page');
-              },
-            ),
+            // ListTile(
+            //   tileColor: currentItem == Global.TODO_DRAWER_ADDFRIEND
+            //       ? Global.THEME_COLOR.subColor
+            //       : Global.THEME_COLOR.background,
+            //   title: Text(
+            //     '添加好友',
+            //     style: TextStyle(
+            //         fontSize: Global.NORMAL_TEXT_SIZE,
+            //         color: currentItem == Global.TODO_DRAWER_ADDFRIEND
+            //             ? Global.THEME_COLOR.mainColor
+            //             : Global.THEME_COLOR.textColor),
+            //   ),
+            //   onTap: () {
+            //     Navigator.pushNamed(context, '/addfriend_page');
+            //   },
+            // ),
           ],
         ),
       ),

@@ -5,9 +5,11 @@ import 'package:dandelion_todo/components/search_item.dart';
 import 'package:dandelion_todo/components/todo_item.dart';
 import 'package:dandelion_todo/http/rest_api_mock.dart';
 import 'package:dandelion_todo/models/todo.dart';
+import 'package:dandelion_todo/states/todo_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // main page
 class TodoPage extends StatefulWidget {
@@ -19,30 +21,37 @@ class TodoPage extends StatefulWidget {
 
 class _TodoPageState extends State<TodoPage> {
   // List<TodoProvider> todoList = List.empty(growable: true);
-  List<Todo> todoList = List.empty();
+  // TODO: 使用state中的全局数据来初始化
+  // List<Todo> todoList = List.empty();
   @override
   void initState() {
-    RestMock.instance.getTodoList(Global.getUser()).then((value) {
-      todoList = value;
-    });
+    // RestMock.instance
+    //     .getTodoList(Global.getUser())
+    //     .catchError((e) {})
+    //     .then((value) {
+    //   todoList = value;
+    // });
     // sleep(Duration(seconds: 5));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<TodoState>(context).updateTodoList();
     return Scaffold(
       drawer: MyDrawer(),
       backgroundColor: Global.THEME_COLOR.background,
       body: Stack(
         children: [
           ListView(
+            // FP!!!
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.all(20.0),
               )
             ]
-                .followedBy(todoList
+                .followedBy(Provider.of<TodoState>(context)
+                    .todoList
                     .where((todoData) =>
                         ((todoData.completeAt == 0) == widget.isUnfinished))
                     .map((todoData) => Padding(

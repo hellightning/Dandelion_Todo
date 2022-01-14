@@ -44,12 +44,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Global.THEME_COLOR.themeColor,
         ),
-        // initialRoute:
-        //     Global.isLoggedIn() ? '/todo_page/unfinished' : '/login_page',
-        initialRoute: '/planttree_page',
+        initialRoute:
+            Global.isLoggedIn() ? '/todo_page/unfinished' : '/login_page',
+        // initialRoute: '/planttree_page',
         routes: {
           '/todo_page/unfinished': (context) => TodoPage(
-                isUnfinished: false,
+                isUnfinished: true,
               ),
           '/todo_page/finished': (context) => TodoPage(
                 isUnfinished: false,
