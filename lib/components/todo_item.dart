@@ -66,7 +66,7 @@ class TodoItem extends StatelessWidget {
                         alignment: Alignment.bottomLeft,
                         child: Container(
                           padding: const EdgeInsets.all(5),
-                          constraints: const BoxConstraints(maxWidth: 100),
+                          constraints: const BoxConstraints(maxWidth: 200),
                           child: Text(
                             'Deadline: ' +
                                 formatDate(
@@ -74,8 +74,12 @@ class TodoItem extends StatelessWidget {
                                         todoData.deadline as int),
                                     [yyyy, '-', mm, '-', dd]),
                             style: TextStyle(
-                                color: /*isNearDeadline? warn : neglected*/ Global
-                                    .THEME_COLOR.neglected),
+                                color: (todoData.deadline -
+                                            DateTime.now()
+                                                .millisecondsSinceEpoch <=
+                                        86400000)
+                                    ? Global.THEME_COLOR.warnColor
+                                    : Global.THEME_COLOR.neglected),
                           ),
                         ),
                       ),
@@ -136,9 +140,8 @@ class TodoItem extends StatelessWidget {
                                     DateTime.fromMicrosecondsSinceEpoch(
                                         todoData.completeAt as int),
                                     [yyyy, '-', mm, '-', dd]),
-                            style: TextStyle(
-                                color: /*isNearDeadline? warn : neglected*/ Global
-                                    .THEME_COLOR.neglected),
+                            style:
+                                TextStyle(color: Global.THEME_COLOR.neglected),
                           ),
                         ),
                       ),

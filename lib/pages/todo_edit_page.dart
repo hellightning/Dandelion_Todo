@@ -2,6 +2,7 @@ import 'package:dandelion_todo/http/rest_api_mock.dart';
 import 'package:dandelion_todo/models/index.dart';
 import 'package:dandelion_todo/states/todo_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ class TodoEditPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editKey = GlobalKey<FormState>();
+    var _deadlineInputController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -27,6 +29,7 @@ class TodoEditPage extends StatelessWidget {
           key: editKey,
           child: ListView(
             children: [
+              // TODO: 复用组件
               TextFormField(
                 initialValue: todoData?.title ?? '',
                 style: TextStyle(color: Global.THEME_COLOR.textColor),
@@ -36,12 +39,18 @@ class TodoEditPage extends StatelessWidget {
                   hintText: '概括你的TODO事项',
                   hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
                   enabledBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.neglected)),
                   focusedBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.mainColor)),
                   errorBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.warnColor)),
                 ),
@@ -50,7 +59,11 @@ class TodoEditPage extends StatelessWidget {
                   todoJson['title'] = newValue ?? 'title';
                 },
               ),
+              SizedBox(
+                height: 5,
+              ),
               TextFormField(
+                controller: _deadlineInputController,
                 style: TextStyle(color: Global.THEME_COLOR.textColor),
                 keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(
@@ -59,24 +72,46 @@ class TodoEditPage extends StatelessWidget {
                   hintText: 'Dandelion是宣判终末的Deadline',
                   hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
                   enabledBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.neglected)),
                   focusedBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.mainColor)),
                   errorBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.warnColor)),
                 ),
-                onSaved: (newValue) {
-                  var parted =
-                      newValue?.split('-').map((value) => int.parse(value));
-                  var date = DateTime((parted as List)[0] ?? 2022,
-                          (parted as List)[1] ?? 1, (parted as List)[2] ?? 1)
-                      .millisecondsSinceEpoch;
-                  todoData?.deadline = date;
-                  todoJson['deadline'] = date;
+                onTap: () async {
+                  showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.now().add(Duration(days: 365)),
+                  ).then((value) {
+                    try {
+                      todoData?.deadline = value!.millisecondsSinceEpoch;
+                      todoJson['deadline'] = value!.millisecondsSinceEpoch;
+                      _deadlineInputController.text =
+                          formatDate(value, [yyyy, '-', mm, '-', dd]);
+                    } catch (e) {
+                      todoData?.deadline =
+                          DateTime.now().millisecondsSinceEpoch;
+                      todoJson['deadline'] =
+                          DateTime.now().millisecondsSinceEpoch;
+                      _deadlineInputController.text =
+                          formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
+                    }
+                  });
                 },
+              ),
+              SizedBox(
+                height: 5,
               ),
               TextFormField(
                 style: TextStyle(color: Global.THEME_COLOR.textColor),
@@ -86,15 +121,29 @@ class TodoEditPage extends StatelessWidget {
                   hintText: '数字越大重要性越高',
                   hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
                   enabledBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.neglected)),
                   focusedBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.mainColor)),
                   errorBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.warnColor)),
                 ),
+                onTap: () {
+                  showCupertinoDialog(
+                    context: context,
+                    builder: (context) {
+                      return Container();
+                    },
+                  );
+                },
                 onSaved: (newValue) {
                   try {
                     todoData?.importance = int.parse(newValue ?? '0');
@@ -105,6 +154,9 @@ class TodoEditPage extends StatelessWidget {
                   }
                 },
               ),
+              SizedBox(
+                height: 5,
+              ),
               TextFormField(
                 style: TextStyle(color: Global.THEME_COLOR.textColor),
                 decoration: InputDecoration(
@@ -113,12 +165,18 @@ class TodoEditPage extends StatelessWidget {
                   hintText: '你觉得这个任务需要多长时间？',
                   hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
                   enabledBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.neglected)),
                   focusedBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.mainColor)),
                   errorBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.warnColor)),
                 ),
@@ -126,20 +184,30 @@ class TodoEditPage extends StatelessWidget {
                   // TODO: 好像没这个逻辑？
                 },
               ),
+              SizedBox(
+                height: 5,
+              ),
               TextFormField(
                 style: TextStyle(color: Global.THEME_COLOR.textColor),
+                maxLines: 10,
                 decoration: InputDecoration(
                   labelText: 'TODO详细内容',
                   labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
                   hintText: 'TODO还有什么需要描述的',
                   hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
                   enabledBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.neglected)),
                   focusedBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.mainColor)),
                   errorBorder: OutlineInputBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15.0)),
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.warnColor)),
                 ),
@@ -172,6 +240,7 @@ class TodoEditPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           editKey.currentState?.save();
+          //TODO: 数据项不全
           todoData ??=
               await RestMock.instance.createTodo(Todo.fromJson(todoJson));
           await RestMock.instance.updateUserTodo(
