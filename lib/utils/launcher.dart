@@ -32,8 +32,13 @@ class DandelionLauncher {
 
   static Future<int> register(String nickname, String password) async {
     int ret = -1;
-    ret = 4;
-    // TODO: 注册逻辑
+    RestMock.instance.register(nickname, password).catchError((e) {
+      print(e);
+    }).then((value) {
+      //TODO: 完善nullcheck
+      Global.login(value?.userId as int, value!.password);
+      ret = value.userId as int;
+    });
     return ret;
   }
 

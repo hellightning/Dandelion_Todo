@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Provider管理全局状态
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
@@ -57,9 +56,9 @@ class MyApp extends StatelessWidget {
           '/config_page/setting': (context) => ConfigPage(),
           '/config_page/account': (context) => ConfigPage(), // 同上
           '/edit_page/add': (context) => TodoEditPage(),
-          '/edit_page/edit': (context) => TodoEditPage(),
+          // '/edit_page/edit': (context) => TodoEditPage(),
           '/login_page': (context) => LoginPage(),
-          '/planttree_page': (context) => PlanttreePage(),
+          // '/planttree_page': (context) => PlanttreePage(),
           '/addfriend_page': (context) => AddFriendPage(),
         },
       ),

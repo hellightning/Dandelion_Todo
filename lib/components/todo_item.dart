@@ -1,8 +1,13 @@
+import 'package:dandelion_todo/http/rest_api_mock.dart';
 import 'package:dandelion_todo/models/index.dart';
+import 'package:dandelion_todo/pages/planttree_page.dart';
+import 'package:dandelion_todo/pages/todo_edit_page.dart';
+import 'package:dandelion_todo/states/todo_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
+import 'package:provider/provider.dart';
 
 // 首页显示TODO缩略信息的Widget
 class TodoItem extends StatelessWidget {
@@ -10,17 +15,19 @@ class TodoItem extends StatelessWidget {
       : super(key: key);
   Todo todoData;
   bool isUnfinished;
-  // String todoTitle = "Test Title";
-  // String todoContent = "test content test content test content test content";
-  // int importance = 0;
-  // DateTime fromTime = DateTime.now();
-  // DateTime toTime = DateTime(2099);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/edit_page/edit');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TodoEditPage(
+              todoData: todoData,
+            ),
+          ),
+        );
       },
       onLongPress: () => {
         // TODO 长按拖拽可以调整顺序
@@ -81,22 +88,40 @@ class TodoItem extends StatelessWidget {
                           Icons.task_alt,
                           color: Global.THEME_COLOR.mainColor,
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          todoData.completeAt =
+                              DateTime.now().microsecondsSinceEpoch;
+                          await RestMock.instance.updateUserTodo(
+                              Global.getUser(),
+                              todoData.todoId as int,
+                              todoData);
+                          Provider.of<TodoState>(context).updateTodoList();
+                        },
                       ),
                       IconButton(
                         icon: Icon(
                           Icons.delete_forever,
                           color: Global.THEME_COLOR.warnColor,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          RestMock.instance.deleteUserTodo(Global.getUser(),
+                              todoData.todoId as int, todoData);
+                          Provider.of<TodoState>(context).updateTodoList();
+                        },
                       ),
                       IconButton(
                         icon: Icon(
                           Icons.alarm_rounded,
                           color: Global.THEME_COLOR.textColor,
                         ),
-                        onPressed: () =>
-                            Navigator.pushNamed(context, '/planttree_page'),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlanttreePage(
+                              todoData: todoData,
+                            ),
+                          ),
+                        ),
                       ),
                     ]
                   : <Widget>[

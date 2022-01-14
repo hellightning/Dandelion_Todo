@@ -40,7 +40,7 @@ class Global {
   static const NORMAL_TEXT_SIZE = 16.0;
 
   // theme colors
-  static String APP_THEME = 'light';
+  static String APP_THEME = AppTheme.blue;
   set setAppTheme(String at) {
     try {
       Global.APP_THEME = at;

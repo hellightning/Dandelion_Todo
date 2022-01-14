@@ -36,7 +36,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10),
-                    // TODO: 点击头像进入账号管理页面
+                    // TODO: 用头像代替Icon
                     child: IconButton(
                       icon: Icon(
                         Icons.account_circle_rounded,
@@ -56,6 +56,12 @@ class _MyDrawerState extends State<MyDrawer> {
                   ? Global.THEME_COLOR.subColor
                   : Global.THEME_COLOR.background,
               // selected: currentItem == Global.TODO_DRAWER_UNFINISHED,
+              leading: Icon(
+                Icons.unpublished_outlined,
+                color: currentItem == Global.TODO_DRAWER_UNFINISHED
+                    ? Global.THEME_COLOR.mainColor
+                    : Global.THEME_COLOR.textColor,
+              ),
               title: Text(
                 '正在进行',
                 style: TextStyle(
@@ -78,6 +84,12 @@ class _MyDrawerState extends State<MyDrawer> {
                   ? Global.THEME_COLOR.subColor
                   : Global.THEME_COLOR.background,
               // selected: currentItem == Global.TODO_DRAWER_FINISHED,
+              leading: Icon(
+                Icons.task_alt,
+                color: currentItem == Global.TODO_DRAWER_FINISHED
+                    ? Global.THEME_COLOR.mainColor
+                    : Global.THEME_COLOR.textColor,
+              ),
               title: Text(
                 '已完成',
                 style: TextStyle(
@@ -101,6 +113,12 @@ class _MyDrawerState extends State<MyDrawer> {
                   : Global.THEME_COLOR.background,
               // selectedTileColor: Global.THEME_COLOR.subColor,
               // selected: currentItem == Global.TODO_DRAWER_CONFIG,
+              leading: Icon(
+                Icons.settings,
+                color: currentItem == Global.TODO_DRAWER_CONFIG
+                    ? Global.THEME_COLOR.mainColor
+                    : Global.THEME_COLOR.textColor,
+              ),
               title: Text(
                 '设置',
                 style: TextStyle(

@@ -1,12 +1,13 @@
 import 'dart:async';
 
+import 'package:dandelion_todo/models/index.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PlanttreePage extends StatefulWidget {
-  PlanttreePage({Key? key /*,required this.todoid*/}) : super(key: key);
-  int todoid = 0;
+  PlanttreePage({Key? key, required this.todoData}) : super(key: key);
+  Todo todoData;
   @override
   _PlanttreePageState createState() => _PlanttreePageState();
 }

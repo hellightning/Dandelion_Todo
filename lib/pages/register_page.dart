@@ -34,15 +34,14 @@ class _RegisterPageState extends State<RegisterPage> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.upload),
         onPressed: () async {
-          // TODO:
           if (_unameController.text == '' ||
               _pwdController.text == '' ||
               _pwdController.text != _pwdcController.text) {
-            ;
+            //TODO: 校验失败的逻辑
           } else {
             await DandelionLauncher.register(
                 _unameController.text, _pwdController.text);
-
+            //TODO: 显示注册结果
             Navigator.pop(context);
           }
         },
