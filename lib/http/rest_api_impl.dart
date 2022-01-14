@@ -1,12 +1,16 @@
 import 'dart:io';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:dandelion_todo/http/http_error.dart';
 import 'package:dandelion_todo/http/rest_api.dart';
 import 'package:dandelion_todo/models/todo.dart';
 import 'package:dandelion_todo/models/user.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class RestImpl implements RestApi {
   static final RestImpl _instance = RestImpl._internal();
@@ -360,11 +364,6 @@ class RestImpl implements RestApi {
   }
 
   @override
-  Future setAvatar(File image) async {
-    throw UnimplementedError();
-  }
-
-  @override
   Future syncTodoList(List<Todo> lst) async {
     try {
       var nlst = List<Map>.from(lst.map((e) => e.toJson()));
@@ -494,13 +493,30 @@ class RestImpl implements RestApi {
   }
 
   @override
-  Future pickUploadAvatar() async {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future cameraUploadAvatar() async {
-    throw UnimplementedError();
+  Future uploadAvatar(XFile file) async {
+    List<int> f = await file.readAsBytes();
+    try {
+      var res = await http.post(
+          Uri.parse('http://sgp.hareru.moe:8080/api/user/4/avatar'),
+          headers: {
+            'Authorization': dio.options.headers['Authorization'],
+            'Content-type': 'image/jpeg',
+            'Connection': 'keep-alive',
+          },
+          body: f
+      );
+      if (res.statusCode != 200) {
+        if (res.statusCode == 403) {
+          await login(localUid, localPassword);
+          await uploadAvatar(file);
+        } else {
+          var msg = json.decode(res.body)["msg"];
+          throw InvalidInputException(msg);
+        }
+      }
+    } on Error catch(e) {
+      throw NetworkErrorException();
+    }
   }
 
   @override
@@ -536,6 +552,23 @@ class RestImpl implements RestApi {
       } else {
         throw NetworkErrorException();
       }
+    }
+  }
+
+  @override
+  Future<Uint8List> getAvatar(int userId) async {
+    try {
+      var res = await http.get(
+          Uri.parse('http://sgp.hareru.moe:8080/api/user/$userId/avatar'),
+          headers: {
+            'Authorization': dio.options.headers['Authorization'],
+            'Content-type': 'image/jpeg',
+            'Connection': 'keep-alive',
+          }
+      );
+      return res.bodyBytes;
+    } catch (e) {
+      rethrow;
     }
   }
 }

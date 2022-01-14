@@ -1,16 +1,17 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dandelion_todo/models/todo.dart';
 import 'package:dandelion_todo/models/user.dart';
+import 'package:image_picker/image_picker.dart';
 
 abstract class RestUser {
   Future<User?> register(String nickname, String password);
   Future login(int userId, String password);
   Future<List<int>?> findUserByNickName(String nickname);
   Future<String?> findNicknameById(int userId);
-  Future pickUploadAvatar();
-  Future cameraUploadAvatar();
-  Future setAvatar(File image);
+  Future uploadAvatar(XFile file);
+  Future<Uint8List> getAvatar(int userId);
   Future<User?> findDetailById(int userId);
   Future updateNickname(String newNickname);
   Future updatePassword(String password);

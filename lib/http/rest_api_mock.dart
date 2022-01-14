@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:dandelion_todo/http/http_error.dart';
 import 'package:dandelion_todo/http/rest_api.dart';
@@ -193,18 +194,9 @@ class RestMock implements RestApi {
     return;
   }
 
-  @override
+  @Deprecated('use upload avatar instead')
   Future pickUploadAvatar() async {
     final images = await picker.pickImage(source: ImageSource.camera);
-    if (images != null) {
-      localImage = File(images.path);
-    }
-    return;
-  }
-
-  @override
-  Future cameraUploadAvatar() async {
-    final images = await picker.pickImage(source: ImageSource.gallery);
     if (images != null) {
       localImage = File(images.path);
     }
@@ -234,5 +226,21 @@ class RestMock implements RestApi {
   @override
   Future<List<Todo>> getTodoListWithPage(int userId, int limit, int maxId) {
     return getTodoList(userId);
+  }
+
+  @override
+  Future uploadAvatar(XFile file) async {
+    double r = Random().nextDouble();
+    await Future.delayed(const Duration(milliseconds: 100));
+    if (r > .8) {
+      throw NetworkErrorException();
+    }
+    return;
+  }
+
+  @override
+  Future<Uint8List> getAvatar(int userId) {
+    // TODO: implement getAvatar
+    throw UnimplementedError();
   }
 }
