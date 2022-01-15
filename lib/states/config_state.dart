@@ -7,6 +7,7 @@ class ConfigState extends ChangeNotifier {
   String searchFilter = '';
   set setTheme(String thm) {
     theme = thm;
+    Global.APP_THEME = thm;
   }
 
   ThemeColor get themeColor {
@@ -16,14 +17,8 @@ class ConfigState extends ChangeNotifier {
   ConfigState() {
     theme = Global.appTheme;
   }
-  late AppTheme currentTheme;
   @override
   void notifyListeners() {
     super.notifyListeners();
-  }
-
-  changeTheme(AppTheme newTheme) {
-    currentTheme = newTheme;
-    notifyListeners();
   }
 }

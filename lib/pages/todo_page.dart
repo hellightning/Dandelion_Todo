@@ -28,18 +28,8 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> {
-  // List<TodoProvider> todoList = List.empty(growable: true);
-  // TODO: 使用state中的全局数据来初始化
-  // List<Todo> todoList = List.empty();
   @override
   void initState() {
-    // RestImpl.instance
-    //     .getTodoList(Global.getUser())
-    //     .catchError((e) {})
-    //     .then((value) {
-    //   todoList = value;
-    // });
-    // sleep(Duration(seconds: 5));
     super.initState();
   }
 

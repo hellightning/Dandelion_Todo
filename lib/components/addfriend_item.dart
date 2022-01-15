@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SearchItem extends StatelessWidget {
-  const SearchItem({Key? key}) : super(key: key);
+class AddFriendItem extends StatelessWidget {
+  const AddFriendItem({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     var _searchController = TextEditingController();

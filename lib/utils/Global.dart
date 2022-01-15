@@ -53,7 +53,7 @@ class Global {
 
   static Future<int> register(String nickname, String password) async {
     int ret = -1;
-    RestImpl().register(nickname, password).catchError((e) {
+    await RestImpl().register(nickname, password).catchError((e) {
       print(e);
     }).then((value) {
       //TODO: 完善nullcheck
@@ -68,6 +68,12 @@ class Global {
   static const TODO_DRAWER_FINISHED = 1;
   static const TODO_DRAWER_CONFIG = 2;
   static const TODO_DRAWER_FRIENDTODO = 3;
+  static const TODO_DRAWER_ADDFRIEND = 4;
+  static const TODO_DRAWER_CHANGETHEME = 5;
+  static const TODO_DRAWER_LOGOUT = 6;
+  static const TODO_DRAWER_HELP = 7;
+  static const TODO_DRAWER_SUGGEST = 8;
+
   static const APPBAR_TITLE_SIZE = 20.0;
   static const TODO_TITLE_SIZE = 30.0;
   static const NORMAL_TEXT_SIZE = 16.0;
@@ -76,15 +82,15 @@ class Global {
   static const IMPORTANCE_DES = {0: '随缘', 1: '一般', 2: '重要', 3: '非常重要'};
 
   // theme colors
-  static String APP_THEME = 'null';
+  static String? APP_THEME;
   static String get appTheme {
     if (_pref?.getString('theme') == null) {
       _pref?.setString('theme', 'dark');
     }
-    if (APP_THEME == 'null') {
+    if (APP_THEME == null) {
       APP_THEME = _pref!.getString('theme')!;
     }
-    return APP_THEME;
+    return APP_THEME!;
   }
 
   static set setAppTheme(String at) {

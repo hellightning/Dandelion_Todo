@@ -2,7 +2,9 @@ import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -40,9 +42,12 @@ class _RegisterPageState extends State<RegisterPage> {
               _pwdController.text != _pwdcController.text) {
             //TODO: 校验失败的逻辑
           } else {
-            await Global.register(_unameController.text, _pwdController.text);
+            int userid = await Global.register(
+                _unameController.text, _pwdController.text);
+            print(userid);
+            Fluttertoast.showToast(msg: '你的userId是:$userid');
             //TODO: 显示注册结果
-            Navigator.pop(context);
+            Navigator.pop(context, userid);
           }
         },
       ),
@@ -51,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          autovalidate: true,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: <Widget>[
               Image.asset(

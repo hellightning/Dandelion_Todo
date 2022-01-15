@@ -54,8 +54,7 @@ class TodoItem extends StatelessWidget {
               ),
             );
           },
-          onLongPress: () => {
-          },
+          onLongPress: () => {},
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

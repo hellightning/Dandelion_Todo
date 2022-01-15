@@ -1,8 +1,6 @@
 import 'package:dandelion_todo/models/index.dart';
 import 'package:flutter/widgets.dart';
 
-/// 好像没什么用...先留着吧
-/// 账号管理比较简单（单用户登录）的情况下没有必要使用
 class ProfileState extends ChangeNotifier {
   // ProfileState({required this.userModel}) {
   //   userid = userModel.userId as int;
@@ -13,6 +11,7 @@ class ProfileState extends ChangeNotifier {
   int userid = 0;
   String nickname = '';
   String password = '';
+  List<int> watchList = List.empty(growable: true);
 
   Future updateUser() async {
     // User = ;

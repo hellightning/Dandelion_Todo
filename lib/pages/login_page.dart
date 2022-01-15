@@ -31,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    var args = ModalRoute.of(context)?.settings.arguments;
     return Scaffold(
       appBar: AppBar(title: Text('Login')),
       backgroundColor: Provider.of<ConfigState>(context).themeColor.background,
@@ -39,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () async {
           // TODO: 登陆结果校验
           if (_unameController.text == '' && _pwdController.text == '') {
-            Navigator.pushNamed(context, 'register_page');
+            Navigator.pushNamed(context, '/register_page');
           } else if (await Global.login(
                   int.parse(_unameController.text), _pwdController.text)
               // TODO: 使用用户名登陆？
@@ -67,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
               TextFormField(
                   autofocus: _nameAutoFocus,
                   controller: _unameController,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'userid',
                     hintText: '请输入userid',
@@ -80,6 +82,11 @@ class _LoginPageState extends State<LoginPage> {
                             .neglected),
                     prefixIcon: Icon(Icons.person),
                   ),
+                  onTap: () {
+                    if (args != null && args is int) {
+                      _unameController.text = args.toString();
+                    }
+                  },
                   onChanged: (value) {
                     if (value == '') {
                       setState(() {
