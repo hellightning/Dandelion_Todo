@@ -1,7 +1,8 @@
-import 'package:dandelion_todo/http/rest_api_mock.dart';
+import 'package:dandelion_todo/http/rest_api_impl.dart';
 import 'package:dandelion_todo/models/index.dart';
 import 'package:dandelion_todo/pages/planttree_page.dart';
 import 'package:dandelion_todo/pages/todo_edit_page.dart';
+import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/states/todo_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,10 +12,15 @@ import 'package:provider/provider.dart';
 
 // 首页显示TODO缩略信息的Widget
 class TodoItem extends StatelessWidget {
-  TodoItem({Key? key, required this.todoData, this.isUnfinished = true})
+  TodoItem(
+      {Key? key,
+      required this.todoData,
+      this.isUnfinished = true,
+      this.isFriend = false})
       : super(key: key);
   Todo todoData;
   bool isUnfinished;
+  bool isFriend;
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +31,16 @@ class TodoItem extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
       margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-        color: Global.THEME_COLOR.subColor,
+        color: Provider.of<ConfigState>(context).themeColor.subColor,
         boxShadow: <BoxShadow>[
-          BoxShadow(blurRadius: 2.0, color: Global.THEME_COLOR.neglected),
+          BoxShadow(
+              blurRadius: 2.0,
+              color: Provider.of<ConfigState>(context).themeColor.neglected),
         ],
         borderRadius: const BorderRadius.all(Radius.circular(5.0)),
       ),
       child: Material(
-        color: Global.THEME_COLOR.subColor,
+        color: Provider.of<ConfigState>(context).themeColor.subColor,
         type: MaterialType.button,
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
         child: InkWell(
@@ -57,12 +65,14 @@ class TodoItem extends StatelessWidget {
                 child: Text(
                   todoData.title,
                   style: TextStyle(
-                      color: Global.THEME_COLOR.mainColor,
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .mainColor,
                       fontSize: Global.TODO_TITLE_SIZE),
                 ),
               ),
               Divider(
-                color: Global.THEME_COLOR.neglected,
+                color: Provider.of<ConfigState>(context).themeColor.neglected,
                 thickness: 1.0,
               ),
               Padding(
@@ -70,13 +80,15 @@ class TodoItem extends StatelessWidget {
                 child: Text(
                   todoData.description,
                   style: TextStyle(
-                      color: Global.THEME_COLOR.textColor,
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .textColor,
                       fontSize: Global.NORMAL_TEXT_SIZE),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: isUnfinished
+                children: isUnfinished && !isFriend
                     ? <Widget>[
                         Align(
                           alignment: Alignment.bottomLeft,
@@ -94,8 +106,12 @@ class TodoItem extends StatelessWidget {
                                               DateTime.now()
                                                   .millisecondsSinceEpoch <=
                                           86400000)
-                                      ? Global.THEME_COLOR.warnColor
-                                      : Global.THEME_COLOR.neglected),
+                                      ? Provider.of<ConfigState>(context)
+                                          .themeColor
+                                          .warnColor
+                                      : Provider.of<ConfigState>(context)
+                                          .themeColor
+                                          .neglected),
                             ),
                           ),
                         ),
@@ -106,12 +122,14 @@ class TodoItem extends StatelessWidget {
                         IconButton(
                           icon: Icon(
                             Icons.task_alt,
-                            color: Global.THEME_COLOR.mainColor,
+                            color: Provider.of<ConfigState>(context)
+                                .themeColor
+                                .mainColor,
                           ),
                           onPressed: () async {
                             todoData.completeAt =
                                 DateTime.now().microsecondsSinceEpoch;
-                            await RestMock.instance
+                            await RestImpl()
                                 .updateUserTodo(Global.getUser(),
                                     todoData.todoId as int, todoData)
                                 .catchError((e) {
@@ -125,10 +143,12 @@ class TodoItem extends StatelessWidget {
                         IconButton(
                           icon: Icon(
                             Icons.delete_forever,
-                            color: Global.THEME_COLOR.warnColor,
+                            color: Provider.of<ConfigState>(context)
+                                .themeColor
+                                .warnColor,
                           ),
                           onPressed: () {
-                            RestMock.instance
+                            RestImpl()
                                 .deleteUserTodo(Global.getUser(),
                                     todoData.todoId as int, todoData)
                                 .catchError((e) {
@@ -142,7 +162,9 @@ class TodoItem extends StatelessWidget {
                         IconButton(
                           icon: Icon(
                             Icons.alarm_rounded,
-                            color: Global.THEME_COLOR.textColor,
+                            color: Provider.of<ConfigState>(context)
+                                .themeColor
+                                .textColor,
                           ),
                           onPressed: () => Navigator.push(
                             context,
@@ -167,7 +189,9 @@ class TodoItem extends StatelessWidget {
                                           todoData.completeAt as int),
                                       [yyyy, '-', mm, '-', dd]),
                               style: TextStyle(
-                                  color: Global.THEME_COLOR.neglected),
+                                  color: Provider.of<ConfigState>(context)
+                                      .themeColor
+                                      .neglected),
                             ),
                           ),
                         ),

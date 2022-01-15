@@ -11,18 +11,23 @@ import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/states/todo_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import 'utils/Global.dart';
 
 void main() {
-  Global.init().then((e) => runApp(MyApp()));
+  Global.init().then((e) async {
+    return Global.isLoggedIn();
+  }).catchError((e) {
+    Fluttertoast.showToast(msg: e.toString());
+  }).then((loggedIn) => runApp(MyApp(isLoggedIn: loggedIn)));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
+  bool isLoggedIn;
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -37,31 +42,40 @@ class MyApp extends StatelessWidget {
           value: TodoState(),
         )
       ],
-      child: MaterialApp(
-        title: 'Dandelion Todo',
-        color: Global.THEME_COLOR.background,
-        theme: ThemeData(
-          primarySwatch: Global.THEME_COLOR.themeColor,
-        ),
-        initialRoute:
-            Global.isLoggedIn() ? '/todo_page/unfinished' : '/login_page',
-        // initialRoute: '/planttree_page',
-        routes: {
-          '/todo_page/unfinished': (context) => TodoPage(
-                isUnfinished: true,
-              ),
-          '/todo_page/finished': (context) => TodoPage(
-                isUnfinished: false,
-              ), // 参数应该不一样
-          '/config_page/setting': (context) => ConfigPage(),
-          '/config_page/account': (context) => ConfigPage(), // 同上
-          '/edit_page/add': (context) => TodoEditPage(),
-          // '/edit_page/edit': (context) => TodoEditPage(),
-          '/login_page': (context) => LoginPage(),
-          // '/planttree_page': (context) => PlanttreePage(),
-          '/addfriend_page': (context) => AddFriendPage(),
-        },
-      ),
+      builder: (context, child) {
+        return MaterialApp(
+          title: 'Dandelion Todo',
+          color: Provider.of<ConfigState>(context).themeColor.background,
+          theme: ThemeData(
+            primarySwatch:
+                Provider.of<ConfigState>(context).themeColor.themeColor,
+          ),
+          initialRoute: isLoggedIn ? '/todo_page/unfinished' : '/login_page',
+          // initialRoute: '/planttree_page',
+          routes: {
+            '/todo_page/unfinished': (context) => TodoPage(
+                  isUnfinished: true,
+                  currItem: Global.TODO_DRAWER_UNFINISHED,
+                ),
+            '/todo_page/finished': (context) => TodoPage(
+                  isUnfinished: false,
+                  currItem: Global.TODO_DRAWER_FINISHED,
+                ),
+            '/todo_page/friend': (context) => TodoPage(
+                  isUnfinished: true,
+                  isFriend: true,
+                  currItem: Global.TODO_DRAWER_FRIENDTODO,
+                ), // 参数应该不一样
+            '/config_page/setting': (context) => ConfigPage(),
+            '/config_page/account': (context) => ConfigPage(), // 同上
+            '/edit_page/add': (context) => TodoEditPage(),
+            // '/edit_page/edit': (context) => TodoEditPage(),
+            '/login_page': (context) => LoginPage(),
+            // '/planttree_page': (context) => PlanttreePage(),
+            '/addfriend_page': (context) => AddFriendPage(),
+          },
+        );
+      },
     );
   }
 }

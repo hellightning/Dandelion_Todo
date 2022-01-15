@@ -1,7 +1,8 @@
+import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
-import 'package:dandelion_todo/utils/launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('注册')),
-      backgroundColor: Global.THEME_COLOR.background,
+      backgroundColor: Provider.of<ConfigState>(context).themeColor.background,
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.upload),
         onPressed: () async {
@@ -39,8 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
               _pwdController.text != _pwdcController.text) {
             //TODO: 校验失败的逻辑
           } else {
-            await DandelionLauncher.register(
-                _unameController.text, _pwdController.text);
+            await Global.register(_unameController.text, _pwdController.text);
             //TODO: 显示注册结果
             Navigator.pop(context);
           }
@@ -55,7 +55,9 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             children: <Widget>[
               Image.asset(
-                'assets/imgs/' + Global.THEME_COLOR.name + '.jpeg',
+                'assets/imgs/' +
+                    Provider.of<ConfigState>(context).themeColor.name +
+                    '.jpeg',
                 fit: BoxFit.cover,
                 width: MediaQuery.of(context).size.width,
                 height: 200,
@@ -66,8 +68,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: InputDecoration(
                     labelText: '昵称',
                     hintText: 'input your nickname',
-                    labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
-                    hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
+                    labelStyle: TextStyle(
+                        color: Provider.of<ConfigState>(context)
+                            .themeColor
+                            .textColor),
+                    hintStyle: TextStyle(
+                        color: Provider.of<ConfigState>(context)
+                            .themeColor
+                            .neglected),
                     prefixIcon: Icon(Icons.person),
                   ),
                   validator: (v) {
@@ -81,8 +89,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 decoration: InputDecoration(
                     labelText: '密码',
                     hintText: 'please input your password',
-                    labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
-                    hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
+                    labelStyle: TextStyle(
+                        color: Provider.of<ConfigState>(context)
+                            .themeColor
+                            .textColor),
+                    hintStyle: TextStyle(
+                        color: Provider.of<ConfigState>(context)
+                            .themeColor
+                            .neglected),
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -104,8 +118,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 decoration: InputDecoration(
                     labelText: '确认密码',
                     hintText: 'please input your password again',
-                    labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
-                    hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
+                    labelStyle: TextStyle(
+                        color: Provider.of<ConfigState>(context)
+                            .themeColor
+                            .textColor),
+                    hintStyle: TextStyle(
+                        color: Provider.of<ConfigState>(context)
+                            .themeColor
+                            .neglected),
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(

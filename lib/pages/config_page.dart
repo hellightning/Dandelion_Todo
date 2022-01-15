@@ -1,7 +1,9 @@
+import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:dandelion_todo/utils/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({Key? key}) : super(key: key);
@@ -18,7 +20,7 @@ class _ConfigPageState extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Global.THEME_COLOR.background,
+      backgroundColor: Provider.of<ConfigState>(context).themeColor.background,
       appBar: AppBar(
         title: Text('设置'),
       ),
@@ -27,15 +29,23 @@ class _ConfigPageState extends State<ConfigPage> {
           ListTile(
             title: Text(
               '设置事项',
-              style: TextStyle(color: Global.THEME_COLOR.textColor),
+              style: TextStyle(
+                  color:
+                      Provider.of<ConfigState>(context).themeColor.textColor),
             ),
             subtitle: Text('设置说明',
-                style: TextStyle(color: Global.THEME_COLOR.neglected)),
+                style: TextStyle(
+                    color: Provider.of<ConfigState>(context)
+                        .themeColor
+                        .neglected)),
           ),
           ListTile(
             title: Text('主题颜色',
-                style: TextStyle(color: Global.THEME_COLOR.textColor)),
-            subtitle: Text(Global.THEME_COLOR.name),
+                style: TextStyle(
+                    color: Provider.of<ConfigState>(context)
+                        .themeColor
+                        .textColor)),
+            subtitle: Text(Provider.of<ConfigState>(context).themeColor.name),
             // 太丑了，肯定不能这么嗯写
             onTap: () {
               showDialog<Null>(

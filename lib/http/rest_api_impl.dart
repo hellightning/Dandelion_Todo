@@ -62,15 +62,10 @@ class RestImpl implements RestApi {
   }
 
   @override
-  Future<Todo> createTodo(Todo todo) async{
+  Future<Todo> createTodo(Todo todo) async {
     try {
-      var res = await dio.request(
-          '/api/todo/$localUid/new',
-          options: Options(
-              method: 'POST'
-          ),
-          data: todo.toJson()
-      );
+      var res = await dio.request('/api/todo/$localUid/new',
+          options: Options(method: 'POST'), data: todo.toJson());
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
@@ -99,13 +94,8 @@ class RestImpl implements RestApi {
   @override
   Future deleteUserTodo(int userId, int todoId, Todo todo) async {
     try {
-      var res = await dio.request(
-          '/api/todo/$localUid/$todoId',
-          options: Options(
-              method: 'DELETE'
-          ),
-          data: todo.toJson()
-      );
+      var res = await dio.request('/api/todo/$localUid/$todoId',
+          options: Options(method: 'DELETE'), data: todo.toJson());
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
@@ -192,12 +182,8 @@ class RestImpl implements RestApi {
   @override
   Future<String?> findNicknameById(int userId) async {
     try {
-      var res = await dio.request(
-          '/api/user/$userId',
-          options: Options(
-              method: 'GET'
-          )
-      );
+      var res = await dio.request('/api/user/$userId',
+          options: Options(method: 'GET'));
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
@@ -226,12 +212,8 @@ class RestImpl implements RestApi {
   @override
   Future<List<int>?> findUserByNickName(String nickname) async {
     try {
-      var res = await dio.request(
-          '/api/user/search?nickname=$nickname',
-          options: Options(
-              method: 'GET'
-          )
-      );
+      var res = await dio.request('/api/user/search?nickname=$nickname',
+          options: Options(method: 'GET'));
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
@@ -396,13 +378,8 @@ class RestImpl implements RestApi {
   Future syncTodoList(List<Todo> lst) async {
     try {
       var nlst = List<Map>.from(lst.map((e) => e.toJson()));
-      await dio.request(
-          '/api/todo/$localUid',
-          options: Options(
-              method: 'POST'
-          ),
-          data: json.encode(nlst)
-      );
+      await dio.request('/api/todo/$localUid',
+          options: Options(method: 'POST'), data: json.encode(nlst));
     } on DioError catch (e) {
       if (e.response != null) {
         var body = json.decode(e.response.toString());
@@ -491,13 +468,8 @@ class RestImpl implements RestApi {
   @override
   Future updateUserTodo(int userId, int todoId, Todo content) async {
     try {
-      var res = await dio.request(
-        '/api/todo/$localUid/$todoId',
-        options: Options(
-            method: 'PUT'
-        ),
-        data: content.toJson()
-      );
+      var res = await dio.request('/api/todo/$localUid/$todoId',
+          options: Options(method: 'PUT'), data: content.toJson());
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
@@ -532,8 +504,7 @@ class RestImpl implements RestApi {
             'Content-type': 'image/jpeg',
             'Connection': 'keep-alive',
           },
-          body: f
-      );
+          body: f);
       if (res.statusCode != 200) {
         if (res.statusCode == 403) {
           await login(localUid, localPassword);
@@ -543,20 +514,18 @@ class RestImpl implements RestApi {
           throw InvalidInputException(msg);
         }
       }
-    } on Error catch(e) {
+    } on Error catch (e) {
       throw NetworkErrorException();
     }
   }
 
   @override
-  Future<List<Todo>> getTodoListWithPage(int userId, int limit, int maxId) async {
+  Future<List<Todo>> getTodoListWithPage(
+      int userId, int limit, int maxId) async {
     try {
       var res = await dio.request(
           '/api/todo/$userId?limit=$limit&max_id=$maxId',
-          options: Options(
-              method: 'GET'
-          )
-      );
+          options: Options(method: 'GET'));
       var body = json.decode(res.toString());
       if (body["status"] != 200) {
         throw InvalidInputException(body["msg"]);
@@ -593,8 +562,7 @@ class RestImpl implements RestApi {
             'Authorization': dio.options.headers['Authorization'],
             'Content-type': 'image/jpeg',
             'Connection': 'keep-alive',
-          }
-      );
+          });
       return res.bodyBytes;
     } catch (e) {
       rethrow;

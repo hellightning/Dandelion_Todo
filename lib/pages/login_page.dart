@@ -1,11 +1,9 @@
-import 'package:dandelion_todo/http/http_error.dart';
-import 'package:dandelion_todo/http/rest_api_mock.dart';
 import 'package:dandelion_todo/models/index.dart';
-import 'package:dandelion_todo/pages/todo_page.dart';
+import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
-import 'package:dandelion_todo/utils/launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -35,14 +33,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Login')),
-      backgroundColor: Global.THEME_COLOR.background,
+      backgroundColor: Provider.of<ConfigState>(context).themeColor.background,
       floatingActionButton: FloatingActionButton(
         child: Icon(_isUserEmpty ? Icons.upload : Icons.login),
         onPressed: () async {
           // TODO: 登陆结果校验
           if (_unameController.text == '' && _pwdController.text == '') {
             Navigator.pushNamed(context, 'register_page');
-          } else if (await DandelionLauncher.login(
+          } else if (await Global.login(
                   int.parse(_unameController.text), _pwdController.text)
               // TODO: 使用用户名登陆？
               ) {
@@ -59,7 +57,9 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: <Widget>[
               Image.asset(
-                'assets/imgs/' + Global.THEME_COLOR.name + '.jpeg',
+                'assets/imgs/' +
+                    Provider.of<ConfigState>(context).themeColor.name +
+                    '.jpeg',
                 fit: BoxFit.cover,
                 width: MediaQuery.of(context).size.width,
                 height: 200,
@@ -70,8 +70,14 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     labelText: 'userid',
                     hintText: '请输入userid',
-                    labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
-                    hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
+                    labelStyle: TextStyle(
+                        color: Provider.of<ConfigState>(context)
+                            .themeColor
+                            .textColor),
+                    hintStyle: TextStyle(
+                        color: Provider.of<ConfigState>(context)
+                            .themeColor
+                            .neglected),
                     prefixIcon: Icon(Icons.person),
                   ),
                   onChanged: (value) {
@@ -94,8 +100,14 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                     labelText: '密码',
                     hintText: '请输入不含空字符的密码',
-                    labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
-                    hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
+                    labelStyle: TextStyle(
+                        color: Provider.of<ConfigState>(context)
+                            .themeColor
+                            .textColor),
+                    hintStyle: TextStyle(
+                        color: Provider.of<ConfigState>(context)
+                            .themeColor
+                            .neglected),
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(

@@ -1,5 +1,6 @@
-import 'package:dandelion_todo/http/rest_api_mock.dart';
+import 'package:dandelion_todo/http/rest_api_impl.dart';
 import 'package:dandelion_todo/models/index.dart';
+import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/states/todo_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:date_format/date_format.dart';
@@ -17,16 +18,26 @@ class TodoEditPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _deadlineInputController = TextEditingController();
-    var _importanceInputController = TextEditingController();
+    var _deadlineInputController = TextEditingController(
+        text: formatDate(
+            (todoData == null
+                ? DateTime.now()
+                : DateTime.fromMillisecondsSinceEpoch(
+                    todoData!.deadline as int)),
+            [yyyy, '-', mm, '-', dd]));
+    var _importanceInputController = TextEditingController(
+        text: todoData == null
+            ? Global.IMPORTANCE_DES[0]
+            : Global.IMPORTANCE_DES[todoData!.importance]);
     return Scaffold(
       appBar: AppBar(
         title: Text(
           (todoData == null) ? '新添TODO项目' : '编辑TODO项目',
-          style: TextStyle(color: Global.THEME_COLOR.textColor),
+          style: TextStyle(
+              color: Provider.of<ConfigState>(context).themeColor.textColor),
         ),
       ),
-      backgroundColor: Global.THEME_COLOR.background,
+      backgroundColor: Provider.of<ConfigState>(context).themeColor.background,
       body: Container(
         child: Form(
           key: _editKey,
@@ -38,27 +49,41 @@ class TodoEditPage extends StatelessWidget {
                 autofocus: todoData == null,
                 // autovalidateMode: AutovalidateMode.onUserInteraction,
                 initialValue: todoData?.title ?? '',
-                style: TextStyle(color: Global.THEME_COLOR.textColor),
+                style: TextStyle(
+                    color:
+                        Provider.of<ConfigState>(context).themeColor.textColor),
                 decoration: InputDecoration(
                   labelText: 'TODO标题',
-                  labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
+                  labelStyle: TextStyle(
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .textColor),
                   hintText: '概括你的TODO事项',
-                  hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
+                  hintStyle: TextStyle(
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .neglected),
                   enabledBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.neglected)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .neglected)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.mainColor)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .mainColor)),
                   errorBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.warnColor)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .warnColor)),
                 ),
                 onSaved: (newValue) {
                   todoData?.title = newValue ?? '';
@@ -73,34 +98,42 @@ class TodoEditPage extends StatelessWidget {
               TextFormField(
                 readOnly: true,
                 controller: _deadlineInputController,
-                // initialValue: formatDate(
-                //     (todoData == null
-                //         ? DateTime.now()
-                //         : DateTime.fromMillisecondsSinceEpoch(
-                //             todoData!.deadline as int)),
-                //     [yyyy, '-', mm, '-', dd]),
-                style: TextStyle(color: Global.THEME_COLOR.textColor),
+                style: TextStyle(
+                    color:
+                        Provider.of<ConfigState>(context).themeColor.textColor),
                 keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(
                   labelText: '结束时间',
-                  labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
+                  labelStyle: TextStyle(
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .textColor),
                   hintText: 'Dandelion是宣判终末的Deadline',
-                  hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
+                  hintStyle: TextStyle(
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .neglected),
                   enabledBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.neglected)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .neglected)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.mainColor)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .mainColor)),
                   errorBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.warnColor)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .warnColor)),
                 ),
                 onTap: () async {
                   showDatePicker(
@@ -131,27 +164,41 @@ class TodoEditPage extends StatelessWidget {
               TextFormField(
                 readOnly: true,
                 controller: _importanceInputController,
-                style: TextStyle(color: Global.THEME_COLOR.textColor),
+                style: TextStyle(
+                    color:
+                        Provider.of<ConfigState>(context).themeColor.textColor),
                 decoration: InputDecoration(
                   labelText: '重要性',
-                  labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
+                  labelStyle: TextStyle(
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .textColor),
                   hintText: '数字越大重要性越高',
-                  hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
+                  hintStyle: TextStyle(
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .neglected),
                   enabledBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.neglected)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .neglected)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.mainColor)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .mainColor)),
                   errorBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.warnColor)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .warnColor)),
                 ),
                 onTap: () async {
                   // TODO: picker
@@ -160,7 +207,9 @@ class TodoEditPage extends StatelessWidget {
                     context: context,
                     builder: (context) {
                       return Container(
-                        color: Global.THEME_COLOR.subColor,
+                        color: Provider.of<ConfigState>(context)
+                            .themeColor
+                            .subColor,
                         width: 200,
                         height: 250,
                         child: Row(
@@ -181,8 +230,10 @@ class TodoEditPage extends StatelessWidget {
                                     .map((str) => Text(
                                           str,
                                           style: TextStyle(
-                                              color:
-                                                  Global.THEME_COLOR.textColor),
+                                              color: Provider.of<ConfigState>(
+                                                      context)
+                                                  .themeColor
+                                                  .textColor),
                                         ))
                                     .toList(),
                                 onSelectedItemChanged: (value) {
@@ -191,11 +242,15 @@ class TodoEditPage extends StatelessWidget {
                               ),
                             ),
                             Material(
-                              color: Global.THEME_COLOR.background,
+                              color: Provider.of<ConfigState>(context)
+                                  .themeColor
+                                  .background,
                               child: IconButton(
                                 icon: Icon(
                                   Icons.check_rounded,
-                                  color: Global.THEME_COLOR.mainColor,
+                                  color: Provider.of<ConfigState>(context)
+                                      .themeColor
+                                      .mainColor,
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).pop(importance);
@@ -226,27 +281,41 @@ class TodoEditPage extends StatelessWidget {
                 height: 5,
               ),
               TextFormField(
-                style: TextStyle(color: Global.THEME_COLOR.textColor),
+                style: TextStyle(
+                    color:
+                        Provider.of<ConfigState>(context).themeColor.textColor),
                 decoration: InputDecoration(
                   labelText: '预计需要时间',
-                  labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
+                  labelStyle: TextStyle(
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .textColor),
                   hintText: '你觉得这个任务需要多长时间？',
-                  hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
+                  hintStyle: TextStyle(
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .neglected),
                   enabledBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.neglected)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .neglected)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.mainColor)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .mainColor)),
                   errorBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.warnColor)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .warnColor)),
                 ),
                 // onSaved: (newValue) {
                 //   // TODO: 好像没这个逻辑？
@@ -257,28 +326,42 @@ class TodoEditPage extends StatelessWidget {
               ),
               TextFormField(
                 initialValue: todoData?.description ?? '',
-                style: TextStyle(color: Global.THEME_COLOR.textColor),
+                style: TextStyle(
+                    color:
+                        Provider.of<ConfigState>(context).themeColor.textColor),
                 maxLines: 10,
                 decoration: InputDecoration(
                   labelText: 'TODO详细内容',
-                  labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
+                  labelStyle: TextStyle(
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .textColor),
                   hintText: 'TODO还有什么需要描述的',
-                  hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
+                  hintStyle: TextStyle(
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .neglected),
                   enabledBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.neglected)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .neglected)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.mainColor)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .mainColor)),
                   errorBorder: OutlineInputBorder(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(15.0)),
-                      borderSide:
-                          BorderSide(color: Global.THEME_COLOR.warnColor)),
+                      borderSide: BorderSide(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .warnColor)),
                 ),
                 onSaved: (newValue) {
                   todoData?.description = newValue ?? 'description';
@@ -297,32 +380,45 @@ class TodoEditPage extends StatelessWidget {
         decoration: new BoxDecoration(
           border: Border(
               bottom: BorderSide(
-                color: Global.THEME_COLOR.neglected,
+                color: Provider.of<ConfigState>(context).themeColor.neglected,
                 width: 3.0,
               ),
-              right:
-                  BorderSide(color: Global.THEME_COLOR.neglected, width: 3.0)),
+              right: BorderSide(
+                  color: Provider.of<ConfigState>(context).themeColor.neglected,
+                  width: 3.0)),
           // borderRadius: BorderRadius.all(Radius.circular(15.0)),
-          color: Global.THEME_COLOR.subColor,
+          color: Provider.of<ConfigState>(context).themeColor.subColor,
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          _editKey.currentState?.save();
-          todoData ??= await RestMock.instance
-              .createTodo(Todo.fromJson(todoJson))
-              .catchError((e) {
+          try {
+            _editKey.currentState?.save();
+            todoJson['createAt'] = DateTime.now().millisecondsSinceEpoch;
+            todoJson['completeAt'] = 0;
+            todoJson['creatorId'] = Global.getUser();
+            todoJson['localId'] = Uuid().v1();
+            todoJson['parentId'] = 0;
+            todoJson['plantTime'] = 0;
+            todoJson['todoId'] = 0;
+            todoJson['updateAt'] = DateTime.now().millisecondsSinceEpoch;
+            todoData ??= await RestImpl()
+                .createTodo(Todo.fromJson(todoJson))
+                .catchError((e) {
+              Fluttertoast.showToast(msg: e.toString());
+            });
+            todoData?.localId = Uuid().v1();
+            await RestImpl()
+                .updateUserTodo(
+                    Global.getUser(), todoData!.todoId as int, todoData!)
+                .catchError((e) {
+              Fluttertoast.showToast(msg: e.toString());
+            });
+            Provider.of<TodoState>(context, listen: false).updateTodoList();
+            Navigator.pop(context);
+          } catch (e) {
             Fluttertoast.showToast(msg: e.toString());
-          });
-          todoData?.localId = Uuid().v1();
-          await RestMock.instance
-              .updateUserTodo(
-                  Global.getUser(), todoData!.todoId as int, todoData!)
-              .catchError((e) {
-            Fluttertoast.showToast(msg: e.toString());
-          });
-          Provider.of<TodoState>(context).updateTodoList();
-          Navigator.pop(context);
+          }
         },
         child: Icon(Icons.send),
       ),

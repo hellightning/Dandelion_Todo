@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:dandelion_todo/models/index.dart';
+import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PlanttreePage extends StatefulWidget {
   PlanttreePage({Key? key, required this.todoData}) : super(key: key);
@@ -29,13 +31,13 @@ class _PlanttreePageState extends State<PlanttreePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Global.THEME_COLOR.background,
+      backgroundColor: Provider.of<ConfigState>(context).themeColor.background,
       appBar: AppBar(
         title: Text(
           isPlanting ? '种树中...' : '请选择时间',
           style: TextStyle(
               fontSize: Global.APPBAR_TITLE_SIZE,
-              color: Global.THEME_COLOR.textColor),
+              color: Provider.of<ConfigState>(context).themeColor.textColor),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -89,7 +91,7 @@ class _PlanttreePageState extends State<PlanttreePage> {
         },
         child: Icon(
           Icons.add_alarm_rounded,
-          color: Global.THEME_COLOR.textColor,
+          color: Provider.of<ConfigState>(context).themeColor.textColor,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -116,8 +118,10 @@ class _PlanttreePageState extends State<PlanttreePage> {
                     .map((index) => Container(
                           child: Text(
                             '$index时',
-                            style:
-                                TextStyle(color: Global.THEME_COLOR.textColor),
+                            style: TextStyle(
+                                color: Provider.of<ConfigState>(context)
+                                    .themeColor
+                                    .textColor),
                           ),
                         ))
                     .toList(),
@@ -149,8 +153,10 @@ class _PlanttreePageState extends State<PlanttreePage> {
                     .map((index) => Container(
                           child: Text(
                             '$index分',
-                            style:
-                                TextStyle(color: Global.THEME_COLOR.textColor),
+                            style: TextStyle(
+                                color: Provider.of<ConfigState>(context)
+                                    .themeColor
+                                    .textColor),
                           ),
                         ))
                     .toList(),

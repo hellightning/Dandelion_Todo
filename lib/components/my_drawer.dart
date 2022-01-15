@@ -1,6 +1,8 @@
+import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MyDrawer extends StatefulWidget {
   MyDrawer({Key? key, this.initItem = 0}) : super(key: key);
@@ -13,7 +15,7 @@ class _MyDrawerState extends State<MyDrawer> {
   int currentItem = 0;
   @override
   void initState() {
-    currentItem = 0;
+    currentItem = widget.initItem;
     super.initState();
   }
 
@@ -21,7 +23,7 @@ class _MyDrawerState extends State<MyDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Global.THEME_COLOR.background,
+        color: Provider.of<ConfigState>(context).themeColor.background,
         child: ListView(
           children: [
             DrawerHeader(
@@ -30,7 +32,9 @@ class _MyDrawerState extends State<MyDrawer> {
                 alignment: Alignment.bottomCenter,
                 children: [
                   Image.asset(
-                    'assets/imgs/' + Global.THEME_COLOR.name + '.jpeg',
+                    'assets/imgs/' +
+                        Provider.of<ConfigState>(context).themeColor.name +
+                        '.jpeg',
                     width: 800,
                     height: 800,
                     fit: BoxFit.cover,
@@ -45,7 +49,9 @@ class _MyDrawerState extends State<MyDrawer> {
                         icon: Icon(
                           Icons.account_circle_rounded,
                           size: 60,
-                          color: Global.THEME_COLOR.warnColor,
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .warnColor,
                         ),
                         onPressed: () {
                           Navigator.pushNamed(context, '/addfriend_page');
@@ -57,24 +63,30 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
             Material(
-              color: Global.THEME_COLOR.background,
+              color: Provider.of<ConfigState>(context).themeColor.background,
               child: ListTile(
-                tileColor: Global.THEME_COLOR.background,
-                selectedTileColor: Global.THEME_COLOR.subColor,
+                tileColor:
+                    Provider.of<ConfigState>(context).themeColor.background,
+                selectedTileColor:
+                    Provider.of<ConfigState>(context).themeColor.subColor,
                 selected: currentItem == Global.TODO_DRAWER_UNFINISHED,
                 leading: Icon(
                   Icons.unpublished_outlined,
                   color: currentItem == Global.TODO_DRAWER_UNFINISHED
-                      ? Global.THEME_COLOR.mainColor
-                      : Global.THEME_COLOR.neglected,
+                      ? Provider.of<ConfigState>(context).themeColor.mainColor
+                      : Provider.of<ConfigState>(context).themeColor.neglected,
                 ),
                 title: Text(
                   '正在进行',
                   style: TextStyle(
                       fontSize: Global.NORMAL_TEXT_SIZE,
                       color: currentItem == Global.TODO_DRAWER_UNFINISHED
-                          ? Global.THEME_COLOR.mainColor
-                          : Global.THEME_COLOR.neglected),
+                          ? Provider.of<ConfigState>(context)
+                              .themeColor
+                              .mainColor
+                          : Provider.of<ConfigState>(context)
+                              .themeColor
+                              .neglected),
                 ),
                 onTap: () {
                   setState(() {
@@ -87,24 +99,30 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
             Material(
-              color: Global.THEME_COLOR.background,
+              color: Provider.of<ConfigState>(context).themeColor.background,
               child: ListTile(
-                tileColor: Global.THEME_COLOR.background,
-                selectedTileColor: Global.THEME_COLOR.subColor,
+                tileColor:
+                    Provider.of<ConfigState>(context).themeColor.background,
+                selectedTileColor:
+                    Provider.of<ConfigState>(context).themeColor.subColor,
                 selected: currentItem == Global.TODO_DRAWER_FINISHED,
                 leading: Icon(
                   Icons.task_alt,
                   color: currentItem == Global.TODO_DRAWER_FINISHED
-                      ? Global.THEME_COLOR.mainColor
-                      : Global.THEME_COLOR.neglected,
+                      ? Provider.of<ConfigState>(context).themeColor.mainColor
+                      : Provider.of<ConfigState>(context).themeColor.neglected,
                 ),
                 title: Text(
                   '已完成',
                   style: TextStyle(
                       fontSize: Global.NORMAL_TEXT_SIZE,
                       color: currentItem == Global.TODO_DRAWER_FINISHED
-                          ? Global.THEME_COLOR.mainColor
-                          : Global.THEME_COLOR.neglected),
+                          ? Provider.of<ConfigState>(context)
+                              .themeColor
+                              .mainColor
+                          : Provider.of<ConfigState>(context)
+                              .themeColor
+                              .neglected),
                 ),
                 onTap: () {
                   setState(() {
@@ -117,30 +135,72 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
             Material(
-              color: Global.THEME_COLOR.background,
+              color: Provider.of<ConfigState>(context).themeColor.background,
               child: ListTile(
-                tileColor: Global.THEME_COLOR.background,
-                selectedTileColor: Global.THEME_COLOR.subColor,
+                tileColor:
+                    Provider.of<ConfigState>(context).themeColor.background,
+                selectedTileColor:
+                    Provider.of<ConfigState>(context).themeColor.subColor,
                 selected: currentItem == Global.TODO_DRAWER_CONFIG,
                 leading: Icon(
                   Icons.settings,
                   color: currentItem == Global.TODO_DRAWER_CONFIG
-                      ? Global.THEME_COLOR.mainColor
-                      : Global.THEME_COLOR.neglected,
+                      ? Provider.of<ConfigState>(context).themeColor.mainColor
+                      : Provider.of<ConfigState>(context).themeColor.neglected,
                 ),
                 title: Text(
                   '设置',
                   style: TextStyle(
                       fontSize: Global.NORMAL_TEXT_SIZE,
                       color: currentItem == Global.TODO_DRAWER_CONFIG
-                          ? Global.THEME_COLOR.mainColor
-                          : Global.THEME_COLOR.neglected),
+                          ? Provider.of<ConfigState>(context)
+                              .themeColor
+                              .mainColor
+                          : Provider.of<ConfigState>(context)
+                              .themeColor
+                              .neglected),
                 ),
                 onTap: () {
                   setState(() {
                     currentItem = Global.TODO_DRAWER_CONFIG;
                   });
                   Navigator.pushNamed(context, '/config_page/setting');
+                },
+              ),
+            ),
+            Material(
+              color: Provider.of<ConfigState>(context).themeColor.background,
+              child: ListTile(
+                tileColor:
+                    Provider.of<ConfigState>(context).themeColor.background,
+                selectedTileColor:
+                    Provider.of<ConfigState>(context).themeColor.subColor,
+                selected: currentItem == Global.TODO_DRAWER_FRIENDTODO,
+                leading: Icon(
+                  Icons.visibility,
+                  color: currentItem == Global.TODO_DRAWER_FRIENDTODO
+                      ? Provider.of<ConfigState>(context).themeColor.mainColor
+                      : Provider.of<ConfigState>(context).themeColor.neglected,
+                ),
+                title: Text(
+                  '好友TODO',
+                  style: TextStyle(
+                      fontSize: Global.NORMAL_TEXT_SIZE,
+                      color: currentItem == Global.TODO_DRAWER_FRIENDTODO
+                          ? Provider.of<ConfigState>(context)
+                              .themeColor
+                              .mainColor
+                          : Provider.of<ConfigState>(context)
+                              .themeColor
+                              .neglected),
+                ),
+                onTap: () {
+                  setState(() {
+                    currentItem = Global.TODO_DRAWER_FRIENDTODO;
+                  });
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/todo_page/friend');
                 },
               ),
             ),
