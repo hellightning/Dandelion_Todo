@@ -2,13 +2,14 @@ import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class AddFriendItem extends StatelessWidget {
   const AddFriendItem({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var _searchController = TextEditingController();
+    var _addfriendController = TextEditingController();
     // String content = '';
     return Container(
       child: Row(
@@ -26,25 +27,29 @@ class AddFriendItem extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.7,
             height: 50,
             child: TextField(
-              // controller: _searchController,
+              // controller: _addfriendController,
               style: TextStyle(
                   color: Provider.of<ConfigState>(context).themeColor.textColor,
                   fontSize: Global.NORMAL_TEXT_SIZE),
               decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(10.0),
-                  hintText: '搜索TODO事项',
+                  hintText: '输入你要添加好友的昵称/userid',
                   hintStyle: TextStyle(
                       color: Provider.of<ConfigState>(context)
                           .themeColor
                           .neglected),
                   border: InputBorder.none),
-              // onChanged: (value) {
-              //   content = value;
-              // },
               onEditingComplete: () {
-                // TODO: 修逻辑
-                Provider.of<ConfigState>(context, listen: false).searchFilter =
-                    _searchController.text;
+                try {
+                  Global.updateWatchlistByUserid(
+                      int.parse(_addfriendController.text));
+                } catch (e) {
+                  try {
+                    Global.updateWatchlistByNickname(_addfriendController.text);
+                  } catch (e) {
+                    Fluttertoast.showToast(msg: e.toString());
+                  }
+                }
               },
             ),
           ),

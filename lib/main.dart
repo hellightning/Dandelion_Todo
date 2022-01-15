@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:dandelion_todo/pages/account_page.dart';
 import 'package:dandelion_todo/pages/addfriend_page.dart';
 import 'package:dandelion_todo/pages/config_page.dart';
+import 'package:dandelion_todo/pages/help_page.dart';
 import 'package:dandelion_todo/pages/login_page.dart';
 import 'package:dandelion_todo/pages/planttree_page.dart';
 import 'package:dandelion_todo/pages/register_page.dart';
@@ -75,6 +77,8 @@ class MyApp extends StatelessWidget {
             '/register_page': (context) => RegisterPage(),
             // '/planttree_page': (context) => PlanttreePage(),
             '/addfriend_page': (context) => AddFriendPage(),
+            '/help_page': (context) => const HelpPage(),
+            '/account_page': (context) => const AccountPage()
           },
         );
       },

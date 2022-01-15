@@ -42,7 +42,10 @@ class _LoginPageState extends State<LoginPage> {
           if (_unameController.text == '' && _pwdController.text == '') {
             Navigator.pushNamed(context, '/register_page');
           } else if (await Global.login(
-                  int.parse(_unameController.text), _pwdController.text)
+                  int.parse(_unameController.text == ''
+                      ? '0'
+                      : _unameController.text),
+                  _pwdController.text)
               // TODO: 使用用户名登陆？
               ) {
             Navigator.pushReplacementNamed(context, '/todo_page/unfinished');

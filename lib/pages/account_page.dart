@@ -6,14 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-/// 由于设置项不多，所以设置界面暂且保留，但不使用
-class ConfigPage extends StatefulWidget {
-  const ConfigPage({Key? key}) : super(key: key);
+class AccountPage extends StatefulWidget {
+  const AccountPage({Key? key}) : super(key: key);
   @override
-  _ConfigPageState createState() => _ConfigPageState();
+  _AccountPageState createState() => _AccountPageState();
 }
 
-class _ConfigPageState extends State<ConfigPage> {
+class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     super.initState();

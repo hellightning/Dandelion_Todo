@@ -1,4 +1,5 @@
 import 'package:dandelion_todo/states/config_state.dart';
+import 'package:dandelion_todo/states/profile_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:dandelion_todo/utils/themes.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,17 +48,20 @@ class _MyDrawerState extends State<MyDrawer> {
                     // TODO: 用头像代替Icon
                     child: Material(
                       color: Colors.transparent,
-                      child: IconButton(
-                        alignment: Alignment.center,
-                        icon: Icon(
-                          Icons.account_circle_rounded,
-                          size: 60,
-                          color: Provider.of<ConfigState>(context)
-                              .themeColor
-                              .warnColor,
+                      child: MaterialButton(
+                        child: CircleAvatar(
+                          radius: 30,
+                          child: Provider.of<ProfileState>(context)
+                                      .avatar
+                                      .length ==
+                                  0
+                              ? Image.network(
+                                  'https://book.flutterchina.club/logo.png')
+                              : Image.memory(
+                                  Provider.of<ProfileState>(context).avatar),
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/addfriend_page');
+                          Navigator.pushNamed(context, '/account_page');
                         },
                       ),
                     ),
@@ -395,9 +399,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   setState(() {
                     currentItem = Global.TODO_DRAWER_HELP;
                   });
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/helppage');
+                  Navigator.pushNamed(context, '/help_page');
                 },
               ),
             ),
