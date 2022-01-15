@@ -5,17 +5,20 @@ import 'package:dandelion_todo/utils/Global.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class TodoEditPage extends StatelessWidget {
   TodoEditPage({Key? key, this.todoData}) : super(key: key);
+  final _editKey = GlobalKey<FormState>();
   Todo? todoData;
   var todoJson = Map<String, dynamic>();
 
   @override
   Widget build(BuildContext context) {
-    var _editKey = GlobalKey<FormState>();
     var _deadlineInputController = TextEditingController();
+    var _importanceInputController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -33,6 +36,7 @@ class TodoEditPage extends StatelessWidget {
               // TODO: 复用组件
               TextFormField(
                 autofocus: todoData == null,
+                // autovalidateMode: AutovalidateMode.onUserInteraction,
                 initialValue: todoData?.title ?? '',
                 style: TextStyle(color: Global.THEME_COLOR.textColor),
                 decoration: InputDecoration(
@@ -69,6 +73,12 @@ class TodoEditPage extends StatelessWidget {
               TextFormField(
                 readOnly: true,
                 controller: _deadlineInputController,
+                // initialValue: formatDate(
+                //     (todoData == null
+                //         ? DateTime.now()
+                //         : DateTime.fromMillisecondsSinceEpoch(
+                //             todoData!.deadline as int)),
+                //     [yyyy, '-', mm, '-', dd]),
                 style: TextStyle(color: Global.THEME_COLOR.textColor),
                 keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(
@@ -119,6 +129,8 @@ class TodoEditPage extends StatelessWidget {
                 height: 5,
               ),
               TextFormField(
+                readOnly: true,
+                controller: _importanceInputController,
                 style: TextStyle(color: Global.THEME_COLOR.textColor),
                 decoration: InputDecoration(
                   labelText: '重要性',
@@ -141,23 +153,74 @@ class TodoEditPage extends StatelessWidget {
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.warnColor)),
                 ),
-                onTap: () {
-                  showCupertinoDialog(
+                onTap: () async {
+                  // TODO: picker
+                  int importance = 0;
+                  await showDialog<int>(
                     context: context,
                     builder: (context) {
-                      return Container();
+                      return Container(
+                        color: Global.THEME_COLOR.subColor,
+                        width: 200,
+                        height: 250,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 200,
+                              height: 200,
+                              alignment: Alignment.center,
+                              child: CupertinoPicker(
+                                itemExtent: 50,
+                                children: List.filled(4, 0)
+                                    .fold<List<String>>(
+                                        List.empty(growable: true), (l, _) {
+                                      l.add(Global.IMPORTANCE_DES[l.length] ??
+                                          '摸鱼');
+                                      return l;
+                                    })
+                                    .map((str) => Text(
+                                          str,
+                                          style: TextStyle(
+                                              color:
+                                                  Global.THEME_COLOR.textColor),
+                                        ))
+                                    .toList(),
+                                onSelectedItemChanged: (value) {
+                                  importance = value;
+                                },
+                              ),
+                            ),
+                            Material(
+                              color: Global.THEME_COLOR.background,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.check_rounded,
+                                  color: Global.THEME_COLOR.mainColor,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop(importance);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
                     },
                   );
+                  todoData?.importance = importance;
+                  todoJson['importance'] = importance;
+                  _importanceInputController.text =
+                      Global.IMPORTANCE_DES[importance] ?? '摸鱼';
                 },
-                onSaved: (newValue) {
-                  try {
-                    todoData?.importance = int.parse(newValue ?? '0');
-                    todoJson['importance'] = int.parse(newValue ?? '0');
-                  } catch (e) {
-                    todoData?.importance = 0;
-                    todoJson['importance'] = 0;
-                  }
-                },
+                // onSaved: (newValue) {
+                //   try {
+                //     todoData?.importance = int.parse(newValue ?? '0');
+                //     todoJson['importance'] = int.parse(newValue ?? '0');
+                //   } catch (e) {
+                //     todoData?.importance = 0;
+                //     todoJson['importance'] = 0;
+                //   }
+                // },
               ),
               SizedBox(
                 height: 5,
@@ -193,6 +256,7 @@ class TodoEditPage extends StatelessWidget {
                 height: 5,
               ),
               TextFormField(
+                initialValue: todoData?.description ?? '',
                 style: TextStyle(color: Global.THEME_COLOR.textColor),
                 maxLines: 10,
                 decoration: InputDecoration(
@@ -245,11 +309,18 @@ class TodoEditPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           _editKey.currentState?.save();
-          //TODO: 数据项不全
-          todoData ??=
-              await RestMock.instance.createTodo(Todo.fromJson(todoJson));
-          await RestMock.instance.updateUserTodo(
-              Global.getUser(), todoData!.todoId as int, todoData!);
+          todoData ??= await RestMock.instance
+              .createTodo(Todo.fromJson(todoJson))
+              .catchError((e) {
+            Fluttertoast.showToast(msg: e.toString());
+          });
+          todoData?.localId = Uuid().v1();
+          await RestMock.instance
+              .updateUserTodo(
+                  Global.getUser(), todoData!.todoId as int, todoData!)
+              .catchError((e) {
+            Fluttertoast.showToast(msg: e.toString());
+          });
           Provider.of<TodoState>(context).updateTodoList();
           Navigator.pop(context);
         },

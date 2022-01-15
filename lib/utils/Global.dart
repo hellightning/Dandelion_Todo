@@ -39,6 +39,9 @@ class Global {
   static const TODO_TITLE_SIZE = 30.0;
   static const NORMAL_TEXT_SIZE = 16.0;
 
+  // 字符常量
+  static const IMPORTANCE_DES = {0: '随缘', 1: '一般', 2: '重要', 3: '非常重要'};
+
   // theme colors
   static String APP_THEME = AppTheme.dark;
   set setAppTheme(String at) {
