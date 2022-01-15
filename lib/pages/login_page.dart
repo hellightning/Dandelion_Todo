@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          autovalidate: true,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: <Widget>[
               Image.asset(
@@ -68,8 +68,8 @@ class _LoginPageState extends State<LoginPage> {
                   autofocus: _nameAutoFocus,
                   controller: _unameController,
                   decoration: InputDecoration(
-                    labelText: '请输入userid或昵称',
-                    hintText: 'input userid or nickname',
+                    labelText: 'userid',
+                    hintText: '请输入userid',
                     labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
                     hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
                     prefixIcon: Icon(Icons.person),
@@ -86,16 +86,14 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                   validator: (v) {
-                    return v!.trim().isNotEmpty
-                        ? null
-                        : 'please input your username';
+                    return v!.trim().isNotEmpty ? null : 'userid不能为空';
                   }),
               TextFormField(
                 controller: _pwdController,
                 autofocus: !_nameAutoFocus,
                 decoration: InputDecoration(
-                    labelText: 'password',
-                    hintText: 'please input your password',
+                    labelText: '密码',
+                    hintText: '请输入不含空字符的密码',
                     labelStyle: TextStyle(color: Global.THEME_COLOR.textColor),
                     hintStyle: TextStyle(color: Global.THEME_COLOR.neglected),
                     prefixIcon: Icon(Icons.lock),
@@ -110,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                     )),
                 obscureText: !pwdShow,
                 validator: (v) {
-                  return v!.trim().isNotEmpty ? null : '请输入密码';
+                  return v!.trim().isNotEmpty ? null : '密码不能为空';
                 },
               ),
             ],

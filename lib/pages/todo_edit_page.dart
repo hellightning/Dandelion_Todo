@@ -14,7 +14,7 @@ class TodoEditPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var editKey = GlobalKey<FormState>();
+    var _editKey = GlobalKey<FormState>();
     var _deadlineInputController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
@@ -26,11 +26,13 @@ class TodoEditPage extends StatelessWidget {
       backgroundColor: Global.THEME_COLOR.background,
       body: Container(
         child: Form(
-          key: editKey,
+          key: _editKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: ListView(
             children: [
               // TODO: 复用组件
               TextFormField(
+                autofocus: todoData == null,
                 initialValue: todoData?.title ?? '',
                 style: TextStyle(color: Global.THEME_COLOR.textColor),
                 decoration: InputDecoration(
@@ -58,11 +60,14 @@ class TodoEditPage extends StatelessWidget {
                   todoData?.title = newValue ?? '';
                   todoJson['title'] = newValue ?? 'title';
                 },
+                validator: (v) =>
+                    (v == null || v.trim().isEmpty) ? '标题不能为空' : null,
               ),
               SizedBox(
                 height: 5,
               ),
               TextFormField(
+                readOnly: true,
                 controller: _deadlineInputController,
                 style: TextStyle(color: Global.THEME_COLOR.textColor),
                 keyboardType: TextInputType.datetime,
@@ -180,9 +185,9 @@ class TodoEditPage extends StatelessWidget {
                       borderSide:
                           BorderSide(color: Global.THEME_COLOR.warnColor)),
                 ),
-                onSaved: (newValue) {
-                  // TODO: 好像没这个逻辑？
-                },
+                // onSaved: (newValue) {
+                //   // TODO: 好像没这个逻辑？
+                // },
               ),
               SizedBox(
                 height: 5,
@@ -239,7 +244,7 @@ class TodoEditPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          editKey.currentState?.save();
+          _editKey.currentState?.save();
           //TODO: 数据项不全
           todoData ??=
               await RestMock.instance.createTodo(Todo.fromJson(todoJson));

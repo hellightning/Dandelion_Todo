@@ -18,163 +18,167 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TodoEditPage(
-              todoData: todoData,
-            ),
-          ),
-        );
-      },
-      onLongPress: () => {
-        // TODO 长按拖拽可以调整顺序
-      },
-      child: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: Text(
-                todoData.title,
-                style: TextStyle(
-                    color: Global.THEME_COLOR.mainColor,
-                    fontSize: Global.TODO_TITLE_SIZE),
+    return Container(
+      constraints:
+          const BoxConstraints(minWidth: 300, maxWidth: 300, minHeight: 150),
+      alignment: Alignment.topCenter,
+      padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
+      margin: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: Global.THEME_COLOR.subColor,
+        boxShadow: <BoxShadow>[
+          BoxShadow(blurRadius: 2.0, color: Global.THEME_COLOR.neglected),
+        ],
+        borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+      ),
+      child: Material(
+        color: Global.THEME_COLOR.subColor,
+        type: MaterialType.button,
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TodoEditPage(
+                  todoData: todoData,
+                ),
               ),
-            ),
-            Divider(
-              color: Global.THEME_COLOR.neglected,
-              thickness: 1.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: Text(
-                todoData.description,
-                style: TextStyle(
-                    color: Global.THEME_COLOR.textColor,
-                    fontSize: Global.NORMAL_TEXT_SIZE),
+            );
+          },
+          onLongPress: () => {
+            // TODO 长按拖拽可以调整顺序
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: Text(
+                  todoData.title,
+                  style: TextStyle(
+                      color: Global.THEME_COLOR.mainColor,
+                      fontSize: Global.TODO_TITLE_SIZE),
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: isUnfinished
-                  ? <Widget>[
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Container(
-                          padding: const EdgeInsets.all(5),
-                          constraints: const BoxConstraints(maxWidth: 200),
-                          child: Text(
-                            'Deadline: ' +
-                                formatDate(
-                                    DateTime.fromMicrosecondsSinceEpoch(
-                                        todoData.deadline as int),
-                                    [yyyy, '-', mm, '-', dd]),
-                            style: TextStyle(
-                                color: (todoData.deadline -
-                                            DateTime.now()
-                                                .millisecondsSinceEpoch <=
-                                        86400000)
-                                    ? Global.THEME_COLOR.warnColor
-                                    : Global.THEME_COLOR.neglected),
-                          ),
-                        ),
-                      ),
-                      const Flexible(
-                        fit: FlexFit.tight,
-                        child: SizedBox(),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.task_alt,
-                          color: Global.THEME_COLOR.mainColor,
-                        ),
-                        onPressed: () async {
-                          todoData.completeAt =
-                              DateTime.now().microsecondsSinceEpoch;
-                          await RestMock.instance.updateUserTodo(
-                              Global.getUser(),
-                              todoData.todoId as int,
-                              todoData);
-                          Provider.of<TodoState>(context).updateTodoList();
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.delete_forever,
-                          color: Global.THEME_COLOR.warnColor,
-                        ),
-                        onPressed: () {
-                          RestMock.instance.deleteUserTodo(Global.getUser(),
-                              todoData.todoId as int, todoData);
-                          Provider.of<TodoState>(context).updateTodoList();
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.alarm_rounded,
-                          color: Global.THEME_COLOR.textColor,
-                        ),
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PlanttreePage(
-                              todoData: todoData,
+              Divider(
+                color: Global.THEME_COLOR.neglected,
+                thickness: 1.0,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: Text(
+                  todoData.description,
+                  style: TextStyle(
+                      color: Global.THEME_COLOR.textColor,
+                      fontSize: Global.NORMAL_TEXT_SIZE),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: isUnfinished
+                    ? <Widget>[
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            constraints: const BoxConstraints(maxWidth: 200),
+                            child: Text(
+                              'Deadline: ' +
+                                  formatDate(
+                                      DateTime.fromMicrosecondsSinceEpoch(
+                                          todoData.deadline as int),
+                                      [yyyy, '-', mm, '-', dd]),
+                              style: TextStyle(
+                                  color: (todoData.deadline -
+                                              DateTime.now()
+                                                  .millisecondsSinceEpoch <=
+                                          86400000)
+                                      ? Global.THEME_COLOR.warnColor
+                                      : Global.THEME_COLOR.neglected),
                             ),
                           ),
                         ),
-                      ),
-                    ]
-                  : <Widget>[
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Container(
-                          padding: const EdgeInsets.all(5),
-                          constraints: const BoxConstraints(maxWidth: 100),
-                          child: Text(
-                            'Completed: ' +
-                                formatDate(
-                                    DateTime.fromMicrosecondsSinceEpoch(
-                                        todoData.completeAt as int),
-                                    [yyyy, '-', mm, '-', dd]),
-                            style:
-                                TextStyle(color: Global.THEME_COLOR.neglected),
+                        const Flexible(
+                          fit: FlexFit.tight,
+                          child: SizedBox(),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.task_alt,
+                            color: Global.THEME_COLOR.mainColor,
+                          ),
+                          onPressed: () async {
+                            todoData.completeAt =
+                                DateTime.now().microsecondsSinceEpoch;
+                            await RestMock.instance
+                                .updateUserTodo(Global.getUser(),
+                                    todoData.todoId as int, todoData)
+                                .catchError((e) {
+                              print(e);
+                            });
+                            // TODO: 修修逻辑
+                            Provider.of<TodoState>(context, listen: false)
+                                .updateTodoList();
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete_forever,
+                            color: Global.THEME_COLOR.warnColor,
+                          ),
+                          onPressed: () {
+                            RestMock.instance
+                                .deleteUserTodo(Global.getUser(),
+                                    todoData.todoId as int, todoData)
+                                .catchError((e) {
+                              print(e);
+                            });
+                            // TODO: 修修逻辑
+                            Provider.of<TodoState>(context, listen: false)
+                                .updateTodoList();
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.alarm_rounded,
+                            color: Global.THEME_COLOR.textColor,
+                          ),
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PlanttreePage(
+                                todoData: todoData,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                      const Flexible(
-                        fit: FlexFit.tight,
-                        child: SizedBox(),
-                      ),
-                    ],
-            ),
-          ],
-        ),
-        // constraints: BoxConstraints.loose(Size(300, 150)),
-        constraints:
-            const BoxConstraints(minWidth: 300, maxWidth: 300, minHeight: 150),
-        alignment: Alignment.topCenter,
-        // color: Colors.grey[200],
-        padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
-        margin: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          color: Global.THEME_COLOR.subColor,
-          boxShadow: <BoxShadow>[
-            BoxShadow(blurRadius: 2.0, color: Global.THEME_COLOR.neglected),
-          ],
-          borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-          // border: Border(
-          //     bottom: BorderSide(
-          //         color: Global.THEME_COLOR.neglected,
-          //         width: 2.0,
-          //         style: BorderStyle.solid),
-          //     right: BorderSide(
-          //         color: Global.THEME_COLOR.neglected,
-          //         width: 2.0,
-          //         style: BorderStyle.solid)),
+                      ]
+                    : <Widget>[
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            constraints: const BoxConstraints(maxWidth: 100),
+                            child: Text(
+                              'Completed: ' +
+                                  formatDate(
+                                      DateTime.fromMicrosecondsSinceEpoch(
+                                          todoData.completeAt as int),
+                                      [yyyy, '-', mm, '-', dd]),
+                              style: TextStyle(
+                                  color: Global.THEME_COLOR.neglected),
+                            ),
+                          ),
+                        ),
+                        const Flexible(
+                          fit: FlexFit.tight,
+                          child: SizedBox(),
+                        ),
+                      ],
+              ),
+            ],
+          ),
         ),
       ),
     );

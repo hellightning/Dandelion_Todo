@@ -56,20 +56,18 @@ class _PlanttreePageState extends State<PlanttreePage> {
                         remainHour -= 1;
                         remainMinute = 59;
                         remainSecond = 59;
-                        _hourController.animateTo(
-                            _hourController.offset + remainHour.toDouble(),
+                        _hourController.animateToItem(remainHour,
                             duration: Duration(milliseconds: 500),
                             curve: Curves.ease);
-                        _minuteController.animateTo(
-                            _minuteController.offset + remainMinute.toDouble(),
+                        _minuteController.animateToItem(remainMinute,
                             duration: Duration(milliseconds: 500),
                             curve: Curves.ease);
                       }
                     } else {
                       remainSecond = 59;
                       remainMinute -= 1;
-                      _minuteController.animateTo(
-                          _minuteController.offset + remainMinute.toDouble(),
+                      print(remainMinute);
+                      _minuteController.animateToItem(remainMinute,
                           duration: Duration(milliseconds: 500),
                           curve: Curves.ease);
                     }
@@ -127,8 +125,7 @@ class _PlanttreePageState extends State<PlanttreePage> {
                   if (!isPlanting) {
                     remainHour = value;
                   } else {
-                    _hourController.animateTo(
-                        _hourController.offset + remainHour.toDouble(),
+                    _hourController.animateToItem(remainHour,
                         duration: Duration(milliseconds: 500),
                         curve: Curves.ease);
                   }
@@ -164,9 +161,7 @@ class _PlanttreePageState extends State<PlanttreePage> {
                   if (!isPlanting) {
                     remainMinute = value;
                   } else {
-                    //TODO: 这个animateTo是什么神必原理？？？？？？怎么老是蹦到0和1
-                    _minuteController.animateTo(
-                        _minuteController.offset + remainMinute.toDouble(),
+                    _minuteController.animateToItem(remainMinute,
                         duration: Duration(milliseconds: 500),
                         curve: Curves.ease);
                   }
