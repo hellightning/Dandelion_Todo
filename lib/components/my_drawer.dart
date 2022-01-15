@@ -48,21 +48,41 @@ class _MyDrawerState extends State<MyDrawer> {
                     // TODO: 用头像代替Icon
                     child: Material(
                       color: Colors.transparent,
-                      child: MaterialButton(
-                        child: CircleAvatar(
-                          radius: 30,
-                          child: Provider.of<ProfileState>(context)
-                                      .avatar
-                                      .length ==
-                                  0
-                              ? Image.network(
-                                  'https://book.flutterchina.club/logo.png')
-                              : Image.memory(
-                                  Provider.of<ProfileState>(context).avatar),
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/account_page');
-                        },
+                      child: Row(
+                        children: [
+                          MaterialButton(
+                            child: ClipOval(
+                              child: Provider.of<ProfileState>(context)
+                                          .avatar
+                                          .length ==
+                                      0
+                                  ? Image.network(
+                                      'https://book.flutterchina.club/logo.png',
+                                      height: 70,
+                                      width: 70,
+                                    )
+                                  : Image.memory(
+                                      Provider.of<ProfileState>(context).avatar,
+                                      height: 70,
+                                      width: 70,
+                                    ),
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/account_page');
+                            },
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(5),
+                            child: Text(
+                              Provider.of<ProfileState>(context).nickname,
+                              style: TextStyle(
+                                  color: Provider.of<ConfigState>(context)
+                                      .themeColor
+                                      .warnColor,
+                                  fontSize: Global.TODO_TITLE_SIZE),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

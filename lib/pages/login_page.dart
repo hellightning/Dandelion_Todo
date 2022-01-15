@@ -26,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_unameController.text != null) {
       _nameAutoFocus = false;
     }
+    Global.logout();
     super.initState();
   }
 

@@ -6,6 +6,7 @@ import 'package:dandelion_todo/http/http_error.dart';
 import 'package:dandelion_todo/http/rest_api_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'themes.dart';
@@ -26,6 +27,34 @@ class Global {
 
   static String getNickname() {
     return _pref?.getString('nickname') ?? 'dandelion';
+  }
+
+  static Future updateNickname(String nickname) async {
+    RestImpl().updateNickname(nickname).then((_) {
+      _pref?.setString('nickname', nickname);
+    }).catchError((e) {
+      Fluttertoast.showToast(msg: e.toString());
+    });
+  }
+
+  static Future updatePassword(String password) async {
+    RestImpl().updatePassword(password).then((_) {
+      _pref?.setString('password', password);
+    }).catchError((e) {
+      Fluttertoast.showToast(msg: e.toString());
+    });
+  }
+
+  static Future uploadAvatar(XFile avt) async {
+    RestImpl().uploadAvatar(avt).then((_) {
+      return RestImpl().getAvatar(getUser());
+    }).catchError((e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }).then((value) {
+      AVATAR_DYNAMIC = value;
+    }).catchError((e) {
+      Fluttertoast.showToast(msg: e.toString());
+    });
   }
 
   static Future updateWatchlistByUserid(int userid) async {

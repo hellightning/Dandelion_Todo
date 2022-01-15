@@ -54,9 +54,19 @@ class _FriendItemState extends State<FriendItem> {
           onLongPress: () => {},
           child: Row(
             children: [
-              avatarByte.length == 0
-                  ? Image.network('https://book.flutterchina.club/logo.png')
-                  : Image.memory(avatarByte),
+              ClipOval(
+                child: avatarByte.length == 0
+                    ? Image.network(
+                        'https://book.flutterchina.club/logo.png',
+                        height: 70,
+                        width: 70,
+                      )
+                    : Image.memory(
+                        avatarByte,
+                        height: 70,
+                        width: 70,
+                      ),
+              ),
               Column(
                 children: [Text(nickname), Text('userid: ${widget.userid}')],
               ),

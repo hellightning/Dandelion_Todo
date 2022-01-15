@@ -35,7 +35,7 @@ class _TodoPageState extends State<TodoPage> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<TodoState>(context).updateTodoList();
+    // Provider.of<TodoState>(context).updateTodoList();
     return Scaffold(
       drawer: MyDrawer(
         initItem: widget.currItem,

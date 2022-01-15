@@ -31,7 +31,6 @@ class _AddFriendPageState extends State<AddFriendPage> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<TodoState>(context).updateTodoList();
     return Scaffold(
       drawer: MyDrawer(
         initItem: widget.currItem,
