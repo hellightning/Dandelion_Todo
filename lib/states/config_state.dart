@@ -8,6 +8,7 @@ class ConfigState extends ChangeNotifier {
   }
 
   String searchFilter = '';
+
   set setTheme(String thm) {
     Global.APP_THEME = thm;
   }
@@ -18,6 +19,11 @@ class ConfigState extends ChangeNotifier {
 
   void changeTheme(String? value) {
     Global.APP_THEME = value ?? 'dark';
+    notifyListeners();
+  }
+
+  void updateFilter(String filter) {
+    searchFilter = filter;
     notifyListeners();
   }
 }

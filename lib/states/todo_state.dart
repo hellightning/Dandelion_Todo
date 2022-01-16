@@ -5,11 +5,22 @@ import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class TodoState extends ChangeNotifier {
+  TodoState() {
+    updateTodoList();
+    updateFriendTodoList();
+  }
   List<Todo> todoList = List.empty();
+  void addTodo(Todo todoData) {
+    todoList.add(todoData);
+    notifyListeners();
+  }
+
+  void updateTodo(Todo todoData) {
+    todoList.removeWhere((todo) => todo.todoId == todoData.todoId);
+    addTodo(todoData);
+  }
+
   void updateTodoList() async {
-    // await DandelionLauncher.requestTodo().then((value) {
-    //   todoList = value;
-    // });
     await RestImpl().getTodoList(Global.getUser()).then((value) {
       todoList = value;
     }).catchError((e) {
@@ -31,5 +42,6 @@ class TodoState extends ChangeNotifier {
     }).catchError((e) {
       Fluttertoast.showToast(msg: e.toString());
     });
+    notifyListeners();
   }
 }

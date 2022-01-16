@@ -56,6 +56,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
                       )))
                   .toList(),
             ),
+            edgeOffset: 25.0,
             onRefresh: () async {
               Provider.of<ProfileState>(context, listen: false).updateUser();
               sleep(const Duration(milliseconds: 500));

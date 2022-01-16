@@ -35,7 +35,6 @@ class _TodoPageState extends State<TodoPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Provider.of<TodoState>(context).updateTodoList();
     return Scaffold(
       drawer: MyDrawer(
         initItem: widget.currItem,
@@ -57,7 +56,8 @@ class _TodoPageState extends State<TodoPage> {
                       .where((todoData) =>
                           ((todoData.completeAt == 0) == widget.isUnfinished))
                       .where((todoData) => (todoData.title.contains(
-                          Provider.of<ConfigState>(context).searchFilter)))
+                          Provider.of<ConfigState>(context, listen: false)
+                              .searchFilter)))
                       .map((todoData) => Padding(
                             padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                             child: TodoItem(
@@ -68,6 +68,7 @@ class _TodoPageState extends State<TodoPage> {
                           )))
                   .toList(),
             ),
+            edgeOffset: 25.0,
             onRefresh: () async {
               widget.isFriend
                   ? Provider.of<TodoState>(context, listen: false)

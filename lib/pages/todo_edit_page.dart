@@ -30,6 +30,7 @@ class TodoEditPage extends StatelessWidget {
         text: todoData == null
             ? Global.IMPORTANCE_DES[0]
             : Global.IMPORTANCE_DES[todoData!.importance]);
+    var _timeconsumingInputController = TextEditingController(text: '0');
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -147,7 +148,7 @@ class TodoEditPage extends StatelessWidget {
                       todoData?.deadline =
                           (value!.millisecondsSinceEpoch / 1000).floor();
                       todoJson['deadline'] =
-                          value!.millisecondsSinceEpoch / 1000;
+                          (value!.millisecondsSinceEpoch / 1000).floor();
                       _deadlineInputController.text =
                           formatDate(value, [yyyy, '-', mm, '-', dd]);
                     } catch (e) {
@@ -286,6 +287,8 @@ class TodoEditPage extends StatelessWidget {
                 height: 5,
               ),
               TextFormField(
+                controller: _timeconsumingInputController,
+                keyboardType: TextInputType.number,
                 style: TextStyle(
                     color:
                         Provider.of<ConfigState>(context).themeColor.textColor),
@@ -295,7 +298,7 @@ class TodoEditPage extends StatelessWidget {
                       color: Provider.of<ConfigState>(context)
                           .themeColor
                           .textColor),
-                  hintText: '你觉得这个任务需要多长时间？',
+                  hintText: 'TODO任务预期时间，单位为h',
                   hintStyle: TextStyle(
                       color: Provider.of<ConfigState>(context)
                           .themeColor
@@ -322,9 +325,9 @@ class TodoEditPage extends StatelessWidget {
                               .themeColor
                               .warnColor)),
                 ),
-                // onSaved: (newValue) {
-                //   // TODO: 好像没这个逻辑？
-                // },
+                onSaved: (newValue) {
+                  // TODO: 好像没这个逻辑？
+                },
               ),
               SizedBox(
                 height: 5,
@@ -403,22 +406,25 @@ class TodoEditPage extends StatelessWidget {
               todoJson['importance'] = 0;
             }
             if (!todoJson.containsKey('deadline')) {
-              todoJson['deadline'] =
-                  (DateTime.now().add(const Duration(days: 1)))
+              todoJson['deadline'] = (DateTime.now()
+                          .add(const Duration(days: 1))
                           .millisecondsSinceEpoch /
-                      1000;
+                      1000)
+                  .floor();
             }
-            print((DateTime.now().millisecondsSinceEpoch / 1000).floor());
             todoJson['createAt'] =
                 (DateTime.now().millisecondsSinceEpoch / 1000).floor();
             todoJson['completeAt'] = 0;
             todoJson['creatorId'] = Global.getUser();
+            // TODO: 种树时间
             todoJson['localId'] = Uuid().v1();
             todoJson['parentId'] = 0;
             todoJson['plantTime'] = 0;
             todoJson['todoId'] = 0;
             todoJson['updateAt'] =
                 (DateTime.now().millisecondsSinceEpoch / 1000).floor();
+            print('sending');
+            print(todoJson['deadline']);
             todoData ??= await RestImpl()
                 .createTodo(Todo.fromJson(todoJson))
                 .catchError((e) {
@@ -431,7 +437,12 @@ class TodoEditPage extends StatelessWidget {
                 .catchError((e) {
               Fluttertoast.showToast(msg: e.toString());
             });
-            Provider.of<TodoState>(context, listen: false).updateTodoList();
+            try {
+              Provider.of<TodoState>(context, listen: false)
+                  .updateTodo(todoData!);
+            } catch (e) {
+              Fluttertoast.showToast(msg: e.toString());
+            }
             Navigator.pop(context);
           } catch (e) {
             Fluttertoast.showToast(msg: e.toString());

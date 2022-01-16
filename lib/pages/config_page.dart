@@ -60,76 +60,7 @@ class _ConfigPageState extends State<ConfigPage> {
                         .themeColor
                         .neglected)),
             // 太丑了，肯定不能这么嗯写
-            onTap: () {
-              showDialog<Null>(
-                context: context,
-                builder: (BuildContext context) {
-                  return new SimpleDialog(
-                    title: new Text('选择'),
-                    children: <Widget>[
-                      new SimpleDialogOption(
-                        child: new Text('blue'),
-                        onPressed: () {
-                          Provider.of<ConfigState>(context, listen: false)
-                              .changeTheme(AppTheme.blue);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      new SimpleDialogOption(
-                        child: new Text('red'),
-                        onPressed: () {
-                          Provider.of<ConfigState>(context)
-                              .changeTheme(AppTheme.red);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      new SimpleDialogOption(
-                        child: new Text('purple'),
-                        onPressed: () {
-                          Provider.of<ConfigState>(context)
-                              .changeTheme(AppTheme.purple);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      new SimpleDialogOption(
-                        child: new Text('pink'),
-                        onPressed: () {
-                          Provider.of<ConfigState>(context)
-                              .changeTheme(AppTheme.pink);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      new SimpleDialogOption(
-                        child: new Text('green'),
-                        onPressed: () {
-                          Provider.of<ConfigState>(context)
-                              .changeTheme(AppTheme.green);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      new SimpleDialogOption(
-                        child: new Text('dark'),
-                        onPressed: () {
-                          Provider.of<ConfigState>(context)
-                              .changeTheme(AppTheme.dark);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      new SimpleDialogOption(
-                        child: new Text('light'),
-                        onPressed: () {
-                          Provider.of<ConfigState>(context)
-                              .changeTheme(AppTheme.light);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ).then((val) {
-                print(val);
-              });
-            },
+            onTap: () {},
           ),
           Divider(
             color: Provider.of<ConfigState>(context).themeColor.neglected,

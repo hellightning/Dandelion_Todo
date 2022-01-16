@@ -24,8 +24,10 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(todoData.title);
-    print(todoData.deadline);
+    // print(todoData.title);
+    // print(DateTime.now().minute);
+    // print(DateTime.now().second);
+    // print(todoData.deadline);
     return Container(
       constraints:
           const BoxConstraints(minWidth: 300, maxWidth: 300, minHeight: 150),
@@ -106,7 +108,7 @@ class TodoItem extends StatelessWidget {
                                   color: (todoData.deadline * 1000 -
                                               DateTime.now()
                                                   .millisecondsSinceEpoch <=
-                                          86400000)
+                                          259200000)
                                       ? Provider.of<ConfigState>(context)
                                           .themeColor
                                           .warnColor
