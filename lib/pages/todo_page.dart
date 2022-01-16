@@ -43,29 +43,42 @@ class _TodoPageState extends State<TodoPage> {
       backgroundColor: Provider.of<ConfigState>(context).themeColor.background,
       body: Stack(
         children: [
-          ListView(
-            // FP!!!
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(20.0),
-              )
-            ]
-                .followedBy((widget.isFriend
-                        ? Provider.of<TodoState>(context).friendTodoList
-                        : Provider.of<TodoState>(context).todoList)
-                    .where((todoData) =>
-                        ((todoData.completeAt == 0) == widget.isUnfinished))
-                    .where((todoData) => (todoData.title.contains(
-                        Provider.of<ConfigState>(context).searchFilter)))
-                    .map((todoData) => Padding(
-                          padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          child: TodoItem(
-                            todoData: todoData,
-                            isUnfinished: widget.isUnfinished,
-                            isFriend: widget.isFriend,
-                          ),
-                        )))
-                .toList(),
+          RefreshIndicator(
+            child: ListView(
+              // FP!!!
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(20.0),
+                )
+              ]
+                  .followedBy((widget.isFriend
+                          ? Provider.of<TodoState>(context).friendTodoList
+                          : Provider.of<TodoState>(context).todoList)
+                      .where((todoData) =>
+                          ((todoData.completeAt == 0) == widget.isUnfinished))
+                      .where((todoData) => (todoData.title.contains(
+                          Provider.of<ConfigState>(context).searchFilter)))
+                      .map((todoData) => Padding(
+                            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                            child: TodoItem(
+                              todoData: todoData,
+                              isUnfinished: widget.isUnfinished,
+                              isFriend: widget.isFriend,
+                            ),
+                          )))
+                  .toList(),
+            ),
+            onRefresh: () async {
+              widget.isFriend
+                  ? Provider.of<TodoState>(context, listen: false)
+                      .updateFriendTodoList()
+                  : Provider.of<TodoState>(context, listen: false)
+                      .updateTodoList();
+              sleep(const Duration(milliseconds: 500));
+            },
+            color: Provider.of<ConfigState>(context).themeColor.mainColor,
+            backgroundColor:
+                Provider.of<ConfigState>(context).themeColor.subColor,
           ),
           SearchItem(),
         ],

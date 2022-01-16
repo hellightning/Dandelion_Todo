@@ -10,6 +10,7 @@ import 'package:dandelion_todo/states/todo_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 // TODO: 修加好友
@@ -29,6 +30,8 @@ class _AddFriendPageState extends State<AddFriendPage> {
     super.initState();
   }
 
+  final _addfriendItem = AddFriendItem();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,26 +41,44 @@ class _AddFriendPageState extends State<AddFriendPage> {
       backgroundColor: Provider.of<ConfigState>(context).themeColor.background,
       body: Stack(
         children: [
-          ListView(
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(20.0),
-              )
-            ]
-                .followedBy(_watchList.map((userid) => Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child: FriendItem(
-                        userid: userid,
-                      ),
-                    )))
-                .toList(),
+          RefreshIndicator(
+            child: ListView(
+              children: <Widget>[
+                const Padding(
+                  padding: EdgeInsets.all(20.0),
+                )
+              ]
+                  .followedBy(_watchList.map((userid) => Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        child: FriendItem(
+                          userid: userid,
+                        ),
+                      )))
+                  .toList(),
+            ),
+            onRefresh: () async {
+              Provider.of<ProfileState>(context, listen: false).updateUser();
+              sleep(const Duration(milliseconds: 500));
+            },
+            color: Provider.of<ConfigState>(context).themeColor.mainColor,
+            backgroundColor:
+                Provider.of<ConfigState>(context).themeColor.subColor,
           ),
-          AddFriendItem(),
+          _addfriendItem,
         ],
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Provider.of<ProfileState>(context, listen: false).watchList;
+            var content = _addfriendItem.getContent();
+            try {
+              Global.updateWatchlistByUserid(int.parse(content));
+            } catch (e) {
+              try {
+                Global.updateWatchlistByNickname(content);
+              } catch (e) {
+                Fluttertoast.showToast(msg: e.toString());
+              }
+            }
           },
           child: const Icon(Icons.add)),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,

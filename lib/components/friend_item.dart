@@ -56,8 +56,8 @@ class _FriendItemState extends State<FriendItem> {
             children: [
               ClipOval(
                 child: avatarByte.length == 0
-                    ? Image.network(
-                        'https://book.flutterchina.club/logo.png',
+                    ? Image.asset(
+                        'assets/imgs/dandelion_avatar.png',
                         height: 70,
                         width: 70,
                       )

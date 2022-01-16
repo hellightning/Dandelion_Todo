@@ -3,10 +3,12 @@ import 'package:dandelion_todo/utils/themes.dart';
 import 'package:flutter/cupertino.dart';
 
 class ConfigState extends ChangeNotifier {
-  String theme = AppTheme.dark;
+  String get theme {
+    return Global.appTheme;
+  }
+
   String searchFilter = '';
   set setTheme(String thm) {
-    theme = thm;
     Global.APP_THEME = thm;
   }
 
@@ -14,11 +16,8 @@ class ConfigState extends ChangeNotifier {
     return ThemeColor.themeMap[theme]!;
   }
 
-  ConfigState() {
-    theme = Global.appTheme;
-  }
-  @override
-  void notifyListeners() {
-    super.notifyListeners();
+  void changeTheme(String? value) {
+    Global.APP_THEME = value ?? 'dark';
+    notifyListeners();
   }
 }

@@ -6,10 +6,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class AddFriendItem extends StatelessWidget {
-  const AddFriendItem({Key? key}) : super(key: key);
+  AddFriendItem({Key? key}) : super(key: key);
+  var _addfriendController = TextEditingController();
+
+  String getContent() {
+    return _addfriendController.text;
+  }
+
   @override
   Widget build(BuildContext context) {
-    var _addfriendController = TextEditingController();
     // String content = '';
     return Container(
       child: Row(
@@ -40,16 +45,16 @@ class AddFriendItem extends StatelessWidget {
                           .neglected),
                   border: InputBorder.none),
               onEditingComplete: () {
-                try {
-                  Global.updateWatchlistByUserid(
-                      int.parse(_addfriendController.text));
-                } catch (e) {
-                  try {
-                    Global.updateWatchlistByNickname(_addfriendController.text);
-                  } catch (e) {
-                    Fluttertoast.showToast(msg: e.toString());
-                  }
-                }
+                // try {
+                //   Global.updateWatchlistByUserid(
+                //       int.parse(_addfriendController.text));
+                // } catch (e) {
+                //   try {
+                //     Global.updateWatchlistByNickname(_addfriendController.text);
+                //   } catch (e) {
+                //     Fluttertoast.showToast(msg: e.toString());
+                //   }
+                // }
               },
             ),
           ),

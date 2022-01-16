@@ -71,55 +71,55 @@ class _ConfigPageState extends State<ConfigPage> {
                         child: new Text('blue'),
                         onPressed: () {
                           Provider.of<ConfigState>(context, listen: false)
-                              .theme = AppTheme.blue;
+                              .changeTheme(AppTheme.blue);
                           Navigator.of(context).pop();
                         },
                       ),
                       new SimpleDialogOption(
                         child: new Text('red'),
                         onPressed: () {
-                          Provider.of<ConfigState>(context).theme =
-                              AppTheme.red;
+                          Provider.of<ConfigState>(context)
+                              .changeTheme(AppTheme.red);
                           Navigator.of(context).pop();
                         },
                       ),
                       new SimpleDialogOption(
                         child: new Text('purple'),
                         onPressed: () {
-                          Provider.of<ConfigState>(context).theme =
-                              AppTheme.purple;
+                          Provider.of<ConfigState>(context)
+                              .changeTheme(AppTheme.purple);
                           Navigator.of(context).pop();
                         },
                       ),
                       new SimpleDialogOption(
                         child: new Text('pink'),
                         onPressed: () {
-                          Provider.of<ConfigState>(context).theme =
-                              AppTheme.pink;
+                          Provider.of<ConfigState>(context)
+                              .changeTheme(AppTheme.pink);
                           Navigator.of(context).pop();
                         },
                       ),
                       new SimpleDialogOption(
                         child: new Text('green'),
                         onPressed: () {
-                          Provider.of<ConfigState>(context).theme =
-                              AppTheme.green;
+                          Provider.of<ConfigState>(context)
+                              .changeTheme(AppTheme.green);
                           Navigator.of(context).pop();
                         },
                       ),
                       new SimpleDialogOption(
                         child: new Text('dark'),
                         onPressed: () {
-                          Provider.of<ConfigState>(context).theme =
-                              AppTheme.dark;
+                          Provider.of<ConfigState>(context)
+                              .changeTheme(AppTheme.dark);
                           Navigator.of(context).pop();
                         },
                       ),
                       new SimpleDialogOption(
                         child: new Text('light'),
                         onPressed: () {
-                          Provider.of<ConfigState>(context).theme =
-                              AppTheme.light;
+                          Provider.of<ConfigState>(context)
+                              .changeTheme(AppTheme.light);
                           Navigator.of(context).pop();
                         },
                       ),

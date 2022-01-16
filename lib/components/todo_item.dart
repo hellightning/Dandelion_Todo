@@ -24,6 +24,8 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(todoData.title);
+    print(todoData.deadline);
     return Container(
       constraints:
           const BoxConstraints(minWidth: 300, maxWidth: 300, minHeight: 150),
@@ -54,8 +56,7 @@ class TodoItem extends StatelessWidget {
               ),
             );
           },
-          onLongPress: () => {
-          },
+          onLongPress: () => {},
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -97,11 +98,12 @@ class TodoItem extends StatelessWidget {
                             child: Text(
                               'Deadline: ' +
                                   formatDate(
-                                      DateTime.fromMicrosecondsSinceEpoch(
-                                          todoData.deadline as int),
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          todoData.deadline.toInt() * 1000),
                                       [yyyy, '-', mm, '-', dd]),
                               style: TextStyle(
-                                  color: (todoData.deadline -
+                                  // TODO: 时间谜题
+                                  color: (todoData.deadline * 1000 -
                                               DateTime.now()
                                                   .millisecondsSinceEpoch <=
                                           86400000)
@@ -127,7 +129,8 @@ class TodoItem extends StatelessWidget {
                           ),
                           onPressed: () async {
                             todoData.completeAt =
-                                DateTime.now().microsecondsSinceEpoch;
+                                (DateTime.now().millisecondsSinceEpoch / 1000)
+                                    .floor();
                             await RestImpl()
                                 .updateUserTodo(Global.getUser(),
                                     todoData.todoId as int, todoData)
@@ -149,7 +152,7 @@ class TodoItem extends StatelessWidget {
                           onPressed: () {
                             RestImpl()
                                 .deleteUserTodo(Global.getUser(),
-                                    todoData.todoId as int, todoData)
+                                    todoData.todoId.toInt(), todoData)
                                 .catchError((e) {
                               print(e);
                             });
@@ -184,8 +187,8 @@ class TodoItem extends StatelessWidget {
                             child: Text(
                               'Completed: ' +
                                   formatDate(
-                                      DateTime.fromMicrosecondsSinceEpoch(
-                                          todoData.completeAt as int),
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          todoData.completeAt.toInt() * 1000),
                                       [yyyy, '-', mm, '-', dd]),
                               style: TextStyle(
                                   color: Provider.of<ConfigState>(context)

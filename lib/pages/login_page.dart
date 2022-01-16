@@ -3,6 +3,7 @@ import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,15 +18,9 @@ class _LoginPageState extends State<LoginPage> {
   GlobalKey _formKey = GlobalKey<FormState>();
   bool _nameAutoFocus = true;
   bool _isUserEmpty = true;
-  // TODO: 使用provider管理全局用户状态进行替换
-  User? userData;
 
   @override
   void initState() {
-    // 自动填充上次登录的用户名，填充后将焦点定位到密码输入框
-    if (_unameController.text != null) {
-      _nameAutoFocus = false;
-    }
     Global.logout();
     super.initState();
   }
@@ -40,15 +35,16 @@ class _LoginPageState extends State<LoginPage> {
         child: Icon(_isUserEmpty ? Icons.upload : Icons.login),
         onPressed: () async {
           // TODO: 登陆结果校验
-          if (_unameController.text == '' && _pwdController.text == '') {
-            Navigator.pushNamed(context, '/register_page');
+          if (_unameController.text == '') {
+            Navigator.pushNamed(context, '/register_page').then((value) {
+              _unameController.text = value.toString();
+            }).catchError((e) {
+              Fluttertoast.showToast(msg: e);
+            });
           } else if (await Global.login(
-                  int.parse(_unameController.text == ''
-                      ? '0'
-                      : _unameController.text),
-                  _pwdController.text)
-              // TODO: 使用用户名登陆？
-              ) {
+              int.parse(
+                  _unameController.text == '' ? '0' : _unameController.text),
+              _pwdController.text)) {
             Navigator.pushReplacementNamed(context, '/todo_page/unfinished');
           }
         },

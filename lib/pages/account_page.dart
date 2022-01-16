@@ -1,5 +1,6 @@
 import 'package:dandelion_todo/http/rest_api_impl.dart';
 import 'package:dandelion_todo/states/config_state.dart';
+import 'package:dandelion_todo/states/profile_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:dandelion_todo/utils/themes.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,6 +49,7 @@ class _AccountPageState extends State<AccountPage> {
               }).catchError((e) {
                 Fluttertoast.showToast(msg: e.toString());
               });
+              Provider.of<ProfileState>(context, listen: false).updateUser();
             },
           ),
           Divider(
@@ -134,8 +136,8 @@ class _AccountPageState extends State<AccountPage> {
                               onPressed: () {
                                 Navigator.of(context)
                                     .pop(_nicknameController.text);
-                                Global.updateNickname(
-                                    _nicknameController.text.trim());
+                                // Global.updateNickname(
+                                //     _nicknameController.text.trim());
                               },
                             ),
                           ),
@@ -144,7 +146,14 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                   );
                 },
-              );
+              ).then((value) {
+                Global.updateNickname(value ?? Global.getNickname()).then((_) {
+                  Provider.of<ProfileState>(context, listen: false)
+                      .updateUser();
+                }).catchError((e) {
+                  Fluttertoast.showToast(msg: e.toString());
+                });
+              });
             },
           ),
           Divider(
@@ -232,8 +241,8 @@ class _AccountPageState extends State<AccountPage> {
                               onPressed: () {
                                 Navigator.of(context)
                                     .pop(_passwordController.text);
-                                Global.updatePassword(
-                                    _passwordController.text.trim());
+                                // Global.updatePassword(
+                                //     _passwordController.text.trim());
                               },
                             ),
                           ),
@@ -242,7 +251,12 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                   );
                 },
-              );
+              ).then((value) {
+                Global.updatePassword(value ?? Global.getPassword());
+                Provider.of<ProfileState>(context, listen: false).updateUser();
+              }).catchError((e) {
+                Fluttertoast.showToast(msg: e.toString());
+              });
             },
           ),
           Divider(

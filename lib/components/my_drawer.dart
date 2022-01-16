@@ -45,19 +45,18 @@ class _MyDrawerState extends State<MyDrawer> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     alignment: Alignment.bottomCenter,
-                    // TODO: 用头像代替Icon
                     child: Material(
                       color: Colors.transparent,
                       child: Row(
                         children: [
-                          MaterialButton(
-                            child: ClipOval(
+                          ClipOval(
+                            child: MaterialButton(
                               child: Provider.of<ProfileState>(context)
                                           .avatar
                                           .length ==
                                       0
-                                  ? Image.network(
-                                      'https://book.flutterchina.club/logo.png',
+                                  ? Image.asset(
+                                      'assets/imgs/dandelion_avatar.png',
                                       height: 70,
                                       width: 70,
                                     )
@@ -66,10 +65,10 @@ class _MyDrawerState extends State<MyDrawer> {
                                       height: 70,
                                       width: 70,
                                     ),
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/account_page');
+                              },
                             ),
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/account_page');
-                            },
                           ),
                           Padding(
                             padding: EdgeInsets.all(5),
@@ -188,9 +187,6 @@ class _MyDrawerState extends State<MyDrawer> {
                               .neglected),
                 ),
                 onTap: () {
-                  setState(() {
-                    currentItem = Global.TODO_DRAWER_CONFIG;
-                  });
                   Navigator.pushNamed(context, '/config_page/setting');
                 },
               ),
@@ -350,8 +346,8 @@ class _MyDrawerState extends State<MyDrawer> {
                       );
                     },
                   ).then((value) {
-                    Provider.of<ConfigState>(context, listen: false).theme =
-                        value ?? 'dark';
+                    Provider.of<ConfigState>(context, listen: false)
+                        .changeTheme(value);
                   });
                 },
               ),

@@ -45,8 +45,8 @@ class _RegisterPageState extends State<RegisterPage> {
             int userid = await Global.register(
                 _unameController.text, _pwdController.text);
             print(userid);
-            Fluttertoast.showToast(msg: '你的userId是:$userid');
             //TODO: 显示注册结果
+            Fluttertoast.showToast(msg: '你的userId是:$userid');
             Navigator.pop(context, userid);
           }
         },

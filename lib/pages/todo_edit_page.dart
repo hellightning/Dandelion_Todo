@@ -18,12 +18,13 @@ class TodoEditPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: 日期选择第一次无效
     var _deadlineInputController = TextEditingController(
         text: formatDate(
             (todoData == null
                 ? DateTime.now()
                 : DateTime.fromMillisecondsSinceEpoch(
-                    todoData!.deadline as int)),
+                    todoData!.deadline.toInt() * 1000)),
             [yyyy, '-', mm, '-', dd]));
     var _importanceInputController = TextEditingController(
         text: todoData == null
@@ -143,15 +144,20 @@ class TodoEditPage extends StatelessWidget {
                     lastDate: DateTime.now().add(Duration(days: 365)),
                   ).then((value) {
                     try {
-                      todoData?.deadline = value!.millisecondsSinceEpoch;
-                      todoJson['deadline'] = value!.millisecondsSinceEpoch;
+                      todoData?.deadline =
+                          (value!.millisecondsSinceEpoch / 1000).floor();
+                      todoJson['deadline'] =
+                          value!.millisecondsSinceEpoch / 1000;
                       _deadlineInputController.text =
                           formatDate(value, [yyyy, '-', mm, '-', dd]);
                     } catch (e) {
+                      Fluttertoast.showToast(msg: e.toString());
                       todoData?.deadline =
-                          DateTime.now().millisecondsSinceEpoch;
+                          (DateTime.now().millisecondsSinceEpoch / 1000)
+                              .floor();
                       todoJson['deadline'] =
-                          DateTime.now().millisecondsSinceEpoch;
+                          (DateTime.now().millisecondsSinceEpoch / 1000)
+                              .floor();
                       _deadlineInputController.text =
                           formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
                     }
@@ -201,7 +207,6 @@ class TodoEditPage extends StatelessWidget {
                               .warnColor)),
                 ),
                 onTap: () async {
-                  // TODO: picker
                   int importance = 0;
                   await showDialog<int>(
                     context: context,
@@ -394,14 +399,26 @@ class TodoEditPage extends StatelessWidget {
         onPressed: () async {
           try {
             _editKey.currentState?.save();
-            todoJson['createAt'] = DateTime.now().millisecondsSinceEpoch;
+            if (!todoJson.containsKey('importance')) {
+              todoJson['importance'] = 0;
+            }
+            if (!todoJson.containsKey('deadline')) {
+              todoJson['deadline'] =
+                  (DateTime.now().add(const Duration(days: 1)))
+                          .millisecondsSinceEpoch /
+                      1000;
+            }
+            print((DateTime.now().millisecondsSinceEpoch / 1000).floor());
+            todoJson['createAt'] =
+                (DateTime.now().millisecondsSinceEpoch / 1000).floor();
             todoJson['completeAt'] = 0;
             todoJson['creatorId'] = Global.getUser();
             todoJson['localId'] = Uuid().v1();
             todoJson['parentId'] = 0;
             todoJson['plantTime'] = 0;
             todoJson['todoId'] = 0;
-            todoJson['updateAt'] = DateTime.now().millisecondsSinceEpoch;
+            todoJson['updateAt'] =
+                (DateTime.now().millisecondsSinceEpoch / 1000).floor();
             todoData ??= await RestImpl()
                 .createTodo(Todo.fromJson(todoJson))
                 .catchError((e) {
@@ -410,7 +427,7 @@ class TodoEditPage extends StatelessWidget {
             todoData?.localId = Uuid().v1();
             await RestImpl()
                 .updateUserTodo(
-                    Global.getUser(), todoData!.todoId as int, todoData!)
+                    Global.getUser(), todoData!.todoId.toInt(), todoData!)
                 .catchError((e) {
               Fluttertoast.showToast(msg: e.toString());
             });

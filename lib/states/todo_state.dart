@@ -13,7 +13,7 @@ class TodoState extends ChangeNotifier {
     await RestImpl().getTodoList(Global.getUser()).then((value) {
       todoList = value;
     }).catchError((e) {
-      print(e);
+      Fluttertoast.showToast(msg: e.toString());
     });
     notifyListeners();
   }
