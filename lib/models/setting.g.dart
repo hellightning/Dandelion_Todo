@@ -8,9 +8,9 @@ part of 'setting.dart';
 
 Setting _$SettingFromJson(Map<String, dynamic> json) => Setting()
   ..theme = json['theme'] as String
-  ..someSetting = json['someSetting'] as bool;
+  ..unfinished = json['unfinished'] as bool;
 
 Map<String, dynamic> _$SettingToJson(Setting instance) => <String, dynamic>{
       'theme': instance.theme,
-      'someSetting': instance.someSetting,
+      'unfinished': instance.unfinished,
     };

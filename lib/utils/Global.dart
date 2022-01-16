@@ -138,16 +138,17 @@ class Global {
     } else {
       return login(
           _pref!.getInt('userid') ?? 0, _pref!.getString('password') ?? '');
+      // return true;
     }
   }
 
   static Future<int> register(String nickname, String password) async {
     int ret = -1;
-    await RestImpl().register(nickname, password).catchError((e) {
-      print(e);
-    }).then((value) {
+    await RestImpl().register(nickname, password).then((value) {
       Global.login(value?.userId as int, value!.password);
       ret = value.userId as int;
+    }).catchError((e) {
+      Fluttertoast.showToast(msg: e.toString());
     });
     return ret;
   }
@@ -174,7 +175,7 @@ class Global {
   static String? APP_THEME;
   static String get appTheme {
     if (_pref?.getString('theme') == null) {
-      _pref?.setString('theme', 'dark');
+      _pref?.setString('theme', 'pink');
     }
     APP_THEME ??= _pref!.getString('theme')!;
     return APP_THEME!;

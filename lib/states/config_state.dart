@@ -18,7 +18,7 @@ class ConfigState extends ChangeNotifier {
   }
 
   void changeTheme(String? value) {
-    Global.APP_THEME = value ?? 'dark';
+    Global.APP_THEME = value ?? 'pink';
     notifyListeners();
   }
 

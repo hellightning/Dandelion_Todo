@@ -7,6 +7,7 @@
     "localId": "",
     "parentId": 0,
     "plantTime": 0,
+    "importance" : 0,
     "title": "",
     "todoId": 0,
     "updateAt": 0

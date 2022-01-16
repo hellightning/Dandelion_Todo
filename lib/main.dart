@@ -13,10 +13,8 @@ import 'package:dandelion_todo/states/profile_state.dart';
 import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/states/todo_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
 
 import 'utils/Global.dart';
 
