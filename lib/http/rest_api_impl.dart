@@ -15,9 +15,9 @@ import 'package:http/http.dart' as http;
 class RestImpl implements RestApi {
   static final RestImpl _instance = RestImpl._internal();
   var dio = Dio();
-  late String localNickname;
-  late String localPassword;
-  late int localUid;
+  String localNickname = 'hltn';
+  String localPassword = '114514';
+  int localUid = 6;
 
   RestImpl._internal() {
     dio.options.baseUrl = "http://sgp.hareru.moe:8080/";

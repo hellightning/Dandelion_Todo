@@ -22,10 +22,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void initState() {
-    // 自动填充上次登录的用户名，填充后将焦点定位到密码输入框
-    if (_unameController.text != '') {
-      _nameAutoFocus = false;
-    }
+    // // 自动填充上次登录的用户名，填充后将焦点定位到密码输入框
+    // if (_unameController.text != '') {
+    //   _nameAutoFocus = false;
+    // }
     super.initState();
   }
 

@@ -8,7 +8,7 @@ class User {
 
   late String nickname;
   late String password;
-  late Map<String,dynamic> role;
+  late List role;
   late num userId;
   late List watchList;
   
