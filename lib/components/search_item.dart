@@ -43,6 +43,7 @@ class SearchItem extends StatelessWidget {
               // },
               onEditingComplete: () {
                 // TODO: 修逻辑
+                print('hltn' + _searchController.text);
                 Provider.of<ConfigState>(context, listen: false)
                     .updateFilter(_searchController.text);
               },

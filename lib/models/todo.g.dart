@@ -8,7 +8,7 @@ part of 'todo.dart';
 
 Todo _$TodoFromJson(Map<String, dynamic> json) => Todo()
   ..completeAt = json['completeAt'] as num
-  ..createdAt = json['createdAt'] as num
+  ..createAt = json['createAt'] as num
   ..creatorId = json['creatorId'] as num
   ..deadline = json['deadline'] as num
   ..description = json['description'] as String
@@ -22,7 +22,7 @@ Todo _$TodoFromJson(Map<String, dynamic> json) => Todo()
 
 Map<String, dynamic> _$TodoToJson(Todo instance) => <String, dynamic>{
       'completeAt': instance.completeAt,
-      'createdAt': instance.createdAt,
+      'createAt': instance.createAt,
       'creatorId': instance.creatorId,
       'deadline': instance.deadline,
       'description': instance.description,

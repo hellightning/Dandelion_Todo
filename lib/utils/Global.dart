@@ -60,7 +60,10 @@ class Global {
   static Future updateWatchlistByUserid(int userid) async {
     print(WATCHLIST_DYNAMIC.toString());
     RestImpl().addWatchList(List.from([userid])).then((_) {
-      WATCHLIST_DYNAMIC.add(userid);
+      if (!WATCHLIST_DYNAMIC.contains(userid)) {
+        WATCHLIST_DYNAMIC.add(userid);
+      }
+      print('hltn$userid' + WATCHLIST_DYNAMIC.toString());
     }).catchError((e) {
       Fluttertoast.showToast(msg: e.toString());
     });
@@ -71,7 +74,13 @@ class Global {
       Fluttertoast.showToast(msg: e.toString());
     }).then((value) {
       RestImpl().addWatchList(value ?? List.empty()).then((_) {
-        WATCHLIST_DYNAMIC.addAll(value ?? List.empty());
+        if (value != null) {
+          value.forEach((value) {
+            if (!WATCHLIST_DYNAMIC.contains(value)) {
+              WATCHLIST_DYNAMIC.add(value);
+            }
+          });
+        }
       }).catchError((e) {
         Fluttertoast.showToast(msg: e.toString());
       });

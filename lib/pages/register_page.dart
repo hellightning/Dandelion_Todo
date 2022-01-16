@@ -70,6 +70,10 @@ class _RegisterPageState extends State<RegisterPage> {
               TextFormField(
                   autofocus: _nameAutoFocus,
                   controller: _unameController,
+                  style: TextStyle(
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .textColor),
                   decoration: InputDecoration(
                     labelText: '昵称',
                     hintText: 'input your nickname',
@@ -91,6 +95,9 @@ class _RegisterPageState extends State<RegisterPage> {
               TextFormField(
                 controller: _pwdController,
                 autofocus: !_nameAutoFocus,
+                style: TextStyle(
+                    color:
+                        Provider.of<ConfigState>(context).themeColor.textColor),
                 decoration: InputDecoration(
                     labelText: '密码',
                     hintText: 'please input your password',

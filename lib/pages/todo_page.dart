@@ -56,8 +56,7 @@ class _TodoPageState extends State<TodoPage> {
                       .where((todoData) =>
                           ((todoData.completeAt == 0) == widget.isUnfinished))
                       .where((todoData) => (todoData.title.contains(
-                          Provider.of<ConfigState>(context, listen: false)
-                              .searchFilter)))
+                          Provider.of<ConfigState>(context).searchFilter)))
                       .map((todoData) => Padding(
                             padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                             child: TodoItem(

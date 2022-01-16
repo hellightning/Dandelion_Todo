@@ -72,6 +72,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
           onPressed: () {
             var content = _addfriendItem.getContent();
             try {
+              print('hltn' + content);
               Global.updateWatchlistByUserid(int.parse(content));
             } catch (e) {
               try {
@@ -80,6 +81,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
                 Fluttertoast.showToast(msg: e.toString());
               }
             }
+            Provider.of<ProfileState>(context).updateUser();
           },
           child: const Icon(Icons.add)),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,

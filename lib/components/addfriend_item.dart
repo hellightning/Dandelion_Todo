@@ -32,7 +32,7 @@ class AddFriendItem extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.7,
             height: 50,
             child: TextField(
-              // controller: _addfriendController,
+              controller: _addfriendController,
               style: TextStyle(
                   color: Provider.of<ConfigState>(context).themeColor.textColor,
                   fontSize: Global.NORMAL_TEXT_SIZE),

@@ -5,6 +5,7 @@ import 'package:dandelion_todo/states/config_state.dart';
 import 'package:dandelion_todo/utils/Global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class FriendItem extends StatefulWidget {
@@ -68,11 +69,31 @@ class _FriendItemState extends State<FriendItem> {
                       ),
               ),
               Column(
-                children: [Text(nickname), Text('userid: ${widget.userid}')],
+                children: [
+                  Text(
+                    nickname,
+                    style: TextStyle(
+                        color: Provider.of<ConfigState>(context)
+                            .themeColor
+                            .mainColor,
+                        fontSize: Global.TODO_TITLE_SIZE),
+                  ),
+                  Text('userid: ${widget.userid}',
+                      style: TextStyle(
+                          color: Provider.of<ConfigState>(context)
+                              .themeColor
+                              .textColor,
+                          fontSize: Global.NORMAL_TEXT_SIZE))
+                ],
               ),
               IconButton(
-                icon: Icon(Icons.delete_forever),
-                onPressed: () {},
+                icon: Icon(
+                  Icons.delete_forever,
+                  color: Provider.of<ConfigState>(context).themeColor.warnColor,
+                ),
+                onPressed: () {
+                  Fluttertoast.showToast(msg: '暂未实现');
+                },
               ),
             ],
           ),

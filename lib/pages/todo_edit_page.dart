@@ -423,8 +423,7 @@ class TodoEditPage extends StatelessWidget {
             todoJson['todoId'] = 0;
             todoJson['updateAt'] =
                 (DateTime.now().millisecondsSinceEpoch / 1000).floor();
-            print('sending');
-            print(todoJson['deadline']);
+            print('sending' + todoJson.toString());
             todoData ??= await RestImpl()
                 .createTodo(Todo.fromJson(todoJson))
                 .catchError((e) {

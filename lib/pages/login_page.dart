@@ -69,6 +69,10 @@ class _LoginPageState extends State<LoginPage> {
               TextFormField(
                   autofocus: _nameAutoFocus,
                   controller: _unameController,
+                  style: TextStyle(
+                      color: Provider.of<ConfigState>(context)
+                          .themeColor
+                          .textColor),
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'userid',
@@ -105,6 +109,9 @@ class _LoginPageState extends State<LoginPage> {
               TextFormField(
                 controller: _pwdController,
                 autofocus: !_nameAutoFocus,
+                style: TextStyle(
+                    color:
+                        Provider.of<ConfigState>(context).themeColor.textColor),
                 decoration: InputDecoration(
                     labelText: '密码',
                     hintText: '请输入不含空字符的密码',
