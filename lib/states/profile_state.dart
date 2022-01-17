@@ -27,6 +27,18 @@ class ProfileState extends ChangeNotifier {
     return Global.WATCHLIST_DYNAMIC;
   }
 
+  void updateWatchlistByUserid(int userid) {
+    Global.updateWatchlistByUserid(userid).then((_) {
+      notifyListeners();
+    });
+  }
+
+  void updateWatchlistByNickname(String nickname) {
+    Global.updateWatchlistByNickname(nickname).then((_) {
+      notifyListeners();
+    });
+  }
+
   Uint8List get avatar {
     return Global.AVATAR_DYNAMIC;
   }

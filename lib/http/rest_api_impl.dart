@@ -498,7 +498,7 @@ class RestImpl implements RestApi {
     List<int> f = await file.readAsBytes();
     try {
       var res = await http.post(
-          Uri.parse('http://sgp.hareru.moe:8080/api/user/4/avatar'),
+          Uri.parse('http://sgp.hareru.moe:8080/api/user/$localUid/avatar'),
           headers: {
             'Authorization': dio.options.headers['Authorization'],
             'Content-type': 'image/jpeg',

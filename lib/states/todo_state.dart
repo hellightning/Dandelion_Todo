@@ -29,10 +29,13 @@ class TodoState extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Todo> friendTodoList = List.empty();
+  List<Todo> friendTodoList = List.empty(growable: true);
   void updateFriendTodoList() async {
     await RestImpl().findWatchList(Global.getUser()).then((value) {
       for (var friend in value) {
+        if (friend == Global.getUser()) {
+          continue;
+        }
         RestImpl().getTodoList(friend).then((value) {
           friendTodoList.addAll(value);
         }).catchError((e) {

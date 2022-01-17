@@ -22,10 +22,14 @@ class _FriendItemState extends State<FriendItem> {
   @override
   void initState() {
     RestImpl().findNicknameById(widget.userid).then((value) {
-      nickname = value ?? 'unknown nickname';
+      setState(() {
+        nickname = value ?? 'unknown nickname';
+      });
     });
     RestImpl().getAvatar(widget.userid).then((value) {
-      avatarByte = value;
+      setState(() {
+        avatarByte = value;
+      });
     });
   }
 

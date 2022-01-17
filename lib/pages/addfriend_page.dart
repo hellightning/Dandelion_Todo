@@ -73,15 +73,22 @@ class _AddFriendPageState extends State<AddFriendPage> {
             var content = _addfriendItem.getContent();
             try {
               print('hltn' + content);
-              Global.updateWatchlistByUserid(int.parse(content));
+              Provider.of<ProfileState>(context, listen: false)
+                  .updateWatchlistByUserid(int.parse(content));
+              setState(() {
+                _watchList = Global.WATCHLIST_DYNAMIC;
+              });
             } catch (e) {
               try {
-                Global.updateWatchlistByNickname(content);
+                Provider.of<ProfileState>(context, listen: false)
+                    .updateWatchlistByNickname(content);
+                setState(() {
+                  Global.WATCHLIST_DYNAMIC;
+                });
               } catch (e) {
                 Fluttertoast.showToast(msg: e.toString());
               }
             }
-            Provider.of<ProfileState>(context).updateUser();
           },
           child: const Icon(Icons.add)),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,

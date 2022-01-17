@@ -15,7 +15,7 @@ class PlanttreePage extends StatefulWidget {
 }
 
 class _PlanttreePageState extends State<PlanttreePage> {
-  bool isPlanting = false;
+  bool _isPlanting = false;
   FixedExtentScrollController _hourController = FixedExtentScrollController();
   FixedExtentScrollController _minuteController = FixedExtentScrollController();
   int remainSecond = 0;
@@ -34,7 +34,7 @@ class _PlanttreePageState extends State<PlanttreePage> {
       backgroundColor: Provider.of<ConfigState>(context).themeColor.background,
       appBar: AppBar(
         title: Text(
-          isPlanting ? '种树中...' : '请选择时间',
+          _isPlanting ? '种树中...' : '请选择时间',
           style: TextStyle(
               fontSize: Global.APPBAR_TITLE_SIZE,
               color: Provider.of<ConfigState>(context).themeColor.textColor),
@@ -43,9 +43,9 @@ class _PlanttreePageState extends State<PlanttreePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            isPlanting = !isPlanting;
+            _isPlanting = !_isPlanting;
           });
-          if (isPlanting) {
+          if (_isPlanting) {
             const second = Duration(seconds: 1);
             var callback = (timer) => setState(() {
                   if (remainSecond <= 0) {
@@ -53,7 +53,7 @@ class _PlanttreePageState extends State<PlanttreePage> {
                       if (remainHour <= 0) {
                         // TODO: 更新种树结果到服务端
                         _timer.cancel();
-                        isPlanting = false;
+                        _isPlanting = false;
                       } else {
                         remainHour -= 1;
                         remainMinute = 59;
@@ -126,7 +126,7 @@ class _PlanttreePageState extends State<PlanttreePage> {
                         ))
                     .toList(),
                 onSelectedItemChanged: (value) {
-                  if (!isPlanting) {
+                  if (!_isPlanting) {
                     remainHour = value;
                   } else {
                     _hourController.animateToItem(remainHour,
@@ -161,10 +161,10 @@ class _PlanttreePageState extends State<PlanttreePage> {
                         ))
                     .toList(),
                 onSelectedItemChanged: (value) {
-                  print(isPlanting);
+                  print(_isPlanting);
                   print(remainMinute.toDouble());
                   print(value);
-                  if (!isPlanting) {
+                  if (!_isPlanting) {
                     remainMinute = value;
                   } else {
                     _minuteController.animateToItem(remainMinute,
